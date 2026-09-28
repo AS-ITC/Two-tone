@@ -339,6 +339,7 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
           <button class="itail-btn itail-btn-cta" id="btnEmail" onclick="composeEmail()">✉️ อีเมล</button>
           <button class="itail-btn itail-btn-outline" onclick="deleteSheet()" style="color:var(--itail-danger);border-color:var(--itail-danger);">🗑️ ลบใบนี้</button>
         </div>
+        <div class="ocr-status" id="emailHint" style="margin:0 0 8px;"></div>
         <label class="chk"><input type="checkbox" id="chkPhotos"> แนบภาพถ่ายท้ายรายงาน (ใน PDF / พิมพ์) — Excel มีชีตภาพถ่ายให้เสมอ</label>
       </div>
     </div>
@@ -1097,32 +1098,35 @@ function mailSummary(s){
 */
 let emailCache=null;
 function sheetKey(s){ const last=s.entries.length?s.entries[s.entries.length-1].id:''; return [s.id,s.entries.length,last,s.verifierSig?s.verifierSig.d.length:0,$('chkPhotos').checked?1:0].join('|'); }
-function canShareFiles(){
-  try{ return !!(navigator.canShare && navigator.share && navigator.canShare({files:[new File(['x'],'a.pdf',{type:'application/pdf'})]})); }catch(e){ return false; }
-}
+function canShareOne(f){ try{ return !!(navigator.canShare && navigator.share && navigator.canShare({files:[f]})); }catch(e){ return false; } }
 const EMAIL_LABEL='✉️ อีเมล';
+function setHint(t){ const h=$('emailHint'); if(h) h.textContent=t||''; }
 function refreshEmailBtn(){
   const s=curSheet(), btn=$('btnEmail'); if(!btn||emailBusy) return;
-  btn.textContent = (s && emailCache && emailCache.key===sheetKey(s)) ? '📤 ไฟล์พร้อมแล้ว — แตะเพื่อส่ง' : EMAIL_LABEL;
+  const ok = s && emailCache && emailCache.key===sheetKey(s);
+  btn.textContent = ok ? '📤 ไฟล์พร้อมแล้ว — แตะเพื่อส่ง' : EMAIL_LABEL;
+  if(!ok) setHint('');
 }
-// ชั้นที่ 2: ดาวน์โหลด 2 ไฟล์ + เปิด mailto
-function fallbackDownload(s, c){
+// ดาวน์โหลดไฟล์ (คอมพิวเตอร์ / ไฟล์ที่แชร์ไม่ได้)
+function dlFiles(list){ list.forEach((f,i)=>setTimeout(()=>downloadBlob(f.blob,f.name), i*600)); }
+// ชั้นที่ 2: ดาวน์โหลดทุกไฟล์ + เปิด mailto
+function fallbackDownload(s, c, why){
   const m=mailSummary(s), subject=`ใบบันทึก Two tone ${dmy(s.date)} ${s.shift}`;
-  downloadBlob(c.pdf.blob,c.pdf.name);
-  setTimeout(()=>downloadBlob(c.xlsx.blob,c.xlsx.name),600);
+  dlFiles([c.pdf,c.xlsx]);
   const body=m.body+`\n(ไฟล์ที่ดาวน์โหลดไว้: ${c.pdf.name} และ ${c.xlsx.name})\n⚠️ กรุณาแนบ 2 ไฟล์นี้ในอีเมลนี้ด้วยตนเองก่อนกดส่ง (ไฟล์อยู่ในโฟลเดอร์ Downloads — ในแอปอีเมลกด 📎 แล้วเลือกจาก Downloads)`;
-  toast('ดาวน์โหลดไฟล์แล้ว (ถ้าเบราว์เซอร์ถามให้อนุญาตดาวน์โหลดหลายไฟล์) แล้วแนบไฟล์ในอีเมลที่เปิดขึ้นเอง — ไฟล์อยู่ใน Downloads', 9000);
-  setTimeout(()=>{ location.href='mailto:?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body); }, 1500);
+  toast((why?why+' — ':'')+'ดาวน์โหลดไฟล์แล้ว แนบในอีเมลที่เปิดขึ้นเอง (ไฟล์อยู่ใน Downloads)', 9000);
+  setTimeout(()=>{ location.href='mailto:?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body); }, 1800);
 }
-// ชั้นที่ 1: เรียกทันทีจากการแตะ (ห้ามมี await ก่อนหน้า)
+// ชั้นที่ 1: เรียกทันทีจากการแตะ (ห้ามมี await ก่อนหน้า) — แชร์เฉพาะไฟล์ที่เบราว์เซอร์อนุญาต
 function shareNow(s, c){
   const m=mailSummary(s), subject=`ใบบันทึก Two tone ${dmy(s.date)} ${s.shift}`;
-  navigator.share({ files:c.files, title:subject, text:m.body }).then(()=>{
-    toast('เปิดหน้าต่างแชร์แล้ว เลือกแอปอีเมลที่ต้องการส่งได้เลย');
+  if(c.rest.length) dlFiles(c.rest);           // ไฟล์ที่แชร์ไม่ได้ (เช่น Excel บน Chrome Android) → โหลดลงเครื่อง
+  navigator.share({ files:c.shareFiles, title:subject, text:m.body }).then(()=>{
+    toast(c.rest.length ? 'แนบ PDF แล้ว — อย่าลืมแนบไฟล์ Excel จาก Downloads เอง' : 'เปิดหน้าต่างแชร์แล้ว เลือกแอปอีเมลที่ต้องการส่งได้เลย', 7000);
   }).catch(err=>{
     if(err && err.name==='AbortError') return;      // ผู้ใช้กดยกเลิก = จบปกติ
     console.warn('share failed → fallback', err);
-    fallbackDownload(s,c);
+    fallbackDownload(s,c,'แชร์ไม่สำเร็จ ('+(err&&err.name||'error')+')');
   });
 }
 async function composeEmail(){
@@ -1130,21 +1134,27 @@ async function composeEmail(){
   if(!s.entries.length){ toast('ใบนี้ยังไม่มีรายการตรวจ'); return; }
   const key=sheetKey(s);
   // แตะครั้งที่ 2: ไฟล์พร้อมแล้ว → share ทันที
-  if(emailCache && emailCache.key===key && canShareFiles()){ shareNow(s,emailCache); return; }
+  if(emailCache && emailCache.key===key && emailCache.shareFiles.length){ shareNow(s,emailCache); return; }
 
   const btn=$('btnEmail');
-  emailBusy=true; btn.disabled=true; btn.textContent='⏳ กำลังเตรียมไฟล์...';
+  emailBusy=true; btn.disabled=true; btn.textContent='⏳ กำลังเตรียมไฟล์...'; setHint('');
   let ready=false;
   try{
     let pdf, xlsx;
     try{ pdf=await buildPdfBlob(s); }catch(e){ toast('สร้างไฟล์ PDF ไม่สำเร็จ: '+e.message, 7000); return; }
     try{ xlsx=await buildXlsxBlob(s); }catch(e){ toast('สร้างไฟล์ Excel ไม่สำเร็จ: '+e.message, 7000); return; }
-    const files=[ new File([pdf.blob],pdf.name,{type:pdf.type}), new File([xlsx.blob],xlsx.name,{type:xlsx.type}) ];
-    emailCache={ key, pdf, xlsx, files };
-    if(canShareFiles()){
-      ready=true;
+    const all=[ {o:pdf,f:new File([pdf.blob],pdf.name,{type:pdf.type})}, {o:xlsx,f:new File([xlsx.blob],xlsx.name,{type:xlsx.type})} ];
+    const okList=all.filter(x=>canShareOne(x.f));
+    emailCache={ key, pdf, xlsx, shareFiles:okList.map(x=>x.f), rest:all.filter(x=>!okList.includes(x)).map(x=>x.o) };
+    if(okList.length===2){
+      ready=true; setHint('แตะปุ่ม "ส่ง" อีกครั้ง → เลือกแอปอีเมล ไฟล์ PDF + Excel จะติดไปเป็นไฟล์แนบให้อัตโนมัติ');
       toast('ไฟล์พร้อมแล้ว — แตะปุ่ม "ส่ง" อีกครั้งเพื่อเลือกแอปอีเมล', 6000);
+    } else if(okList.length===1){
+      ready=true;
+      setHint('อุปกรณ์/เบราว์เซอร์นี้แชร์ไฟล์ '+(okList[0].f.name.endsWith('.pdf')?'PDF':'บางชนิด')+' ได้อย่างเดียว (Chrome บน Android ไม่อนุญาตให้แชร์ไฟล์ Excel) — แตะ "ส่ง" อีกครั้ง ระบบจะแนบ PDF ให้ และดาวน์โหลด Excel ไว้ใน Downloads ให้คุณแนบเพิ่มเอง');
+      toast('ไฟล์พร้อมแล้ว — แตะ "ส่ง" อีกครั้ง (PDF แนบอัตโนมัติ / Excel แนบเองจาก Downloads)', 8000);
     } else {
+      setHint('เบราว์เซอร์นี้ไม่รองรับการแชร์ไฟล์ — ระบบดาวน์โหลดไฟล์ให้แล้ว ให้แนบเองจาก Downloads (แนะนำใช้ Chrome)');
       fallbackDownload(s, emailCache);
     }
   } finally {
