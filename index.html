@@ -181,6 +181,12 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
 .ph-btns .itail-btn{ padding:7px 14px; font-size:13px; }
 .ph-empty{ text-align:center; padding:14px 6px; font-size:13px; color:var(--itail-text-muted); background:var(--itail-bg); border-radius:10px; }
 .thumb2{ margin-left:4px; }
+.mstep{ margin-bottom:12px; }
+.mstep .itail-btn{ width:100%; }
+.mstep.done .itail-btn{ opacity:.75; }
+.msub{ font-size:12.5px; color:var(--itail-text-muted); margin-top:5px; line-height:1.4; }
+.mnote{ font-size:13.5px; color:var(--itail-navy); background:var(--itail-amber-light); border-radius:12px; padding:10px 12px; margin-bottom:12px; line-height:1.45; }
+#mailModal{ z-index:65; }
 #sigCanvas{ width:100%; height:200px; border:1.5px solid var(--itail-border); border-radius:12px; touch-action:none; background:#fff; display:block; }
 
 /* Report tab */
@@ -339,7 +345,6 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
           <button class="itail-btn itail-btn-cta" id="btnEmail" onclick="composeEmail()">✉️ อีเมล</button>
           <button class="itail-btn itail-btn-outline" onclick="deleteSheet()" style="color:var(--itail-danger);border-color:var(--itail-danger);">🗑️ ลบใบนี้</button>
         </div>
-        <div class="ocr-status" id="emailHint" style="margin:0 0 8px;"></div>
         <label class="chk"><input type="checkbox" id="chkPhotos"> แนบภาพถ่ายท้ายรายงาน (ใน PDF / พิมพ์) — Excel มีชีตภาพถ่ายให้เสมอ</label>
       </div>
     </div>
@@ -447,6 +452,15 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
   </div>
 </div>
 
+<!-- MAIL PANEL -->
+<div class="modal-backdrop" id="mailModal">
+  <div class="modal-box" style="max-width:440px;">
+    <div class="modal-title">✉️ ส่งใบบันทึกทางอีเมล</div>
+    <div id="mailBody"></div>
+    <div class="modal-actions"><button class="itail-btn itail-btn-outline" onclick="closeMail()">ปิด</button></div>
+  </div>
+</div>
+
 <div class="lightbox" id="lightbox" onclick="this.classList.remove('show')"><img id="lightboxImg" src=""></div>
 
 <div id="printArea"></div>
@@ -532,7 +546,7 @@ function downloadBlob(blob, filename){
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a'); a.href=url; a.download=filename;
   document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url), 2000);
+  setTimeout(()=>URL.revokeObjectURL(url), 60000);
 }
 function imgSize(dataUrl){ return new Promise(res=>{ const i=new Image(); i.onload=()=>res({w:i.width,h:i.height}); i.onerror=()=>res({w:1,h:1}); i.src=dataUrl; }); }
 
@@ -1099,68 +1113,100 @@ function mailSummary(s){
 let emailCache=null;
 function sheetKey(s){ const last=s.entries.length?s.entries[s.entries.length-1].id:''; return [s.id,s.entries.length,last,s.verifierSig?s.verifierSig.d.length:0,$('chkPhotos').checked?1:0].join('|'); }
 function canShareOne(f){ try{ return !!(navigator.canShare && navigator.share && navigator.canShare({files:[f]})); }catch(e){ return false; } }
-const EMAIL_LABEL='✉️ อีเมล';
-function setHint(t){ const h=$('emailHint'); if(h) h.textContent=t||''; }
-function refreshEmailBtn(){
-  const s=curSheet(), btn=$('btnEmail'); if(!btn||emailBusy) return;
-  const ok = s && emailCache && emailCache.key===sheetKey(s);
-  btn.textContent = ok ? '📤 ไฟล์พร้อมแล้ว — แตะเพื่อส่ง' : EMAIL_LABEL;
-  if(!ok) setHint('');
+function refreshEmailBtn(){}   // (เก็บไว้เพื่อความเข้ากันได้)
+function kb(b){ return b.size>1048576 ? (b.size/1048576).toFixed(1)+' MB' : Math.max(1,Math.round(b.size/1024))+' KB'; }
+function openMailto(s, m){
+  const subject=`ใบบันทึก Two tone ${dmy(s.date)} ${s.shift}`;
+  const body=m.body+`\n(ไฟล์: ${emailCache.pdf.name} และ ${emailCache.xlsx.name})\n⚠️ กรุณาแนบไฟล์ทั้ง 2 ในอีเมลนี้ด้วยตนเอง (อยู่ในโฟลเดอร์ Downloads — กด 📎 ในแอปอีเมล)`;
+  const a=document.createElement('a'); a.href='mailto:?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+  document.body.appendChild(a); a.click(); a.remove();
 }
-// ดาวน์โหลดไฟล์ (คอมพิวเตอร์ / ไฟล์ที่แชร์ไม่ได้)
-function dlFiles(list){ list.forEach((f,i)=>setTimeout(()=>downloadBlob(f.blob,f.name), i*600)); }
-// ชั้นที่ 2: ดาวน์โหลดทุกไฟล์ + เปิด mailto
-function fallbackDownload(s, c, why){
-  const m=mailSummary(s), subject=`ใบบันทึก Two tone ${dmy(s.date)} ${s.shift}`;
-  dlFiles([c.pdf,c.xlsx]);
-  const body=m.body+`\n(ไฟล์ที่ดาวน์โหลดไว้: ${c.pdf.name} และ ${c.xlsx.name})\n⚠️ กรุณาแนบ 2 ไฟล์นี้ในอีเมลนี้ด้วยตนเองก่อนกดส่ง (ไฟล์อยู่ในโฟลเดอร์ Downloads — ในแอปอีเมลกด 📎 แล้วเลือกจาก Downloads)`;
-  toast((why?why+' — ':'')+'ดาวน์โหลดไฟล์แล้ว แนบในอีเมลที่เปิดขึ้นเอง (ไฟล์อยู่ใน Downloads)', 9000);
-  setTimeout(()=>{ location.href='mailto:?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body); }, 1800);
+
+/* ---------- แผงส่งอีเมล: ทุกขั้นตอนเป็น "แตะทีละครั้ง" (Android บล็อกดาวน์โหลดอัตโนมัติหลายไฟล์ และการสลับแอปเร็วเกินไปทำให้ดาวน์โหลดหลุด) ---------- */
+let mailDone={};
+function shareDiag(){
+  const ua=navigator.userAgent||'';
+  let br='ไม่ทราบ'; const m=ua.match(/(SamsungBrowser|EdgA|Edg|OPR|Firefox|CriOS|FxiOS|Chrome|Safari)\/([\d.]+)/); if(m) br=m[1]+' '+m[2].split('.')[0];
+  const inApp=/; wv\)|FBAN|FBAV|Line\/|Teams|Outlook|Instagram|MicroMessenger|Messenger/i.test(ua);
+  const c=emailCache;
+  const t=f=>{ try{ return navigator.canShare? String(!!navigator.canShare({files:[f]})) : 'ไม่มี canShare'; }catch(e){ return 'error:'+(e&&e.name); } };
+  return { br, inApp, secure:window.isSecureContext, share:typeof navigator.share, canShare:typeof navigator.canShare,
+    pdf:c&&c.pdfFile?t(c.pdfFile):'-', xlsx:c&&c.xlsxFile?t(c.xlsxFile):'-' };
 }
-// ชั้นที่ 1: เรียกทันทีจากการแตะ (ห้ามมี await ก่อนหน้า) — แชร์เฉพาะไฟล์ที่เบราว์เซอร์อนุญาต
-function shareNow(s, c){
+function diagHtml(){
+  const d=shareDiag(), c=emailCache;
+  let warn='';
+  if(d.inApp) warn='<div class="mnote">⚠️ ดูเหมือนหน้านี้ถูกเปิดจากในแอปอื่น (เช่น Teams/Line/Outlook) ซึ่งแชร์ไฟล์แนบไม่ได้ — กดคัดลอกลิงก์แล้วเปิดใน <b>Chrome</b> โดยตรง</div>';
+  else if(!d.secure) warn='<div class="mnote">⚠️ หน้านี้ไม่ได้เปิดผ่าน https จึงแชร์ไฟล์ไม่ได้</div>';
+  else if(d.share!=='function') warn='<div class="mnote">⚠️ เบราว์เซอร์นี้ ('+esc(d.br)+') ไม่มีระบบแชร์ — ลองเปิดด้วย <b>Chrome</b></div>';
+  return warn+`<div class="msub" style="margin-top:8px;border-top:1px dashed var(--itail-border);padding-top:6px;">🔧 ข้อมูลเครื่อง: ${esc(d.br)} · https=${d.secure} · share=${d.share} · canShare=${d.canShare} · PDF=${d.pdf} · Excel=${d.xlsx}${c&&c.lastErr?' · ผลล่าสุด: '+esc(c.lastErr):''}</div>`;
+}
+function closeMail(){ $('mailModal').classList.remove('show'); }
+function mailStep(id, n, label, cls, sub){
+  const done=mailDone[id];
+  return `<div class="mstep${done?' done':''}"><button class="itail-btn ${cls}" id="ms_${id}" onclick="mailAct('${id}')">${done?'✔ ':''}${n?n+'. ':''}${label}</button>${sub?`<div class="msub">${sub}</div>`:''}</div>`;
+}
+function renderMail(){
+  const s=curSheet(), c=emailCache; if(!s||!c) return;
+  const files=`<div class="msub" style="margin-bottom:10px;">📄 ${esc(c.pdf.name)} (${kb(c.pdf.blob)})<br>📊 ${esc(c.xlsx.name)} (${kb(c.xlsx.blob)})</div>`;
+  let h='', n=c.shareFiles.length;
+  if(n===2){
+    h=mailStep('shareAll','','📤 ส่งทางอีเมล (แนบ PDF + Excel อัตโนมัติ)','itail-btn-cta','เลือกแอปอีเมลในหน้าต่างที่เปิดขึ้น ไฟล์ทั้งสองจะติดไปด้วย')
+     +`<div class="msub" style="margin-top:6px;">หรือ: <button class="link-btn" onclick="mailAct('dlPdf')">ดาวน์โหลด PDF</button> · <button class="link-btn" onclick="mailAct('dlXlsx')">ดาวน์โหลด Excel</button></div>`;
+  } else if(n===1){
+    h=`<div class="mnote">เครื่องนี้ (Chrome บน Android) แชร์ไฟล์ Excel เข้าอีเมลอัตโนมัติไม่ได้ ทำตามลำดับ:</div>`
+     +mailStep('dlXlsx',1,'⬇️ ดาวน์โหลด Excel ลงเครื่อง','itail-btn-outline','ไฟล์จะอยู่ในโฟลเดอร์ Downloads')
+     +mailStep('sharePdf',2,'📤 ส่ง PDF ทางอีเมล','itail-btn-cta','PDF แนบให้อัตโนมัติ → ในแอปอีเมลกด 📎 แล้วเลือก Excel จาก Downloads เพิ่ม');
+  } else {
+    h=`<div class="mnote">เบราว์เซอร์นี้แชร์ไฟล์เข้าอีเมลไม่ได้ ทำตามลำดับ (แนะนำใช้ Chrome):</div>`
+     +mailStep('dlPdf',1,'⬇️ ดาวน์โหลด PDF','itail-btn-outline','')
+     +mailStep('dlXlsx',2,'⬇️ ดาวน์โหลด Excel','itail-btn-outline','ถ้าเบราว์เซอร์ถามให้อนุญาตดาวน์โหลด ให้กดอนุญาต')
+     +mailStep('mailto',3,'✉️ เปิดอีเมล (ข้อความอย่างเดียว)','itail-btn-outline','เปิดแอปอีเมลพร้อมข้อความสรุป — ต้องกด 📎 แนบไฟล์จาก Downloads เอง')
+     +(typeof navigator.share==='function' ? mailStep('tryShare','','🧪 ลองแชร์ PDF ผ่านระบบของเครื่อง','itail-btn-cta','ถ้าเครื่องรองรับ จะเปิดหน้าต่างเลือกแอป (Gmail ฯลฯ) พร้อมแนบ PDF') : '');
+  }
+  $('mailBody').innerHTML=files+h+diagHtml();
+}
+// ทุก action ถูกเรียกตรงจากการแตะ — ห้ามมี await ก่อน share/download
+function mailAct(id){
+  const s=curSheet(), c=emailCache; if(!s||!c) return;
   const m=mailSummary(s), subject=`ใบบันทึก Two tone ${dmy(s.date)} ${s.shift}`;
-  if(c.rest.length) dlFiles(c.rest);           // ไฟล์ที่แชร์ไม่ได้ (เช่น Excel บน Chrome Android) → โหลดลงเครื่อง
-  navigator.share({ files:c.shareFiles, title:subject, text:m.body }).then(()=>{
-    toast(c.rest.length ? 'แนบ PDF แล้ว — อย่าลืมแนบไฟล์ Excel จาก Downloads เอง' : 'เปิดหน้าต่างแชร์แล้ว เลือกแอปอีเมลที่ต้องการส่งได้เลย', 7000);
+  if(id==='dlPdf'){ downloadBlob(c.pdf.blob,c.pdf.name); mailDone.dlPdf=1; toast('ดาวน์โหลด PDF แล้ว (Downloads)'); renderMail(); return; }
+  if(id==='dlXlsx'){ downloadBlob(c.xlsx.blob,c.xlsx.name); mailDone.dlXlsx=1; toast('ดาวน์โหลด Excel แล้ว (Downloads)'); renderMail(); return; }
+  if(id==='mailto'){ mailDone.mailto=1; openMailto(s,m); return; }
+  let files = c.shareFiles;
+  if(id==='tryShare') files=[c.pdfFile];
+  navigator.share({ files, title:subject, text:m.body }).then(()=>{
+    mailDone[id]=1; renderMail();
+    toast(id==='sharePdf' ? 'แนบ PDF แล้ว — อย่าลืมกด 📎 แนบ Excel จาก Downloads' : 'ส่งไปยังแอปอีเมลแล้ว', 7000);
   }).catch(err=>{
     if(err && err.name==='AbortError') return;      // ผู้ใช้กดยกเลิก = จบปกติ
-    console.warn('share failed → fallback', err);
-    fallbackDownload(s,c,'แชร์ไม่สำเร็จ ('+(err&&err.name||'error')+')');
+    console.warn('share failed', err);
+    c.lastErr=(err&&err.name||'error')+(err&&err.message?': '+err.message:'');
+    toast('แชร์ไม่สำเร็จ ('+(err&&err.name||'error')+') — ใช้วิธีดาวน์โหลดแล้วแนบเอง', 8000);
+    if(id!=='tryShare'){ c.shareFiles=[]; }
+    renderMail();
   });
 }
 async function composeEmail(){
   const s=curSheet(); if(!s || emailBusy) return;
   if(!s.entries.length){ toast('ใบนี้ยังไม่มีรายการตรวจ'); return; }
   const key=sheetKey(s);
-  // แตะครั้งที่ 2: ไฟล์พร้อมแล้ว → share ทันที
-  if(emailCache && emailCache.key===key && emailCache.shareFiles.length){ shareNow(s,emailCache); return; }
-
-  const btn=$('btnEmail');
-  emailBusy=true; btn.disabled=true; btn.textContent='⏳ กำลังเตรียมไฟล์...'; setHint('');
-  let ready=false;
+  $('mailModal').classList.add('show');
+  if(emailCache && emailCache.key===key){ renderMail(); return; }
+  mailDone={}; emailBusy=true;
+  $('mailBody').innerHTML='<div class="mnote">⏳ กำลังเตรียมไฟล์ PDF + Excel...</div>';
   try{
     let pdf, xlsx;
-    try{ pdf=await buildPdfBlob(s); }catch(e){ toast('สร้างไฟล์ PDF ไม่สำเร็จ: '+e.message, 7000); return; }
-    try{ xlsx=await buildXlsxBlob(s); }catch(e){ toast('สร้างไฟล์ Excel ไม่สำเร็จ: '+e.message, 7000); return; }
+    try{ pdf=await buildPdfBlob(s); }catch(e){ $('mailBody').innerHTML='<div class="mnote">สร้างไฟล์ PDF ไม่สำเร็จ: '+esc(e.message)+'</div>'; return; }
+    try{ xlsx=await buildXlsxBlob(s); }catch(e){ $('mailBody').innerHTML='<div class="mnote">สร้างไฟล์ Excel ไม่สำเร็จ: '+esc(e.message)+'</div>'; return; }
     const all=[ {o:pdf,f:new File([pdf.blob],pdf.name,{type:pdf.type})}, {o:xlsx,f:new File([xlsx.blob],xlsx.name,{type:xlsx.type})} ];
-    const okList=all.filter(x=>canShareOne(x.f));
-    emailCache={ key, pdf, xlsx, shareFiles:okList.map(x=>x.f), rest:all.filter(x=>!okList.includes(x)).map(x=>x.o) };
-    if(okList.length===2){
-      ready=true; setHint('แตะปุ่ม "ส่ง" อีกครั้ง → เลือกแอปอีเมล ไฟล์ PDF + Excel จะติดไปเป็นไฟล์แนบให้อัตโนมัติ');
-      toast('ไฟล์พร้อมแล้ว — แตะปุ่ม "ส่ง" อีกครั้งเพื่อเลือกแอปอีเมล', 6000);
-    } else if(okList.length===1){
-      ready=true;
-      setHint('อุปกรณ์/เบราว์เซอร์นี้แชร์ไฟล์ '+(okList[0].f.name.endsWith('.pdf')?'PDF':'บางชนิด')+' ได้อย่างเดียว (Chrome บน Android ไม่อนุญาตให้แชร์ไฟล์ Excel) — แตะ "ส่ง" อีกครั้ง ระบบจะแนบ PDF ให้ และดาวน์โหลด Excel ไว้ใน Downloads ให้คุณแนบเพิ่มเอง');
-      toast('ไฟล์พร้อมแล้ว — แตะ "ส่ง" อีกครั้ง (PDF แนบอัตโนมัติ / Excel แนบเองจาก Downloads)', 8000);
-    } else {
-      setHint('เบราว์เซอร์นี้ไม่รองรับการแชร์ไฟล์ — ระบบดาวน์โหลดไฟล์ให้แล้ว ให้แนบเองจาก Downloads (แนะนำใช้ Chrome)');
-      fallbackDownload(s, emailCache);
-    }
-  } finally {
-    emailBusy=false; btn.disabled=false;
-    btn.textContent = ready ? '📤 ไฟล์พร้อมแล้ว — แตะเพื่อส่ง' : EMAIL_LABEL;
-  }
+    const ok=all.filter(x=>canShareOne(x.f));
+    // แชร์ทั้งชุดได้เมื่อ canShare รับทั้ง 2 ไฟล์พร้อมกัน
+    let both=false; try{ both=ok.length===2 && navigator.canShare({files:all.map(x=>x.f)}); }catch(e){}
+    const shareFiles = both ? all.map(x=>x.f) : (ok.some(x=>x.o===pdf) ? [all[0].f] : []);
+    emailCache={ key, pdf, xlsx, shareFiles, rest:[], pdfFile:all[0].f, xlsxFile:all[1].f };
+    renderMail();
+  } finally { emailBusy=false; }
 }
 
 /* ========================= INIT ========================= */
