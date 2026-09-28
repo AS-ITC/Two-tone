@@ -134,8 +134,12 @@ body{ padding-bottom:40px; }
 .section.active{ display:block; }
 .card-gap{ margin-bottom:14px; }
 .h-title{ font-weight:700; color:var(--itail-navy); margin-bottom:10px; font-size:15px; }
-.row2{ display:flex; gap:10px; }
-.row2 > div{ flex:1; }
+.row2{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:10px; }
+.row2 > div{ min-width:0; }
+.itail-input, .itail-select{ min-width:0; max-width:100%; }
+input.itail-input, input[type=date].itail-input, input[type=time].itail-input, .itail-select{ -webkit-appearance:none; appearance:none; display:block; width:100%; min-height:46px; text-align:left; }
+.itail-select{ background-image:linear-gradient(45deg,transparent 50%,#0a6478 50%),linear-gradient(135deg,#0a6478 50%,transparent 50%); background-position:calc(100% - 20px) 50%,calc(100% - 14px) 50%; background-size:6px 6px,6px 6px; background-repeat:no-repeat; padding-right:34px; }
+input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itail-input::-webkit-date-and-time-value{ text-align:left; }
 .field{ margin-bottom:12px; }
 .req{ color:var(--itail-coral); }
 .prod-line{ display:flex; align-items:center; gap:8px; margin-bottom:8px; }
@@ -202,10 +206,11 @@ body{ padding-bottom:40px; }
 .rpt-page{ width:794px; height:1123px; padding:34px 30px; background:#fff; color:#000; position:relative; box-sizing:border-box; transform-origin:top left; font-family:'Anuphan',sans-serif; }
 .rpt-page *{ box-sizing:border-box; }
 .rpt-head{ width:100%; border-collapse:collapse; border:1.8px solid #000; }
-.rpt-head td{ border:1.8px solid #000; padding:8px 10px; font-size:13px; }
+.rpt-head{ table-layout:fixed; }
+.rpt-head td{ border:1.8px solid #000; padding:6px 8px; font-size:13px; }
 .rpt-title{ text-align:center; font-size:17px; font-weight:700; }
 .rpt-code{ text-align:center; font-weight:700; font-size:11.5px; }
-.rpt-logo{ font-weight:700; font-size:11.5px; }
+.rpt-logo{ font-weight:700; font-size:11px; white-space:nowrap; }
 .rpt-logo b{ color:#f5a623; font-size:16px; }
 .rpt-info{ display:flex; align-items:center; gap:14px; font-size:12px; margin:10px 0 4px; font-weight:600; white-space:nowrap; }
 .cb{ display:inline-block; width:12px; height:12px; border:2px solid #000; vertical-align:-1px; margin:0 3px; position:relative; }
@@ -215,15 +220,15 @@ body{ padding-bottom:40px; }
 .rpt-tbl th, .rpt-tbl td{ border:1.6px solid #000; text-align:center; overflow:hidden; }
 .rpt-tbl th{ font-size:12px; padding:2px 2px; line-height:1.15; font-weight:700; }
 .rpt-tbl th small{ font-size:10px; display:block; }
-.rpt-tbl td{ height:27px; font-size:10.5px; padding:0 3px; line-height:1.12; }
+.rpt-tbl td{ height:24px; font-size:10.5px; padding:0 3px; line-height:1.12; }
 .rpt-tbl td.code{ font-size:9px; text-align:left; word-break:break-all; }
-.rpt-tbl td img{ max-height:23px; max-width:96%; vertical-align:middle; }
+.rpt-tbl td img{ max-height:20px; max-width:96%; vertical-align:middle; }
 .rpt-fail{ color:#c00; font-weight:700; }
 .rpt-note{ font-size:8.5px; margin-top:4px; }
-.rpt-foot{ position:absolute; right:30px; bottom:120px; width:250px; text-align:center; font-size:11px; }
+.rpt-foot{ position:absolute; right:30px; bottom:34px; width:250px; text-align:center; font-size:11px; }
 .rpt-foot .sigbox{ height:44px; border-bottom:1.5px solid #000; display:flex; align-items:flex-end; justify-content:center; margin-bottom:3px; }
 .rpt-foot img{ max-height:40px; max-width:90%; }
-.rpt-pg{ position:absolute; left:30px; bottom:120px; font-size:10px; color:#444; }
+.rpt-pg{ position:absolute; left:30px; bottom:34px; font-size:10px; color:#444; }
 .photo-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:12px; }
 .photo-cell{ border:1px solid #999; padding:4px; font-size:10px; text-align:center; }
 .photo-cell img{ width:100%; height:200px; object-fit:contain; background:#f3f3f3; display:block; margin-bottom:3px; }
@@ -829,16 +834,16 @@ function formPage(s, pageIdx, total, rows){
   }
   return `<div class="rpt-page">
     <table class="rpt-head"><tr>
-      <td style="width:140px" class="rpt-logo"><b>✦</b> i-TAIL CORPORATION PCL.</td>
+      <td style="width:190px" class="rpt-logo"><b>✦</b> i-TAIL CORPORATION PCL.</td>
       <td class="rpt-title">บันทึกการตรวจสอบ Ratio สินค้า Two tone</td>
-      <td style="width:178px;white-space:nowrap" class="rpt-code">FPPDPF65-0-25/09/26</td></tr></table>
+      <td style="width:170px;white-space:nowrap;font-size:11px" class="rpt-code">FPPDPF65-0-25/09/26</td></tr></table>
     <div class="rpt-info">
       <span>Date : <span class="ul" style="min-width:110px">${dmy(s.date)}</span></span>
       <span>Shift : ${cb(s.shift==='DS')}DS ${cb(s.shift==='NS')}NS</span>
       <span>Product : ${cb(s.sachet)}Sachet 2.2 Fl. <span class="ul" style="min-width:40px">${esc(s.sachetText)}</span> ${cb(s.spoon)}Spoon ${cb(s.other)}<span class="ul" style="min-width:60px">${esc(s.other?s.otherText:'')}</span></span>
     </div>
     <table class="rpt-tbl">
-      <colgroup><col style="width:66px"><col style="width:172px"><col style="width:56px"><col style="width:108px"><col style="width:112px"><col style="width:112px"><col style="width:112px"></colgroup>
+      <colgroup><col style="width:66px"><col style="width:158px"><col style="width:70px"><col style="width:108px"><col style="width:112px"><col style="width:112px"><col style="width:112px"></colgroup>
       <thead>
         <tr><th rowspan="2">เวลา</th><th rowspan="2">Code</th><th rowspan="2">Line</th><th>การตรวจสอบ<small>Appreance</small></th><th>หมายเหตุ<small>Remark</small></th><th colspan="2">ผู้ตรวจสอบ</th></tr>
         <tr><th style="font-size:10px">&nbsp;</th><th style="font-size:10px">&nbsp;</th><th style="font-size:10.5px">QC</th><th style="font-size:10.5px">PD</th></tr>
