@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>ตรวจสอบผลิตภัณฑ์ทูโทน — i-Tail QC</title>
+<title>บันทึกการตรวจสอบ Ratio สินค้า Two tone — i-Tail QC</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.0.2/tesseract.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
 <style>
 @font-face {
@@ -124,65 +125,115 @@ label.itail-label { display:block; font-size:13px; font-weight:600; color:var(--
 
 
 body{ padding-bottom:40px; }
-.wrap{ max-width:880px; margin:0 auto; padding:0 16px; }
-.topbar-inner{ max-width:880px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;}
+.wrap{ max-width:900px; margin:0 auto; padding:0 16px; }
+.topbar-inner{ max-width:900px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;}
 .topbar-title{ font-weight:700; font-size:18px; }
 .topbar-sub{ font-size:12.5px; opacity:.9; }
 .tabs-row{ margin:16px 0; }
 .section{ display:none; }
 .section.active{ display:block; }
+.card-gap{ margin-bottom:14px; }
+.h-title{ font-weight:700; color:var(--itail-navy); margin-bottom:10px; font-size:15px; }
+.row2{ display:flex; gap:10px; }
+.row2 > div{ flex:1; }
+.field{ margin-bottom:12px; }
+.req{ color:var(--itail-coral); }
+.prod-line{ display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.prod-line input[type=checkbox]{ width:20px; height:20px; accent-color:var(--itail-teal); flex:none; }
+.prod-line .itail-input{ padding:6px 10px; }
+.prod-line label{ font-size:14.5px; white-space:nowrap; }
 
-.capture-card{ text-align:center; padding:32px 20px; }
-.capture-icon{ font-size:48px; margin-bottom:8px; }
+.remind{ border-radius:12px; padding:10px 14px; font-size:13.5px; margin-bottom:14px; background:var(--itail-teal-light); color:var(--itail-teal-dark); }
+.remind.due{ background:var(--itail-amber-light); color:var(--itail-amber-dark); font-weight:600; }
+
+.capture-card{ text-align:center; padding:26px 20px; }
 .capture-hint{ color:var(--itail-text-muted); font-size:13.5px; margin-top:6px; }
 #cameraInput, #fileInput{ display:none; }
 .capture-btns{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:14px; }
 
-.preview-box{ margin-top:18px; }
-.preview-box img{ max-width:100%; max-height:320px; border-radius:12px; box-shadow:var(--itail-shadow-sm); display:block; margin:0 auto; }
-
 /* Modal */
-.modal-backdrop{ position:fixed; inset:0; background:rgba(22,50,79,.45); display:none; align-items:flex-start; justify-content:center; padding:24px 12px; overflow-y:auto; z-index:50; }
+.modal-backdrop{ position:fixed; inset:0; background:rgba(22,50,79,.45); display:none; align-items:flex-start; justify-content:center; padding:20px 12px; overflow-y:auto; z-index:50; }
 .modal-backdrop.show{ display:flex; }
-.modal-box{ background:var(--itail-surface); border-radius:18px; max-width:480px; width:100%; padding:20px; box-shadow:var(--itail-shadow-lg); margin-top:10px; }
+.modal-box{ background:var(--itail-surface); border-radius:18px; max-width:520px; width:100%; padding:20px; box-shadow:var(--itail-shadow-lg); }
 .modal-title{ font-weight:700; font-size:17px; margin-bottom:12px; color:var(--itail-navy); }
-.field{ margin-bottom:14px; }
-.row2{ display:flex; gap:10px; }
-.row2 > div{ flex:1; }
 .result-toggle{ display:flex; gap:10px; }
-.result-toggle .itail-btn{ flex:1; opacity:.55; }
+.result-toggle .itail-btn{ flex:1; opacity:.5; }
 .result-toggle .itail-btn.selected{ opacity:1; transform:scale(1.02); }
-.reason-box{ display:none; }
-.reason-box.show{ display:block; }
-.ratio-box{ background:var(--itail-teal-light); border-radius:12px; padding:10px 14px; font-size:13.5px; color:var(--itail-teal-dark); margin-top:4px; }
-.ocr-status{ font-size:12.5px; color:var(--itail-text-muted); margin-top:4px; }
+.hint-box{ background:var(--itail-teal-light); border-radius:12px; padding:8px 12px; font-size:12.5px; color:var(--itail-teal-dark); margin-top:8px; }
+.ocr-status{ font-size:12.5px; color:var(--itail-text-muted); margin:6px 0; }
 .modal-actions{ display:flex; gap:10px; margin-top:16px; }
 .modal-actions .itail-btn{ flex:1; }
-.req{ color:var(--itail-coral); }
 
-/* Summary */
-.stat-row{ display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap; }
-.stat-card{ flex:1; min-width:110px; text-align:center; padding:14px 8px; }
-.stat-num{ font-size:22px; font-weight:700; color:var(--itail-navy); }
-.stat-label{ font-size:12px; color:var(--itail-text-muted); }
+.crop-wrap{ position:relative; display:block; touch-action:none; user-select:none; -webkit-user-select:none; cursor:crosshair; line-height:0; border-radius:12px; overflow:hidden; background:#000; }
+.crop-wrap img{ width:100%; max-height:300px; object-fit:contain; display:block; pointer-events:none; }
+.crop-sel{ position:absolute; border:2px dashed var(--itail-coral); background:rgba(249,83,109,.15); display:none; pointer-events:none; }
 
-.filter-card{ margin-bottom:14px; }
-.filter-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:10px; }
+.sig-row{ display:flex; gap:10px; }
+.sig-slot{ flex:1; border:1.5px dashed var(--itail-border); border-radius:12px; padding:8px; text-align:center; }
+.sig-slot .lbl{ font-size:12.5px; font-weight:600; color:var(--itail-text-muted); margin-bottom:4px; }
+.sig-slot img{ max-height:44px; max-width:100%; display:none; margin:2px auto 6px; }
+.sig-slot.done{ border-style:solid; border-color:var(--itail-teal); }
+.sig-slot .itail-btn{ padding:6px 14px; font-size:13px; }
+#sigCanvas{ width:100%; height:200px; border:1.5px solid var(--itail-border); border-radius:12px; touch-action:none; background:#fff; display:block; }
 
-.export-row{ display:flex; gap:10px; margin:14px 0; flex-wrap:wrap; }
-
+/* Report tab */
+.rep-bar{ display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; }
+.rep-bar > div:first-child{ flex:1; min-width:220px; }
+.stat-inline{ display:flex; gap:8px; flex-wrap:wrap; margin:12px 0; }
+.export-row{ display:flex; gap:8px; flex-wrap:wrap; margin:12px 0; }
+.export-row .itail-btn{ padding:9px 16px; font-size:14px; }
+.chk{ display:flex; align-items:center; gap:6px; font-size:13.5px; color:var(--itail-text-muted); }
+.chk input{ accent-color:var(--itail-teal); width:18px; height:18px; }
+.verif-box{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+.verif-box img{ max-height:38px; border-bottom:1px solid #999; }
+.preview-area{ background:#e9eff0; border-radius:14px; padding:10px; overflow:hidden; }
+.page-holder{ margin:0 auto 10px; overflow:hidden; box-shadow:var(--itail-shadow-md); background:#fff; }
 .table-scroll{ overflow-x:auto; }
-.thumb{ width:52px; height:52px; object-fit:cover; border-radius:8px; cursor:pointer; box-shadow:var(--itail-shadow-sm); }
+.thumb{ width:46px; height:46px; object-fit:cover; border-radius:8px; cursor:pointer; box-shadow:var(--itail-shadow-sm); }
 .link-btn{ background:none; border:none; color:var(--itail-teal-dark); font-weight:600; cursor:pointer; font-size:13px; text-decoration:underline; padding:0; }
 .link-btn.danger{ color:var(--itail-danger); }
 .empty-row{ text-align:center; color:var(--itail-text-muted); padding:24px; }
-
-.lightbox{ position:fixed; inset:0; background:rgba(10,20,30,.85); display:none; align-items:center; justify-content:center; z-index:60; padding:20px; }
+.lightbox{ position:fixed; inset:0; background:rgba(10,20,30,.85); display:none; align-items:center; justify-content:center; z-index:90; padding:20px; }
 .lightbox.show{ display:flex; }
 .lightbox img{ max-width:100%; max-height:90vh; border-radius:10px; }
+#sigModal{ z-index:70; }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) { }
+/* ===== A4 report form (matches FPPDPF65) ===== */
+.rpt-page{ width:794px; height:1123px; padding:34px 30px; background:#fff; color:#000; position:relative; box-sizing:border-box; transform-origin:top left; font-family:'Anuphan',sans-serif; }
+.rpt-page *{ box-sizing:border-box; }
+.rpt-head{ width:100%; border-collapse:collapse; border:1.8px solid #000; }
+.rpt-head td{ border:1.8px solid #000; padding:8px 10px; font-size:13px; }
+.rpt-title{ text-align:center; font-size:17px; font-weight:700; }
+.rpt-code{ text-align:center; font-weight:700; font-size:11.5px; }
+.rpt-logo{ font-weight:700; font-size:11.5px; }
+.rpt-logo b{ color:#f5a623; font-size:16px; }
+.rpt-info{ display:flex; align-items:center; gap:14px; font-size:12px; margin:10px 0 4px; font-weight:600; white-space:nowrap; }
+.cb{ display:inline-block; width:12px; height:12px; border:2px solid #000; vertical-align:-1px; margin:0 3px; position:relative; }
+.cb.on::after{ content:''; position:absolute; inset:1px; background:#000; }
+.ul{ display:inline-block; min-width:70px; border-bottom:1px solid #000; text-align:center; font-weight:400; padding:0 4px; }
+.rpt-tbl{ width:100%; border-collapse:collapse; table-layout:fixed; }
+.rpt-tbl th, .rpt-tbl td{ border:1.6px solid #000; text-align:center; overflow:hidden; }
+.rpt-tbl th{ font-size:12px; padding:2px 2px; line-height:1.15; font-weight:700; }
+.rpt-tbl th small{ font-size:10px; display:block; }
+.rpt-tbl td{ height:27px; font-size:10.5px; padding:0 3px; line-height:1.12; }
+.rpt-tbl td.code{ font-size:9px; text-align:left; word-break:break-all; }
+.rpt-tbl td img{ max-height:23px; max-width:96%; vertical-align:middle; }
+.rpt-fail{ color:#c00; font-weight:700; }
+.rpt-note{ font-size:8.5px; margin-top:4px; }
+.rpt-foot{ position:absolute; right:30px; bottom:120px; width:250px; text-align:center; font-size:11px; }
+.rpt-foot .sigbox{ height:44px; border-bottom:1.5px solid #000; display:flex; align-items:flex-end; justify-content:center; margin-bottom:3px; }
+.rpt-foot img{ max-height:40px; max-width:90%; }
+.rpt-pg{ position:absolute; left:30px; bottom:120px; font-size:10px; color:#444; }
+.photo-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:12px; }
+.photo-cell{ border:1px solid #999; padding:4px; font-size:10px; text-align:center; }
+.photo-cell img{ width:100%; height:200px; object-fit:contain; background:#f3f3f3; display:block; margin-bottom:3px; }
+
+#printArea{ display:none; }
+@media print{
+  body > *:not(#printArea){ display:none !important; }
+  #printArea{ display:block !important; }
+  #printArea .rpt-page{ page-break-after:always; margin:0; }
+  @page{ size:A4; margin:0; }
 }
 </style>
 </head>
@@ -191,7 +242,7 @@ body{ padding-bottom:40px; }
 <div class="itail-topbar">
   <div class="topbar-inner">
     <div>
-      <div class="topbar-title">🥣 ตรวจสอบผลิตภัณฑ์ทูโทน</div>
+      <div class="topbar-title">🥣 บันทึกการตรวจสอบ Ratio สินค้า Two tone</div>
       <div class="topbar-sub" id="todayLabel"></div>
     </div>
     <div class="itail-badge itail-badge-info" id="shiftNowBadge">กะ —</div>
@@ -200,87 +251,97 @@ body{ padding-bottom:40px; }
 
 <div class="wrap">
   <div class="tabs-row itail-tabs">
-    <div class="itail-tab active" data-tab="capture">📷 บันทึกใหม่</div>
-    <div class="itail-tab" data-tab="summary">📋 ตารางผลตรวจ</div>
+    <div class="itail-tab active" data-tab="capture">📷 ตรวจ / บันทึก</div>
+    <div class="itail-tab" data-tab="report">📋 ใบรายงาน</div>
   </div>
 
-  <!-- CAPTURE SECTION -->
+  <!-- CAPTURE -->
   <div class="section active" id="section-capture">
+    <div class="itail-card card-gap">
+      <div class="h-title">ข้อมูลหัวใบบันทึก</div>
+      <div class="row2 field">
+        <div>
+          <label class="itail-label">Date</label>
+          <input type="date" class="itail-input" id="hDate">
+        </div>
+        <div>
+          <label class="itail-label">Shift</label>
+          <select class="itail-select" id="hShift">
+            <option value="DS">DS (เช้า)</option>
+            <option value="NS">NS (ดึก)</option>
+          </select>
+        </div>
+      </div>
+      <label class="itail-label">Product <span class="req">*</span></label>
+      <div class="prod-line">
+        <input type="checkbox" id="hSachet" checked><label for="hSachet">Sachet 2.2 Fl.</label>
+        <input type="text" class="itail-input" id="hSachetText" placeholder="ระบุ (ถ้ามี)">
+      </div>
+      <div class="prod-line">
+        <input type="checkbox" id="hSpoon"><label for="hSpoon">Spoon</label>
+      </div>
+      <div class="prod-line">
+        <input type="checkbox" id="hOther"><label for="hOther">อื่นๆ</label>
+        <input type="text" class="itail-input" id="hOtherText" placeholder="ระบุ">
+      </div>
+    </div>
+
+    <div class="remind" id="remindBox">ยังไม่มีการตรวจในใบนี้</div>
+
     <div class="itail-card capture-card">
-      <div class="capture-icon">📸</div>
-      <div style="font-weight:600; font-size:15.5px;">ถ่ายภาพผลิตภัณฑ์ทูโทน</div>
-      <div class="capture-hint">ระบบจะลองอ่านชื่อ/โค้ดสินค้าจากภาพให้อัตโนมัติ และประมาณสัดส่วนสองสีเบื้องต้น</div>
+      <div style="font-size:44px;">📸</div>
+      <div style="font-weight:600; font-size:15.5px;">ถ่ายภาพผลิตภัณฑ์ + โค้ดที่พิมพ์บนซอง</div>
+      <div class="capture-hint">ระบบจะอ่าน Code จากภาพให้ (ลากกรอบครอบตำแหน่งโค้ดเพื่อให้อ่านแม่นขึ้นได้)</div>
       <div class="capture-btns">
         <button class="itail-btn itail-btn-primary" onclick="document.getElementById('cameraInput').click()">📷 ถ่ายภาพ</button>
         <button class="itail-btn itail-btn-outline" onclick="document.getElementById('fileInput').click()">🖼️ เลือกรูปจากคลัง</button>
       </div>
       <input type="file" id="cameraInput" accept="image/*" capture="environment">
       <input type="file" id="fileInput" accept="image/*">
-      <div class="preview-box" id="previewBox" style="display:none;">
-        <img id="previewImg" src="">
-      </div>
     </div>
   </div>
 
-  <!-- SUMMARY SECTION -->
-  <div class="section" id="section-summary">
-    <div class="stat-row">
-      <div class="itail-card stat-card"><div class="stat-num" id="statTotal">0</div><div class="stat-label">ตรวจทั้งหมด</div></div>
-      <div class="itail-card stat-card"><div class="stat-num" id="statPass" style="color:#0d7a5c;">0</div><div class="stat-label">ผ่าน</div></div>
-      <div class="itail-card stat-card"><div class="stat-num" id="statFail" style="color:var(--itail-danger);">0</div><div class="stat-label">ไม่ผ่าน</div></div>
-      <div class="itail-card stat-card"><div class="stat-num" id="statRate">0%</div><div class="stat-label">อัตราผ่าน</div></div>
-    </div>
-
-    <div class="itail-card filter-card">
-      <div class="filter-grid">
+  <!-- REPORT -->
+  <div class="section" id="section-report">
+    <div class="itail-card card-gap">
+      <div class="rep-bar">
         <div>
-          <label class="itail-label">จากวันที่</label>
-          <input type="date" class="itail-input" id="fltFrom">
+          <label class="itail-label">เลือกใบบันทึก</label>
+          <select class="itail-select" id="sheetSelect"></select>
         </div>
-        <div>
-          <label class="itail-label">ถึงวันที่</label>
-          <input type="date" class="itail-input" id="fltTo">
+      </div>
+      <div id="sheetBody" style="display:none;">
+        <div class="stat-inline">
+          <span class="itail-badge itail-badge-info" id="stTotal"></span>
+          <span class="itail-badge itail-badge-success" id="stPass"></span>
+          <span class="itail-badge itail-badge-danger" id="stFail"></span>
         </div>
-        <div>
-          <label class="itail-label">กะ</label>
-          <select class="itail-select" id="fltShift">
-            <option value="">ทั้งหมด</option>
-            <option value="DS">DS (เช้า)</option>
-            <option value="NS">NS (ดึก)</option>
-          </select>
+        <div class="verif-box card-gap">
+          <div style="font-weight:600; font-size:14px;">ผู้ทวนสอบ (PD. Leader up):</div>
+          <img id="verifImg" style="display:none;">
+          <span id="verifNone" class="itail-badge itail-badge-warning">ยังไม่เซ็น</span>
+          <button class="itail-btn itail-btn-outline" style="padding:7px 16px;font-size:13.5px;" onclick="signVerifier()">✍️ เซ็นทวนสอบ</button>
         </div>
-        <div>
-          <label class="itail-label">ผลตรวจ</label>
-          <select class="itail-select" id="fltResult">
-            <option value="">ทั้งหมด</option>
-            <option value="pass">ผ่าน</option>
-            <option value="fail">ไม่ผ่าน</option>
-          </select>
+        <div class="export-row">
+          <button class="itail-btn itail-btn-primary" onclick="exportPDF()">⬇️ PDF</button>
+          <button class="itail-btn itail-btn-primary" onclick="exportExcel()">⬇️ Excel</button>
+          <button class="itail-btn itail-btn-outline" onclick="printReport()">🖨️ พิมพ์</button>
+          <button class="itail-btn itail-btn-cta" onclick="composeEmail()">✉️ อีเมล</button>
+          <button class="itail-btn itail-btn-outline" onclick="deleteSheet()" style="color:var(--itail-danger);border-color:var(--itail-danger);">🗑️ ลบใบนี้</button>
         </div>
-        <div>
-          <label class="itail-label">ค้นหาสินค้า</label>
-          <input type="text" class="itail-input" id="fltProduct" placeholder="ชื่อ/โค้ดสินค้า">
-        </div>
+        <label class="chk"><input type="checkbox" id="chkPhotos"> แนบภาพถ่ายท้ายรายงาน (ใน PDF / พิมพ์) — Excel มีชีตภาพถ่ายให้เสมอ</label>
       </div>
     </div>
 
-    <div class="export-row">
-      <button class="itail-btn itail-btn-outline" onclick="exportPDF()">⬇️ PDF</button>
-      <button class="itail-btn itail-btn-outline" onclick="exportExcel()">⬇️ Excel</button>
-      <button class="itail-btn itail-btn-cta" onclick="composeEmail()">✉️ ส่งอีเมลสรุป</button>
-    </div>
+    <div id="reportEmpty" class="itail-card empty-row">ยังไม่มีใบบันทึก — ไปที่แท็บ "ตรวจ / บันทึก" เพื่อถ่ายภาพและบันทึกผลรายการแรก</div>
+    <div class="preview-area card-gap" id="previewWrap" style="display:none;"></div>
 
-    <div class="itail-card table-scroll">
+    <div class="itail-card table-scroll" id="entriesCard" style="display:none;">
+      <div class="h-title">รายการในใบนี้</div>
       <table class="itail-table">
-        <thead>
-          <tr>
-            <th>รูป</th><th>วันที่</th><th>กะ</th><th>สินค้า</th><th>สัดส่วนโดยประมาณ</th><th>ผลตรวจ</th><th>เหตุผล</th><th>ผู้ตรวจ</th><th></th>
-          </tr>
-        </thead>
-        <tbody id="recordsBody">
-        </tbody>
+        <thead><tr><th>รูป</th><th>เวลา</th><th>Code</th><th>Line</th><th>ผล</th><th>Remark</th><th></th></tr></thead>
+        <tbody id="entriesBody"></tbody>
       </table>
-      <div class="empty-row" id="emptyRow" style="display:none;">ยังไม่มีข้อมูลการตรวจ</div>
     </div>
   </div>
 </div>
@@ -289,124 +350,128 @@ body{ padding-bottom:40px; }
 <div class="modal-backdrop" id="entryModal">
   <div class="modal-box">
     <div class="modal-title">บันทึกผลการตรวจ</div>
-    <img id="modalPreviewImg" src="" style="width:100%; max-height:200px; object-fit:cover; border-radius:12px; margin-bottom:12px;">
-    <div class="ratio-box" id="ratioBox">กำลังประมาณสัดส่วน...</div>
-    <div class="ocr-status" id="ocrStatus">🔎 กำลังอ่านตัวอักษรจากภาพ...</div>
+    <div class="crop-wrap" id="cropWrap"><img id="modalImg" src=""><div class="crop-sel" id="cropSel"></div></div>
+    <div class="ocr-status" id="ocrStatus">👆 ลากบนรูปเพื่อกรอบตำแหน่งโค้ด แล้วระบบจะอ่านให้ใหม่</div>
+    <div style="display:flex; gap:8px; margin-bottom:6px;">
+      <button class="itail-btn itail-btn-outline" style="padding:6px 14px;font-size:13px;" onclick="rereadWhole()">🔎 อ่านทั้งรูปใหม่</button>
+    </div>
+    <div class="hint-box" id="ratioBox">กำลังประมาณสัดส่วน...</div>
 
     <div class="field" style="margin-top:14px;">
-      <label class="itail-label">ชื่อ/โค้ดผลิตภัณฑ์ <span class="req">*</span></label>
-      <input type="text" class="itail-input" id="fProduct" placeholder="พิมพ์ชื่อหรือโค้ดสินค้า">
+      <label class="itail-label">Code <span class="req">*</span></label>
+      <textarea class="itail-input" id="fCode" rows="2" placeholder="โค้ดบนซอง เช่น T88 VCN.104 26.05.2027"></textarea>
     </div>
-
     <div class="row2 field">
       <div>
-        <label class="itail-label">วันที่ตรวจ</label>
-        <input type="date" class="itail-input" id="fDate">
+        <label class="itail-label">เวลา</label>
+        <input type="time" class="itail-input" id="fTime">
       </div>
       <div>
-        <label class="itail-label">กะ</label>
-        <select class="itail-select" id="fShift">
-          <option value="DS">DS (เริ่มก่อน 18:00)</option>
-          <option value="NS">NS (หลัง 18:00)</option>
-        </select>
+        <label class="itail-label">Line</label>
+        <input type="text" class="itail-input" id="fLine" placeholder="เช่น AUTOB2.2/2">
       </div>
     </div>
 
     <div class="field">
-      <label class="itail-label">ผู้ตรวจ (ถ้ามี)</label>
-      <input type="text" class="itail-input" id="fInspector" placeholder="ชื่อผู้ตรวจ">
-    </div>
-
-    <div class="field">
-      <label class="itail-label">ผลการตรวจ <span class="req">*</span></label>
+      <label class="itail-label">การตรวจสอบ (Appearance) <span class="req">*</span></label>
       <div class="result-toggle">
         <button class="itail-btn itail-btn-pass" id="btnPass" onclick="selectResult('pass')">✅ ผ่าน</button>
         <button class="itail-btn itail-btn-fail" id="btnFail" onclick="selectResult('fail')">❌ ไม่ผ่าน</button>
       </div>
     </div>
+    <div class="field">
+      <label class="itail-label" id="remarkLbl">หมายเหตุ Remark</label>
+      <textarea class="itail-input" id="fRemark" rows="2" placeholder="ระบุเหตุผลกรณีไม่ผ่าน"></textarea>
+    </div>
 
-    <div class="field reason-box" id="reasonBox">
-      <label class="itail-label">เหตุผลที่ไม่ผ่าน <span class="req">*</span></label>
-      <textarea class="itail-input" id="fReason" rows="2" placeholder="เช่น สัดส่วนสองสีเพี้ยน / สีเข้มล้นเกินเส้นแบ่ง ฯลฯ"></textarea>
+    <div class="field">
+      <label class="itail-label">ผู้ตรวจสอบ (เซ็นด้วยมือ) <span class="req">*</span></label>
+      <div class="sig-row">
+        <div class="sig-slot" id="slotQC"><div class="lbl">QC</div><img id="imgQC"><button class="itail-btn itail-btn-outline" id="btnQC" onclick="signRole('qc')">✍️ เซ็น</button></div>
+        <div class="sig-slot" id="slotPD"><div class="lbl">PD</div><img id="imgPD"><button class="itail-btn itail-btn-outline" id="btnPD" onclick="signRole('pd')">✍️ เซ็น</button></div>
+      </div>
     </div>
 
     <div class="modal-actions">
-      <button class="itail-btn itail-btn-outline" onclick="closeModal()">ยกเลิก</button>
-      <button class="itail-btn itail-btn-primary" id="btnSave" onclick="saveRecord()" disabled>💾 บันทึกผล</button>
+      <button class="itail-btn itail-btn-outline" onclick="closeEntry()">ยกเลิก</button>
+      <button class="itail-btn itail-btn-primary" id="btnSave" onclick="saveEntry()" disabled>💾 บันทึก</button>
     </div>
   </div>
 </div>
 
-<!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox" onclick="this.classList.remove('show')">
-  <img id="lightboxImg" src="">
+<!-- SIGNATURE MODAL -->
+<div class="modal-backdrop" id="sigModal">
+  <div class="modal-box" style="max-width:480px;">
+    <div class="modal-title" id="sigTitle">เซ็นชื่อ</div>
+    <canvas id="sigCanvas"></canvas>
+    <div class="ocr-status">เซ็นชื่อในกรอบด้านบนด้วยนิ้ว/ปากกา</div>
+    <div class="modal-actions">
+      <button class="itail-btn itail-btn-outline" onclick="sigClear()">ล้าง</button>
+      <button class="itail-btn itail-btn-outline" onclick="sigCancel()">ยกเลิก</button>
+      <button class="itail-btn itail-btn-primary" onclick="sigConfirm()">✔ ยืนยัน</button>
+    </div>
+  </div>
 </div>
 
-<script>
-/* ========================= STORAGE (localStorage with in-memory fallback) ========================= */
-const STORAGE_KEY = 'twotone_qc_records_v1';
-let memoryFallback = null;
-let usingMemoryFallback = false;
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('show')"><img id="lightboxImg" src=""></div>
 
-function storageGet() {
-  if (usingMemoryFallback) return memoryFallback || [];
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch (e) {
-    usingMemoryFallback = true;
-    memoryFallback = memoryFallback || [];
-    return memoryFallback;
-  }
+<div id="printArea"></div>
+
+<script>
+/* ========================= STORAGE ========================= */
+const STORAGE_KEY = 'twotone_qc_sheets_v2';
+const LINE_KEY = 'twotone_last_line';
+let memoryFallback = null, usingMemoryFallback = false;
+
+function storageGet(){
+  if(usingMemoryFallback) return memoryFallback || [];
+  try{ const raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : []; }
+  catch(e){ usingMemoryFallback = true; memoryFallback = []; return memoryFallback; }
 }
-function storageSet(records) {
-  if (usingMemoryFallback) { memoryFallback = records; showStorageWarning(); return; }
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
-  } catch (e) {
-    usingMemoryFallback = true;
-    memoryFallback = records;
-    showStorageWarning();
-  }
+function storageSet(v){
+  if(usingMemoryFallback){ memoryFallback = v; showStorageWarning(); return; }
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(v)); }
+  catch(e){ usingMemoryFallback = true; memoryFallback = v; showStorageWarning(); }
 }
-function showStorageWarning() {
-  if (document.getElementById('storageWarnBanner')) return;
+function showStorageWarning(){
+  if(document.getElementById('storageWarnBanner')) return;
   const b = document.createElement('div');
   b.id = 'storageWarnBanner';
-  b.style = 'position:fixed;bottom:0;left:0;right:0;background:#fff3cd;color:#7a5b00;padding:10px 16px;font-size:13px;text-align:center;z-index:80;box-shadow:0 -2px 10px rgba(0,0,0,.1);';
-  b.textContent = '⚠️ เบราว์เซอร์นี้บันทึกไฟล์แบบถาวรไม่ได้ (ข้อมูลจะหายเมื่อปิดหน้านี้) — กรุณา Export PDF/Excel เก็บไว้บ่อยๆ';
+  b.style = 'position:fixed;bottom:0;left:0;right:0;background:#fff3cd;color:#7a5b00;padding:10px 16px;font-size:13px;text-align:center;z-index:95;box-shadow:0 -2px 10px rgba(0,0,0,.1);';
+  b.textContent = '⚠️ เบราว์เซอร์บันทึกข้อมูลถาวรไม่ได้ (พื้นที่เต็ม หรือเปิดจากไฟล์ที่ไม่รองรับ) — ข้อมูลจะหายเมื่อปิดหน้านี้ กรุณา Export PDF/Excel เก็บไว้';
   document.body.appendChild(b);
 }
+function lsGet(k){ try{ return localStorage.getItem(k) || ''; }catch(e){ return ''; } }
+function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
 
-let records = storageGet();
+let sheets = storageGet();
+function persist(){ storageSet(sheets); }
 
 /* ========================= UTIL ========================= */
+const $ = id => document.getElementById(id);
 function pad(n){ return n<10 ? '0'+n : ''+n; }
 function todayStr(){ const d=new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
-function getShiftNow(){ return new Date().getHours() < 18 ? 'DS' : 'NS'; }
-function thaiDate(dstr){
-  if(!dstr) return '-';
-  const [y,m,d] = dstr.split('-');
-  const months = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
-  return d + ' ' + months[parseInt(m,10)-1] + ' ' + (parseInt(y,10)+543);
-}
+function nowTime(){ const d=new Date(); return pad(d.getHours())+':'+pad(d.getMinutes()); }
+// DS = 06:00–17:59, NS = 18:00–05:59
+function getShiftNow(){ const h=new Date().getHours(); return (h>=6 && h<18) ? 'DS' : 'NS'; }
+function dmy(dstr){ if(!dstr) return ''; const [y,m,d]=dstr.split('-'); return d+'/'+m+'/'+y; }
+function uid(){ return 'r'+Date.now()+Math.random().toString(16).slice(2,8); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function downloadBlob(blob, filename){
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = filename;
+  const a = document.createElement('a'); a.href=url; a.download=filename;
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(()=>URL.revokeObjectURL(url), 2000);
 }
-function uid(){ return 'r'+Date.now()+Math.random().toString(16).slice(2,8); }
+function imgSize(dataUrl){ return new Promise(res=>{ const i=new Image(); i.onload=()=>res({w:i.width,h:i.height}); i.onerror=()=>res({w:1,h:1}); i.src=dataUrl; }); }
 
-/* ========================= HEADER / SHIFT NOW ========================= */
 function updateHeader(){
   const now = new Date();
-  document.getElementById('todayLabel').textContent = thaiDate(todayStr()) + ' • ' + pad(now.getHours()) + ':' + pad(now.getMinutes());
-  const shift = getShiftNow();
-  document.getElementById('shiftNowBadge').textContent = 'กะ ' + shift + (shift==='DS' ? ' (เช้า)' : ' (ดึก)');
+  $('todayLabel').textContent = dmy(todayStr()) + ' • ' + nowTime();
+  const s = getShiftNow();
+  $('shiftNowBadge').textContent = 'กะ ' + s + (s==='DS' ? ' (เช้า)' : ' (ดึก)');
+  updateRemind();
 }
-updateHeader();
 setInterval(updateHeader, 30000);
 
 /* ========================= TABS ========================= */
@@ -415,354 +480,473 @@ document.querySelectorAll('.itail-tab').forEach(tab=>{
     document.querySelectorAll('.itail-tab').forEach(t=>t.classList.remove('active'));
     document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
     tab.classList.add('active');
-    document.getElementById('section-'+tab.dataset.tab).classList.add('active');
-    if(tab.dataset.tab === 'summary') render();
+    $('section-'+tab.dataset.tab).classList.add('active');
+    if(tab.dataset.tab==='report') renderReportTab();
   });
 });
 
-/* ========================= IMAGE CAPTURE ========================= */
-let currentImageData = null; // {full: dataURL, thumb: dataURL}
+/* ========================= SHEET HEADER (Date / Shift / Product) ========================= */
+let hdrTouched = false;
+function initHeader(){
+  $('hDate').value = todayStr();
+  $('hShift').value = getShiftNow();
+  const saved = lsGet('twotone_hdr_prod');
+  if(saved){ try{ const p=JSON.parse(saved);
+    $('hSachet').checked=!!p.sachet; $('hSpoon').checked=!!p.spoon; $('hOther').checked=!!p.other;
+    $('hSachetText').value=p.sachetText||''; $('hOtherText').value=p.otherText||'';
+  }catch(e){} }
+}
+function readHdr(){
+  return { date:$('hDate').value||todayStr(), shift:$('hShift').value,
+    sachet:$('hSachet').checked, sachetText:$('hSachetText').value.trim(),
+    spoon:$('hSpoon').checked, other:$('hOther').checked, otherText:$('hOtherText').value.trim() };
+}
+['hDate','hShift'].forEach(id=>$(id).addEventListener('change',()=>{ hdrTouched=true; updateRemind(); }));
+['hSachet','hSpoon','hOther','hSachetText','hOtherText'].forEach(id=>$(id).addEventListener('input',()=>{
+  const h=readHdr(); lsSet('twotone_hdr_prod', JSON.stringify(h)); updateRemind();
+}));
+function sameProducts(s,h){ return !!s.sachet===h.sachet && !!s.spoon===h.spoon && !!s.other===h.other; }
+function findSheet(h){ return sheets.find(s=>s.date===h.date && s.shift===h.shift && sameProducts(s,h)); }
 
-document.getElementById('cameraInput').addEventListener('change', e=> handleFile(e.target.files[0]));
-document.getElementById('fileInput').addEventListener('change', e=> handleFile(e.target.files[0]));
+function updateRemind(){
+  const box = $('remindBox'); const h = readHdr(); const sh = findSheet(h);
+  if(!sh || !sh.entries.length){ box.className='remind'; box.textContent='ยังไม่มีการตรวจในใบนี้ — ตรวจทุก 30 นาทีขณะผลิต'; return; }
+  const last = sh.entries.reduce((a,b)=> a.createdAt>b.createdAt ? a : b);
+  const mins = Math.floor((Date.now()-new Date(last.createdAt).getTime())/60000);
+  const nx = new Date(new Date(last.createdAt).getTime()+30*60000);
+  if(mins>=30){ box.className='remind due'; box.textContent=`⏰ ครบรอบตรวจแล้ว — ตรวจล่าสุด ${last.time} (ผ่านมา ${mins} นาที) • ในใบนี้ ${sh.entries.length} รายการ`; }
+  else { box.className='remind'; box.textContent=`ตรวจล่าสุด ${last.time} (${mins} นาทีที่แล้ว) • รอบถัดไป ~${pad(nx.getHours())}:${pad(nx.getMinutes())} • ในใบนี้ ${sh.entries.length} รายการ`; }
+}
+
+/* ========================= IMAGE CAPTURE ========================= */
+let srcImg = null, curImg = null;
+$('cameraInput').addEventListener('change', e=>handleFile(e.target.files[0]));
+$('fileInput').addEventListener('change', e=>handleFile(e.target.files[0]));
 
 function handleFile(file){
   if(!file) return;
+  const h = readHdr();
+  if(!h.sachet && !h.spoon && !h.other){ alert('กรุณาเลือก Product อย่างน้อย 1 รายการก่อน'); resetInputs(); return; }
   const reader = new FileReader();
-  reader.onload = function(ev){
+  reader.onload = ev=>{
     const img = new Image();
-    img.onload = function(){
-      const full = resizeToDataUrl(img, 900, 0.75);
-      const thumb = resizeToDataUrl(img, 240, 0.6);
-      currentImageData = { full, thumb };
-      document.getElementById('previewBox').style.display = 'block';
-      document.getElementById('previewImg').src = full;
-      openEntryModal(img);
+    img.onload = ()=>{
+      srcImg = img;
+      curImg = { full: resizeToDataUrl(img, 720, 0.65), thumb: resizeToDataUrl(img, 200, 0.6) };
+      openEntry();
     };
     img.src = ev.target.result;
   };
   reader.readAsDataURL(file);
 }
-
-function resizeToDataUrl(img, maxW, quality){
-  const scale = Math.min(1, maxW / img.width);
-  const w = Math.round(img.width * scale);
-  const h = Math.round(img.height * scale);
-  const canvas = document.createElement('canvas');
-  canvas.width = w; canvas.height = h;
-  const ctx = canvas.getContext('2d');
-  ctx.drawImage(img, 0, 0, w, h);
-  return canvas.toDataURL('image/jpeg', quality);
+function resetInputs(){ $('cameraInput').value=''; $('fileInput').value=''; }
+function resizeToDataUrl(img, maxW, q){
+  const sc = Math.min(1, maxW/img.width);
+  const c = document.createElement('canvas'); c.width=Math.round(img.width*sc); c.height=Math.round(img.height*sc);
+  c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+  return c.toDataURL('image/jpeg', q);
 }
 
-/* ========================= RATIO ESTIMATE (heuristic, canvas pixel scan) ========================= */
+/* ========================= RATIO HINT ========================= */
 function estimateRatio(img){
-  const w = 160;
-  const scale = w / img.width;
-  const h = Math.round(img.height * scale);
-  const canvas = document.createElement('canvas');
-  canvas.width = w; canvas.height = h;
-  const ctx = canvas.getContext('2d');
-  ctx.drawImage(img, 0, 0, w, h);
-  let data;
-  try { data = ctx.getImageData(0,0,w,h).data; } catch(e){ return null; }
+  const w=160, sc=w/img.width, h=Math.round(img.height*sc);
+  const c=document.createElement('canvas'); c.width=w; c.height=h;
+  const ctx=c.getContext('2d'); ctx.drawImage(img,0,0,w,h);
+  let d; try{ d=ctx.getImageData(0,0,w,h).data; }catch(e){ return null; }
+  const rows=[];
+  for(let y=0;y<h;y++){ let s=0,n=0; for(let x=0;x<w;x+=2){ const i=(y*w+x)*4; s+=0.299*d[i]+0.587*d[i+1]+0.114*d[i+2]; n++; } rows.push(s/n); }
+  const lo=Math.floor(h*0.15), hi=Math.ceil(h*0.85); let bi=-1, bd=0;
+  for(let y=lo+2;y<hi-2;y++){ const b=(rows[y-1]+rows[y-2])/2, a=(rows[y+1]+rows[y+2])/2, dl=Math.abs(a-b); if(dl>bd){bd=dl;bi=y;} }
+  if(bi<0||bd<8) return 'ประมาณสัดส่วนสองสีจากภาพไม่ได้ชัดเจน — ตรวจด้วยตาเปล่า';
+  const t=Math.round(bi/h*100);
+  return `สัดส่วนสองสีโดยประมาณจากภาพ: บน ~${t}% : ล่าง ~${100-t}% (ใช้อ้างอิงเท่านั้น ผู้ตรวจเป็นผู้ตัดสิน)`;
+}
 
-  const rowLum = [];
-  for(let y=0; y<h; y++){
-    let sum=0, count=0;
-    for(let x=0; x<w; x+=2){
-      const i = (y*w+x)*4;
-      const lum = 0.299*data[i] + 0.587*data[i+1] + 0.114*data[i+2];
-      sum += lum; count++;
+/* ========================= OCR (crop + preprocess + try 0°/180°) ========================= */
+let workerPromise = null, ocrToken = 0;
+function getWorker(){
+  if(!workerPromise){
+    workerPromise = (async()=>{
+      const w = await Tesseract.createWorker('eng');
+      await w.setParameters({ tessedit_pageseg_mode:'6', preserve_interword_spaces:'1' });
+      return w;
+    })().catch(e=>{ workerPromise=null; throw e; });
+  }
+  return workerPromise;
+}
+function prepCanvas(rot){
+  const sel = cropSel;
+  const nw = srcImg.naturalWidth||srcImg.width, nh = srcImg.naturalHeight||srcImg.height;
+  const sx = sel ? Math.round(sel.x*nw) : 0, sy = sel ? Math.round(sel.y*nh) : 0;
+  const sw = sel ? Math.max(8,Math.round(sel.w*nw)) : nw, sh = sel ? Math.max(8,Math.round(sel.h*nh)) : nh;
+  let sc = Math.min(4, Math.max(1, 900/sw)); if(sw*sc>1800) sc = 1800/sw;
+  const w = Math.round(sw*sc), h = Math.round(sh*sc);
+  const c = document.createElement('canvas'); c.width=w; c.height=h;
+  const ctx = c.getContext('2d');
+  if(rot===180){ ctx.translate(w,h); ctx.rotate(Math.PI); }
+  ctx.drawImage(srcImg, sx,sy,sw,sh, 0,0,w,h);
+  ctx.setTransform(1,0,0,1,0,0);
+  const id = ctx.getImageData(0,0,w,h), d = id.data, hist = new Array(256).fill(0);
+  for(let i=0;i<d.length;i+=4){ const g=Math.round(0.299*d[i]+0.587*d[i+1]+0.114*d[i+2]); d[i]=g; hist[g]++; }
+  const total=w*h; let acc=0, lo=0, hi=255;
+  for(let v=0;v<256;v++){ acc+=hist[v]; if(acc>=total*0.02){ lo=v; break; } }
+  acc=0; for(let v=255;v>=0;v--){ acc+=hist[v]; if(acc>=total*0.02){ hi=v; break; } }
+  const rng=Math.max(1,hi-lo);
+  for(let i=0;i<d.length;i+=4){ let g=(d[i]-lo)*255/rng; g=g<0?0:g>255?255:g; d[i]=d[i+1]=d[i+2]=g; d[i+3]=255; }
+  ctx.putImageData(id,0,0);
+  return c;
+}
+function cleanCode(t){
+  const lines = String(t||'').split(/\r?\n/).map(l=>{
+    let s = l.replace(/[^A-Za-z0-9 .\/:\-_]/g,' ').replace(/\s+/g,' ').trim();
+    s = s.split(' ').filter(tok=>!(tok.length<=2 && /^[a-z]+$/.test(tok)) && !/^[.\/:\-_]+$/.test(tok)).join(' ');
+    return s;
+  }).filter(s=>(s.match(/[A-Za-z0-9]/g)||[]).length>=3);
+  return lines.join(' ').trim();
+}
+async function runOCR(force){
+  const st = $('ocrStatus');
+  if(!srcImg) return;
+  if(typeof Tesseract==='undefined'){ st.textContent='⚠️ โหลดระบบ OCR ไม่ได้ (ต้องต่อเน็ตครั้งแรก) — พิมพ์โค้ดเองได้เลย'; return; }
+  const my = ++ocrToken;
+  st.textContent = '🔎 กำลังอ่านโค้ด... (ครั้งแรกอาจใช้เวลาโหลดโมเดลสักครู่)';
+  try{
+    const worker = await getWorker();
+    let best = { score:-1, text:'' };
+    for(const rot of [0,180]){
+      const { data } = await worker.recognize(prepCanvas(rot));
+      const good = (data.words||[]).filter(w=>w.confidence>45 && /[A-Za-z0-9]/.test(w.text));
+      const score = good.reduce((s,w)=>s+w.text.length*w.confidence,0);
+      if(score>best.score) best = { score, text:data.text };
+      if(my!==ocrToken) return;
     }
-    rowLum.push(sum/count);
+    const code = cleanCode(best.text);
+    if(!code){ st.textContent='ℹ️ อ่านโค้ดไม่ได้ — ลองลากกรอบให้ครอบเฉพาะบรรทัดโค้ด หรือพิมพ์เอง'; return; }
+    if(force || !$('fCode').value.trim()) $('fCode').value = code;
+    st.textContent = '✅ อ่านได้: ' + code.slice(0,70) + ' — โปรดตรวจ/แก้ให้ตรงกับซองจริง';
+    validate();
+  }catch(e){
+    st.textContent='⚠️ อ่านโค้ดไม่สำเร็จ (อาจไม่มีเน็ตตอนโหลด OCR) — พิมพ์โค้ดเองได้เลย';
   }
-  // search boundary in middle 70% of rows, ignore top/bottom 15% (bowl rim / shadow)
-  const lo = Math.floor(h*0.15), hi = Math.ceil(h*0.85);
-  let bestIdx = -1, bestDelta = 0;
-  for(let y=lo+2; y<hi-2; y++){
-    const before = (rowLum[y-1]+rowLum[y-2])/2;
-    const after = (rowLum[y+1]+rowLum[y+2])/2;
-    const delta = Math.abs(after-before);
-    if(delta > bestDelta){ bestDelta = delta; bestIdx = y; }
-  }
-  if(bestIdx < 0 || bestDelta < 8){
-    return { ok:false, text:'ไม่สามารถประมาณสัดส่วนจากภาพได้ชัดเจน กรุณาตรวจด้วยตาเปล่า' };
-  }
-  const topPct = Math.round((bestIdx/h)*100);
-  const bottomPct = 100 - topPct;
-  return {
-    ok:true,
-    topPct, bottomPct,
-    text: `ประมาณจากภาพ: ส่วนบน ~${topPct}% : ส่วนล่าง ~${bottomPct}% (ใช้เป็นข้อมูลอ้างอิงเท่านั้น ผลตัดสินสุดท้ายให้ผู้ตรวจยืนยัน)`
-  };
 }
 
-/* ========================= OCR ========================= */
-function runOCR(dataUrl){
-  const statusEl = document.getElementById('ocrStatus');
-  if(typeof Tesseract === 'undefined'){
-    statusEl.textContent = '⚠️ โหลดระบบ OCR ไม่ได้ (ต้องต่ออินเทอร์เน็ตครั้งแรก) — กรุณาพิมพ์ชื่อสินค้าเอง';
-    return;
-  }
-  statusEl.textContent = '🔎 กำลังอ่านตัวอักษรจากภาพ...';
-  Tesseract.recognize(dataUrl, 'eng+tha')
-    .then(({data})=>{
-      const text = (data && data.text || '').trim();
-      if(text){
-        const guess = text.split(/\r?\n/).map(s=>s.trim()).filter(Boolean)[0] || text.slice(0,40);
-        statusEl.textContent = '✅ อ่านได้: "' + guess.slice(0,60) + '" — กรุณาตรวจสอบ/แก้ไขชื่อสินค้าให้ถูกต้อง';
-        const fProduct = document.getElementById('fProduct');
-        if(!fProduct.value.trim()) fProduct.value = guess.slice(0,80);
-        validate();
-      } else {
-        statusEl.textContent = 'ℹ️ ไม่พบตัวอักษรในภาพ กรุณาพิมพ์ชื่อสินค้าเอง';
-      }
-    })
-    .catch(()=>{
-      statusEl.textContent = '⚠️ อ่านตัวอักษรไม่สำเร็จ กรุณาพิมพ์ชื่อสินค้าเอง';
-    });
+/* ---- crop box drawing over the photo ---- */
+let cropSel = null, cropDrag = null;
+const cw = $('cropWrap'), csel = $('cropSel');
+function relPos(e){ const r=$('modalImg').getBoundingClientRect(); return { r, x:Math.min(1,Math.max(0,(e.clientX-r.left)/r.width)), y:Math.min(1,Math.max(0,(e.clientY-r.top)/r.height)) }; }
+// image is object-fit:contain; convert element-relative coords to image-relative
+function elToImg(px,py){
+  const im=$('modalImg'), r=im.getBoundingClientRect();
+  const nw=srcImg.naturalWidth||srcImg.width, nh=srcImg.naturalHeight||srcImg.height;
+  const s=Math.min(r.width/nw, r.height/nh), dw=nw*s, dh=nh*s, ox=(r.width-dw)/2, oy=(r.height-dh)/2;
+  return { x:Math.min(1,Math.max(0,(px*r.width-ox)/dw)), y:Math.min(1,Math.max(0,(py*r.height-oy)/dh)) , ox, oy, dw, dh, r };
 }
+cw.addEventListener('pointerdown', e=>{
+  if(!srcImg) return; cw.setPointerCapture(e.pointerId);
+  const p=relPos(e); cropDrag={ sx:p.x, sy:p.y, ex:p.x, ey:p.y };
+  csel.style.display='block'; drawSel();
+});
+cw.addEventListener('pointermove', e=>{ if(!cropDrag) return; const p=relPos(e); cropDrag.ex=p.x; cropDrag.ey=p.y; drawSel(); });
+cw.addEventListener('pointerup', e=>{
+  if(!cropDrag) return;
+  const d=cropDrag; cropDrag=null;
+  const a=elToImg(Math.min(d.sx,d.ex),Math.min(d.sy,d.ey)), b=elToImg(Math.max(d.sx,d.ex),Math.max(d.sy,d.ey));
+  const w=b.x-a.x, h=b.y-a.y;
+  if(w<0.04||h<0.02){ csel.style.display='none'; return; }
+  cropSel={ x:a.x, y:a.y, w, h };
+  runOCR(true);
+});
+function drawSel(){
+  const wr=cw.getBoundingClientRect(), ir=$('modalImg').getBoundingClientRect();
+  const x1=Math.min(cropDrag.sx,cropDrag.ex), x2=Math.max(cropDrag.sx,cropDrag.ex), y1=Math.min(cropDrag.sy,cropDrag.ey), y2=Math.max(cropDrag.sy,cropDrag.ey);
+  csel.style.left=(ir.left-wr.left+x1*ir.width)+'px'; csel.style.top=(ir.top-wr.top+y1*ir.height)+'px';
+  csel.style.width=((x2-x1)*ir.width)+'px'; csel.style.height=((y2-y1)*ir.height)+'px';
+}
+function rereadWhole(){ cropSel=null; csel.style.display='none'; runOCR(true); }
 
 /* ========================= ENTRY MODAL ========================= */
-let selectedResult = null;
-
-function openEntryModal(img){
-  selectedResult = null;
-  document.getElementById('modalPreviewImg').src = currentImageData.full;
-  document.getElementById('fProduct').value = '';
-  document.getElementById('fDate').value = todayStr();
-  document.getElementById('fShift').value = getShiftNow();
-  document.getElementById('fInspector').value = '';
-  document.getElementById('fReason').value = '';
-  document.getElementById('btnPass').classList.remove('selected');
-  document.getElementById('btnFail').classList.remove('selected');
-  document.getElementById('reasonBox').classList.remove('show');
-  document.getElementById('ratioBox').textContent = 'กำลังประมาณสัดส่วน...';
-  document.getElementById('ocrStatus').textContent = '🔎 กำลังอ่านตัวอักษรจากภาพ...';
-  document.getElementById('entryModal').classList.add('show');
+let selResult = null, qcSig = null, pdSig = null;
+function openEntry(){
+  selResult=null; qcSig=null; pdSig=null; cropSel=null; csel.style.display='none';
+  $('modalImg').src = curImg.full;
+  $('fCode').value=''; $('fTime').value=nowTime(); $('fLine').value=lsGet(LINE_KEY); $('fRemark').value='';
+  $('btnPass').classList.remove('selected'); $('btnFail').classList.remove('selected');
+  $('remarkLbl').innerHTML='หมายเหตุ Remark';
+  setSigUI('qc',null); setSigUI('pd',null);
+  $('ratioBox').textContent='กำลังประมาณสัดส่วน...';
+  $('ocrStatus').textContent='🔎 กำลังอ่านโค้ด...';
+  if(!hdrTouched){ $('hDate').value=todayStr(); $('hShift').value=getShiftNow(); }
+  $('entryModal').classList.add('show');
   validate();
-
-  setTimeout(()=>{
-    const r = estimateRatio(img);
-    document.getElementById('ratioBox').textContent = r ? r.text : 'ไม่สามารถประมาณสัดส่วนได้';
-    document.getElementById('ratioBox').dataset.value = r && r.ok ? (r.topPct+':'+r.bottomPct) : '';
-  }, 30);
-
-  runOCR(currentImageData.full);
+  setTimeout(()=>{ $('ratioBox').textContent = estimateRatio(srcImg) || 'ประมาณสัดส่วนไม่ได้'; }, 30);
+  runOCR(false);
 }
-
-function closeModal(){
-  document.getElementById('entryModal').classList.remove('show');
-  document.getElementById('previewBox').style.display = 'none';
-  currentImageData = null;
-  document.getElementById('cameraInput').value = '';
-  document.getElementById('fileInput').value = '';
-}
-
-function selectResult(type){
-  selectedResult = type;
-  document.getElementById('btnPass').classList.toggle('selected', type==='pass');
-  document.getElementById('btnFail').classList.toggle('selected', type==='fail');
-  document.getElementById('reasonBox').classList.toggle('show', type==='fail');
+function closeEntry(){ ocrToken++; $('entryModal').classList.remove('show'); resetInputs(); srcImg=null; curImg=null; }
+function selectResult(t){
+  selResult=t;
+  $('btnPass').classList.toggle('selected',t==='pass'); $('btnFail').classList.toggle('selected',t==='fail');
+  $('remarkLbl').innerHTML = t==='fail' ? 'หมายเหตุ Remark (เหตุผลที่ไม่ผ่าน) <span class="req">*</span>' : 'หมายเหตุ Remark';
   validate();
 }
-
-['fProduct','fReason'].forEach(id=>{
-  document.getElementById(id).addEventListener('input', validate);
-});
-
+['fCode','fRemark','fTime'].forEach(id=>$(id).addEventListener('input',validate));
 function validate(){
-  const product = document.getElementById('fProduct').value.trim();
-  const reason = document.getElementById('fReason').value.trim();
-  let ok = product.length > 0 && selectedResult !== null;
-  if(selectedResult === 'fail') ok = ok && reason.length > 0;
-  document.getElementById('btnSave').disabled = !ok;
+  let ok = $('fCode').value.trim().length>0 && selResult!==null && !!qcSig && !!pdSig && !!$('fTime').value;
+  if(selResult==='fail') ok = ok && $('fRemark').value.trim().length>0;
+  $('btnSave').disabled = !ok;
 }
-
-function saveRecord(){
-  const rec = {
-    id: uid(),
-    image: currentImageData.thumb,
-    imageFull: currentImageData.full,
-    product: document.getElementById('fProduct').value.trim(),
-    date: document.getElementById('fDate').value || todayStr(),
-    shift: document.getElementById('fShift').value,
-    inspector: document.getElementById('fInspector').value.trim(),
-    result: selectedResult,
-    reason: selectedResult === 'fail' ? document.getElementById('fReason').value.trim() : '',
-    ratio: document.getElementById('ratioBox').textContent,
-    createdAt: new Date().toISOString()
-  };
-  records.unshift(rec);
-  storageSet(records);
-  closeModal();
-  document.querySelector('.itail-tab[data-tab="summary"]').click();
+function setSigUI(role, sig){
+  const slot = $(role==='qc'?'slotQC':'slotPD'), img=$(role==='qc'?'imgQC':'imgPD'), btn=$(role==='qc'?'btnQC':'btnPD');
+  if(sig){ img.src=sig.d; img.style.display='block'; slot.classList.add('done'); btn.textContent='✍️ เซ็นใหม่'; }
+  else { img.style.display='none'; slot.classList.remove('done'); btn.textContent='✍️ เซ็น'; }
 }
-
-/* ========================= SUMMARY / TABLE ========================= */
-function getFiltered(){
-  const from = document.getElementById('fltFrom').value;
-  const to = document.getElementById('fltTo').value;
-  const shift = document.getElementById('fltShift').value;
-  const result = document.getElementById('fltResult').value;
-  const product = document.getElementById('fltProduct').value.trim().toLowerCase();
-  return records.filter(r=>{
-    if(from && r.date < from) return false;
-    if(to && r.date > to) return false;
-    if(shift && r.shift !== shift) return false;
-    if(result && r.result !== result) return false;
-    if(product && !r.product.toLowerCase().includes(product)) return false;
-    return true;
+function signRole(role){
+  openSigPad(role==='qc' ? 'ลายเซ็นผู้ตรวจสอบ QC' : 'ลายเซ็นผู้ตรวจสอบ PD', sig=>{
+    if(role==='qc') qcSig=sig; else pdSig=sig;
+    setSigUI(role,sig); validate();
   });
 }
+function saveEntry(){
+  const h = readHdr();
+  let sh = findSheet(h);
+  if(!sh){ sh = { id:uid(), date:h.date, shift:h.shift, sachet:h.sachet, spoon:h.spoon, other:h.other, sachetText:'', otherText:'', verifierSig:null, entries:[] }; sheets.push(sh); }
+  sh.sachetText=h.sachetText; sh.otherText=h.otherText;
+  const line = $('fLine').value.trim(); lsSet(LINE_KEY, line);
+  sh.entries.push({
+    id:uid(), time:$('fTime').value, code:$('fCode').value.trim(), line,
+    result:selResult, remark:$('fRemark').value.trim(),
+    qcSig, pdSig, image:curImg.thumb, imageFull:curImg.full, createdAt:new Date().toISOString()
+  });
+  persist(); selectedSheetId = sh.id;
+  closeEntry(); updateRemind();
+  document.querySelector('.itail-tab[data-tab="report"]').click();
+}
 
-function render(){
-  const filtered = getFiltered();
-  const total = filtered.length;
-  const pass = filtered.filter(r=>r.result==='pass').length;
-  const fail = filtered.filter(r=>r.result==='fail').length;
-  document.getElementById('statTotal').textContent = total;
-  document.getElementById('statPass').textContent = pass;
-  document.getElementById('statFail').textContent = fail;
-  document.getElementById('statRate').textContent = total ? Math.round(pass/total*100)+'%' : '0%';
-
-  const body = document.getElementById('recordsBody');
-  body.innerHTML = '';
-  document.getElementById('emptyRow').style.display = total ? 'none' : 'block';
-
-  filtered.forEach(r=>{
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td><img class="thumb" src="${r.image}" onclick="openLightbox('${r.id}')"></td>
-      <td>${thaiDate(r.date)}</td>
-      <td><span class="itail-badge itail-badge-info">${r.shift}</span></td>
-      <td>${escapeHtml(r.product)}</td>
-      <td style="font-size:12px; color:var(--itail-text-muted);">${escapeHtml((r.ratio||'').replace(/\(ใช้เป็น.*$/,''))}</td>
-      <td>${r.result==='pass' ? '<span class="itail-badge itail-badge-success">ผ่าน</span>' : '<span class="itail-badge itail-badge-danger">ไม่ผ่าน</span>'}</td>
-      <td>${escapeHtml(r.reason||'-')}</td>
-      <td>${escapeHtml(r.inspector||'-')}</td>
-      <td><button class="link-btn danger" onclick="deleteRecord('${r.id}')">ลบ</button></td>
-    `;
-    body.appendChild(tr);
+/* ========================= SIGNATURE PAD ========================= */
+let sigCb=null, sigDown=false, sigLast=null, sigHas=false;
+const sc = $('sigCanvas'); const sctx = sc.getContext('2d');
+function openSigPad(title, cb){
+  sigCb=cb; $('sigTitle').textContent=title; $('sigModal').classList.add('show');
+  requestAnimationFrame(()=>{
+    const r=sc.getBoundingClientRect(), dpr=window.devicePixelRatio||1;
+    sc.width=Math.round(r.width*dpr); sc.height=Math.round(r.height*dpr); sigClear();
   });
 }
-function escapeHtml(s){
-  return (s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
-function openLightbox(id){
-  const r = records.find(x=>x.id===id);
-  if(!r) return;
-  document.getElementById('lightboxImg').src = r.imageFull || r.image;
-  document.getElementById('lightbox').classList.add('show');
-}
-function deleteRecord(id){
-  if(!confirm('ลบรายการนี้หรือไม่?')) return;
-  records = records.filter(r=>r.id!==id);
-  storageSet(records);
-  render();
-}
-
-['fltFrom','fltTo','fltShift','fltResult','fltProduct'].forEach(id=>{
-  document.getElementById(id).addEventListener('input', render);
-  document.getElementById(id).addEventListener('change', render);
+function sigClear(){ sctx.clearRect(0,0,sc.width,sc.height); sigHas=false; }
+function sigCancel(){ $('sigModal').classList.remove('show'); sigCb=null; }
+function sigPos(e){ const r=sc.getBoundingClientRect(); return { x:(e.clientX-r.left)*sc.width/r.width, y:(e.clientY-r.top)*sc.height/r.height }; }
+sc.addEventListener('pointerdown', e=>{ sc.setPointerCapture(e.pointerId); sigDown=true; sigLast=sigPos(e); sigHas=true;
+  sctx.fillStyle='#111'; sctx.beginPath(); sctx.arc(sigLast.x,sigLast.y,1.4*(window.devicePixelRatio||1),0,7); sctx.fill(); e.preventDefault(); });
+sc.addEventListener('pointermove', e=>{
+  if(!sigDown) return; const p=sigPos(e);
+  sctx.strokeStyle='#111'; sctx.lineWidth=2.6*(window.devicePixelRatio||1); sctx.lineCap='round'; sctx.lineJoin='round';
+  sctx.beginPath(); sctx.moveTo(sigLast.x,sigLast.y); sctx.lineTo(p.x,p.y); sctx.stroke(); sigLast=p; e.preventDefault();
 });
+['pointerup','pointercancel'].forEach(ev=>sc.addEventListener(ev,()=>{ sigDown=false; }));
+function sigConfirm(){
+  if(!sigHas){ alert('กรุณาเซ็นชื่อก่อน'); return; }
+  const id=sctx.getImageData(0,0,sc.width,sc.height), d=id.data;
+  let x0=sc.width,y0=sc.height,x1=0,y1=0;
+  for(let y=0;y<sc.height;y++) for(let x=0;x<sc.width;x++){ if(d[(y*sc.width+x)*4+3]>20){ if(x<x0)x0=x; if(x>x1)x1=x; if(y<y0)y0=y; if(y>y1)y1=y; } }
+  const p=6; x0=Math.max(0,x0-p); y0=Math.max(0,y0-p); x1=Math.min(sc.width-1,x1+p); y1=Math.min(sc.height-1,y1+p);
+  const cw2=x1-x0+1, ch2=y1-y0+1, k=Math.min(1, 300/cw2, 100/ch2);
+  const o=document.createElement('canvas'); o.width=Math.max(1,Math.round(cw2*k)); o.height=Math.max(1,Math.round(ch2*k));
+  o.getContext('2d').drawImage(sc,x0,y0,cw2,ch2,0,0,o.width,o.height);
+  const sig={ d:o.toDataURL('image/png'), w:o.width, h:o.height };
+  const cb=sigCb; sigCancel(); if(cb) cb(sig);
+}
 
-/* ========================= EXPORT: PDF ========================= */
-function exportPDF(){
-  const filtered = getFiltered();
-  if(!filtered.length){ alert('ไม่มีข้อมูลในตัวกรองปัจจุบันให้ Export'); return; }
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit:'mm', format:'a4' });
-  let y = 15;
-  doc.setFontSize(14);
-  doc.text('Two-tone Product QC Report', 15, y); y+=6;
-  doc.setFontSize(9);
-  doc.text('Generated: ' + new Date().toLocaleString(), 15, y); y+=4;
-  doc.text('Total: ' + filtered.length + '  Pass: ' + filtered.filter(r=>r.result==='pass').length + '  Fail: ' + filtered.filter(r=>r.result==='fail').length, 15, y); y+=8;
+/* ========================= REPORT TAB ========================= */
+let selectedSheetId = null;
+function prodLabel(s){
+  const p=[]; if(s.sachet) p.push('Sachet 2.2 Fl.'+(s.sachetText?' '+s.sachetText:'')); if(s.spoon) p.push('Spoon'); if(s.other) p.push(s.otherText||'อื่นๆ');
+  return p.join(', ');
+}
+function curSheet(){ return sheets.find(s=>s.id===selectedSheetId); }
+function sortedEntries(s){ return s.entries.slice().sort((a,b)=> a.createdAt<b.createdAt?-1:1); }
 
-  filtered.forEach((r, idx)=>{
-    if(y > 250){ doc.addPage(); y = 15; }
-    try{ doc.addImage(r.image, 'JPEG', 15, y, 28, 28); }catch(e){}
-    doc.setFontSize(10);
-    let ty = y+4;
-    doc.text('#' + (idx+1) + '  ' + (r.product||'-'), 48, ty); ty+=5;
-    doc.setFontSize(8.5);
-    doc.text('Date: ' + r.date + '   Shift: ' + r.shift + '   Inspector: ' + (r.inspector||'-'), 48, ty); ty+=5;
-    doc.text('Result: ' + (r.result==='pass' ? 'PASS' : 'FAIL'), 48, ty); ty+=5;
-    if(r.result==='fail'){
-      const reasonLines = doc.splitTextToSize('Reason: ' + (r.reason||'-'), 145);
-      doc.text(reasonLines, 48, ty); ty += reasonLines.length*4;
+function renderReportTab(){
+  const sel=$('sheetSelect');
+  const list=sheets.slice().sort((a,b)=> (b.date+b.shift)>(a.date+a.shift)?1:-1);
+  sel.innerHTML='';
+  list.forEach(s=>{ const o=document.createElement('option'); o.value=s.id; o.textContent=`${dmy(s.date)} • ${s.shift} • ${prodLabel(s)} (${s.entries.length})`; sel.appendChild(o); });
+  const has=list.length>0;
+  $('reportEmpty').style.display=has?'none':'block';
+  $('sheetBody').style.display=has?'block':'none';
+  $('previewWrap').style.display=has?'block':'none';
+  $('entriesCard').style.display=has?'block':'none';
+  if(!has){ selectedSheetId=null; return; }
+  if(!list.find(s=>s.id===selectedSheetId)) selectedSheetId=list[0].id;
+  sel.value=selectedSheetId; renderSheet();
+}
+$('sheetSelect').addEventListener('change',e=>{ selectedSheetId=e.target.value; renderSheet(); });
+
+function renderSheet(){
+  const s=curSheet(); if(!s) return;
+  const pass=s.entries.filter(e=>e.result==='pass').length, fail=s.entries.length-pass;
+  $('stTotal').textContent='ตรวจ '+s.entries.length+' ครั้ง'; $('stPass').textContent='ผ่าน '+pass; $('stFail').textContent='ไม่ผ่าน '+fail;
+  if(s.verifierSig){ $('verifImg').src=s.verifierSig.d; $('verifImg').style.display='block'; $('verifNone').style.display='none'; }
+  else { $('verifImg').style.display='none'; $('verifNone').style.display='inline-block'; }
+  renderPreview(); renderEntries();
+}
+function renderPreview(){
+  const s=curSheet(); const wrap=$('previewWrap'); wrap.innerHTML='';
+  const html=buildPages(s,false);
+  const scale=Math.min(1,(wrap.clientWidth-20)/794);
+  html.forEach(h=>{
+    const holder=document.createElement('div'); holder.className='page-holder';
+    holder.style.width=(794*scale)+'px'; holder.style.height=(1123*scale)+'px';
+    holder.innerHTML=h; const pg=holder.firstElementChild; pg.style.transform=`scale(${scale})`;
+    wrap.appendChild(holder);
+  });
+}
+window.addEventListener('resize',()=>{ if($('section-report').classList.contains('active') && curSheet()) renderPreview(); });
+
+function renderEntries(){
+  const s=curSheet(); const b=$('entriesBody'); b.innerHTML='';
+  sortedEntries(s).forEach(e=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><img class="thumb" src="${e.image}" onclick="openLightbox('${e.id}')"></td><td>${esc(e.time)}</td><td style="font-size:12px;">${esc(e.code)}</td><td>${esc(e.line||'-')}</td>
+    <td>${e.result==='pass'?'<span class="itail-badge itail-badge-success">ผ่าน</span>':'<span class="itail-badge itail-badge-danger">ไม่ผ่าน</span>'}</td><td>${esc(e.remark||'-')}</td>
+    <td><button class="link-btn danger" onclick="deleteEntry('${e.id}')">ลบ</button></td>`;
+    b.appendChild(tr);
+  });
+}
+function openLightbox(id){ const s=curSheet(); const e=s&&s.entries.find(x=>x.id===id); if(!e) return; $('lightboxImg').src=e.imageFull||e.image; $('lightbox').classList.add('show'); }
+function deleteEntry(id){ if(!confirm('ลบรายการนี้หรือไม่?')) return; const s=curSheet(); s.entries=s.entries.filter(e=>e.id!==id); persist(); renderReportTab(); updateRemind(); }
+function deleteSheet(){ if(!confirm('ลบทั้งใบบันทึกนี้ (รวมทุกรายการ) หรือไม่?')) return; sheets=sheets.filter(s=>s.id!==selectedSheetId); persist(); selectedSheetId=null; renderReportTab(); updateRemind(); }
+function signVerifier(){ openSigPad('ลายเซ็นผู้ทวนสอบ (PD. Leader up)', sig=>{ const s=curSheet(); s.verifierSig=sig; persist(); renderSheet(); }); }
+
+/* ========================= REPORT FORM HTML (A4, matches FPPDPF65) ========================= */
+function formPage(s, pageIdx, total, rows){
+  const cb=on=>`<span class="cb${on?' on':''}"></span>`;
+  let body='';
+  for(let i=0;i<30;i++){
+    const e=rows[i];
+    if(!e){ body+='<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>'; continue; }
+    body+=`<tr><td>${esc(e.time)}</td><td class="code">${esc(e.code)}</td><td>${esc(e.line)}</td>
+      <td class="${e.result==='fail'?'rpt-fail':''}">${e.result==='pass'?'ผ่าน':'ไม่ผ่าน'}</td><td>${esc(e.remark)}</td>
+      <td><img src="${e.qcSig.d}"></td><td><img src="${e.pdSig.d}"></td></tr>`;
+  }
+  return `<div class="rpt-page">
+    <table class="rpt-head"><tr>
+      <td style="width:140px" class="rpt-logo"><b>✦</b> i-TAIL CORPORATION PCL.</td>
+      <td class="rpt-title">บันทึกการตรวจสอบ Ratio สินค้า Two tone</td>
+      <td style="width:178px;white-space:nowrap" class="rpt-code">FPPDPF65-0-25/09/26</td></tr></table>
+    <div class="rpt-info">
+      <span>Date : <span class="ul" style="min-width:110px">${dmy(s.date)}</span></span>
+      <span>Shift : ${cb(s.shift==='DS')}DS ${cb(s.shift==='NS')}NS</span>
+      <span>Product : ${cb(s.sachet)}Sachet 2.2 Fl. <span class="ul" style="min-width:40px">${esc(s.sachetText)}</span> ${cb(s.spoon)}Spoon ${cb(s.other)}<span class="ul" style="min-width:60px">${esc(s.other?s.otherText:'')}</span></span>
+    </div>
+    <table class="rpt-tbl">
+      <colgroup><col style="width:66px"><col style="width:172px"><col style="width:56px"><col style="width:108px"><col style="width:112px"><col style="width:112px"><col style="width:112px"></colgroup>
+      <thead>
+        <tr><th rowspan="2">เวลา</th><th rowspan="2">Code</th><th rowspan="2">Line</th><th>การตรวจสอบ<small>Appreance</small></th><th>หมายเหตุ<small>Remark</small></th><th colspan="2">ผู้ตรวจสอบ</th></tr>
+        <tr><th style="font-size:10px">&nbsp;</th><th style="font-size:10px">&nbsp;</th><th style="font-size:10.5px">QC</th><th style="font-size:10.5px">PD</th></tr>
+      </thead>
+      <tbody>${body}</tbody>
+    </table>
+    <div class="rpt-note">หมายเหตุ : ขณะผลิตสินค้า ตรวจเช็คการเหลื่อมของสินค้า Two tone ความถี่ทุก 30 นาที</div>
+    ${total>1?`<div class="rpt-pg">หน้า ${pageIdx+1}/${total}</div>`:''}
+    <div class="rpt-foot"><div class="sigbox">${s.verifierSig?`<img src="${s.verifierSig.d}">`:''}</div>ผู้ทวนสอบ PD. Leader up</div>
+  </div>`;
+}
+function photoPage(s, ents, idx, total){
+  return `<div class="rpt-page"><div style="font-weight:700;font-size:14px;">ภาพถ่ายประกอบ — ${dmy(s.date)} • ${s.shift} • ${esc(prodLabel(s))}</div>
+    <div class="photo-grid">${ents.map(e=>`<div class="photo-cell"><img src="${e.imageFull||e.image}">${esc(e.time)} • ${esc(e.code)}<br>${e.result==='pass'?'ผ่าน':'<b style="color:#c00">ไม่ผ่าน</b>'}${e.line?' • '+esc(e.line):''}</div>`).join('')}</div>
+    <div class="rpt-pg" style="bottom:30px">ภาพถ่าย ${idx+1}/${total}</div></div>`;
+}
+function buildPages(s, withPhotos){
+  const ents=sortedEntries(s); const n=Math.max(1,Math.ceil(ents.length/30)); const out=[];
+  for(let i=0;i<n;i++) out.push(formPage(s,i,n,ents.slice(i*30,i*30+30)));
+  if(withPhotos && ents.length){ const per=12, pn=Math.ceil(ents.length/per); for(let i=0;i<pn;i++) out.push(photoPage(s,ents.slice(i*per,i*per+per),i,pn)); }
+  return out;
+}
+
+/* ========================= EXPORT: PDF (render form via html2canvas → jsPDF) ========================= */
+async function exportPDF(){
+  const s=curSheet(); if(!s) return;
+  if(typeof html2canvas==='undefined' || !window.jspdf){ alert('โหลดไลบรารี PDF ไม่ได้ (ต้องต่อเน็ตครั้งแรก) — ลองใช้ปุ่ม "พิมพ์" แล้วเลือก Save as PDF แทน'); return; }
+  const host=document.createElement('div'); host.style='position:fixed;left:-12000px;top:0;';
+  host.innerHTML=buildPages(s,$('chkPhotos').checked).join(''); document.body.appendChild(host);
+  try{
+    if(document.fonts && document.fonts.ready) await document.fonts.ready;
+    const { jsPDF } = window.jspdf; const pdf=new jsPDF({unit:'mm',format:'a4'});
+    const pages=host.querySelectorAll('.rpt-page');
+    for(let i=0;i<pages.length;i++){
+      const cv=await html2canvas(pages[i],{scale:2,backgroundColor:'#ffffff',useCORS:true});
+      if(i>0) pdf.addPage();
+      pdf.addImage(cv.toDataURL('image/jpeg',0.92),'JPEG',0,0,210,297);
     }
-    y = Math.max(y+32, ty+4);
-    doc.setDrawColor(225,234,234);
-    doc.line(15, y-3, 195, y-3);
-  });
-
-  doc.save('twotone_qc_report_' + todayStr() + '.pdf');
+    pdf.save(`FPPDPF65_${s.date}_${s.shift}.pdf`);
+  }catch(e){ alert('สร้าง PDF ไม่สำเร็จ: '+e.message); }
+  finally{ host.remove(); }
+}
+function printReport(){
+  const s=curSheet(); if(!s) return;
+  const pa=$('printArea'); pa.innerHTML=buildPages(s,$('chkPhotos').checked).join('');
+  const clear=()=>{ pa.innerHTML=''; window.removeEventListener('afterprint',clear); };
+  window.addEventListener('afterprint',clear);
+  setTimeout(()=>window.print(),150);
 }
 
-/* ========================= EXPORT: EXCEL (with embedded images) ========================= */
+/* ========================= EXPORT: EXCEL (form sheet + photo sheet, with images) ========================= */
 async function exportExcel(){
-  const filtered = getFiltered();
-  if(!filtered.length){ alert('ไม่มีข้อมูลในตัวกรองปัจจุบันให้ Export'); return; }
-  const workbook = new ExcelJS.Workbook();
-  const sheet = workbook.addWorksheet('QC Report');
-  sheet.columns = [
-    { header:'รูป', key:'img', width:14 },
-    { header:'วันที่', key:'date', width:12 },
-    { header:'กะ', key:'shift', width:8 },
-    { header:'สินค้า', key:'product', width:24 },
-    { header:'สัดส่วนโดยประมาณ', key:'ratio', width:20 },
-    { header:'ผลตรวจ', key:'result', width:10 },
-    { header:'เหตุผล', key:'reason', width:30 },
-    { header:'ผู้ตรวจ', key:'inspector', width:16 },
-    { header:'เวลาบันทึก', key:'created', width:20 },
-  ];
-  sheet.getRow(1).font = { bold:true };
-  sheet.getRow(1).fill = { type:'pattern', pattern:'solid', fgColor:{argb:'FFE3EEF0'} };
-
-  filtered.forEach((r, idx)=>{
-    const rowNum = idx+2;
-    sheet.addRow({
-      date: r.date, shift: r.shift, product: r.product,
-      ratio: (r.ratio||'').replace(/\(ใช้เป็น.*$/,''),
-      result: r.result==='pass' ? 'ผ่าน' : 'ไม่ผ่าน',
-      reason: r.reason||'-', inspector: r.inspector||'-',
-      created: new Date(r.createdAt).toLocaleString()
+  const s=curSheet(); if(!s) return;
+  if(typeof ExcelJS==='undefined'){ alert('โหลดไลบรารี Excel ไม่ได้ (ต้องต่อเน็ตครั้งแรก)'); return; }
+  const ents=sortedEntries(s);
+  const wb=new ExcelJS.Workbook(); const ws=wb.addWorksheet('ใบบันทึก',{pageSetup:{paperSize:9,orientation:'portrait',fitToPage:true,fitToWidth:1,fitToHeight:0}});
+  ws.columns=[{width:9},{width:34},{width:11},{width:14},{width:26},{width:19},{width:19}];
+  const thin={style:'thin',color:{argb:'FF000000'}}, bd={top:thin,left:thin,bottom:thin,right:thin};
+  ws.mergeCells('A1:G1'); ws.getCell('A1').value='i-TAIL CORPORATION PCL.  |  บันทึกการตรวจสอบ Ratio สินค้า Two tone  |  FPPDPF65-0-25/09/26';
+  ws.getCell('A1').font={bold:true,size:13}; ws.getCell('A1').alignment={horizontal:'center',vertical:'middle'}; ws.getRow(1).height=30;
+  ws.mergeCells('A2:G2'); ws.getCell('A2').value=`Date : ${dmy(s.date)}     Shift : ${s.shift}     Product : ${prodLabel(s)}`; ws.getCell('A2').font={bold:true}; ws.getRow(2).height=22;
+  const hdr=['เวลา','Code','Line','การตรวจสอบ (Appreance)','หมายเหตุ (Remark)','QC','PD'];
+  const hr=ws.getRow(3); hdr.forEach((t,i)=>{ const c=hr.getCell(i+1); c.value=t; c.font={bold:true}; c.alignment={horizontal:'center',vertical:'middle',wrapText:true}; c.border=bd; c.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFE3EEF0'}}; }); hr.height=30;
+  const total=Math.max(30,ents.length);
+  for(let i=0;i<total;i++){
+    const r=4+i, row=ws.getRow(r); row.height=34; const e=ents[i];
+    for(let c=1;c<=7;c++){ const cell=row.getCell(c); cell.border=bd; cell.alignment={horizontal:'center',vertical:'middle',wrapText:true}; }
+    if(!e) continue;
+    row.getCell(1).value=e.time; row.getCell(2).value=e.code; row.getCell(3).value=e.line; row.getCell(4).value=e.result==='pass'?'ผ่าน':'ไม่ผ่าน';
+    if(e.result==='fail') row.getCell(4).font={bold:true,color:{argb:'FFCC0000'}};
+    row.getCell(5).value=e.remark;
+    [[e.qcSig,5],[e.pdSig,6]].forEach(([sg,col])=>{
+      const fit=Math.min(100/sg.w,30/sg.h,1.5); const id=wb.addImage({base64:sg.d.split(',')[1],extension:'png'});
+      ws.addImage(id,{tl:{col:col+0.08,row:r-1+0.08},ext:{width:Math.round(sg.w*fit),height:Math.round(sg.h*fit)}});
     });
-    sheet.getRow(rowNum).height = 60;
-    try{
-      const base64 = r.image.split(',')[1];
-      const imgId = workbook.addImage({ base64, extension:'jpeg' });
-      sheet.addImage(imgId, { tl:{col:0.05, row:rowNum-1+0.05}, ext:{width:70, height:70} });
-    }catch(e){}
-  });
+  }
+  const fr=4+total+1;
+  ws.mergeCells(`E${fr+2}:G${fr+2}`); ws.getCell(`E${fr+2}`).value='ผู้ทวนสอบ PD. Leader up'; ws.getCell(`E${fr+2}`).alignment={horizontal:'center'};
+  ws.getRow(fr).height=40;
+  if(s.verifierSig){ const sg=s.verifierSig, fit=Math.min(140/sg.w,38/sg.h,1.5); const id=wb.addImage({base64:sg.d.split(',')[1],extension:'png'});
+    ws.addImage(id,{tl:{col:5.2,row:fr-1+0.1},ext:{width:Math.round(sg.w*fit),height:Math.round(sg.h*fit)}}); }
 
-  const buffer = await workbook.xlsx.writeBuffer();
-  downloadBlob(new Blob([buffer], {type:'application/octet-stream'}), 'twotone_qc_report_' + todayStr() + '.xlsx');
+  const wp=wb.addWorksheet('ภาพถ่าย'); wp.columns=[{width:8},{width:9},{width:34},{width:12},{width:12},{width:32}];
+  ['ลำดับ','เวลา','Code','Line','ผล','ภาพถ่าย'].forEach((t,i)=>{ const c=wp.getRow(1).getCell(i+1); c.value=t; c.font={bold:true}; c.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFE3EEF0'}}; c.border=bd; c.alignment={horizontal:'center'}; });
+  for(let i=0;i<ents.length;i++){
+    const e=ents[i], r=i+2, row=wp.getRow(r); row.height=120;
+    [i+1,e.time,e.code,e.line,e.result==='pass'?'ผ่าน':'ไม่ผ่าน'].forEach((v,k)=>{ const c=row.getCell(k+1); c.value=v; c.border=bd; c.alignment={horizontal:'center',vertical:'middle',wrapText:true}; });
+    row.getCell(6).border=bd;
+    const dim=await imgSize(e.imageFull||e.image), fit=Math.min(200/dim.w,112/dim.h);
+    const id=wb.addImage({base64:(e.imageFull||e.image).split(',')[1],extension:'jpeg'});
+    wp.addImage(id,{tl:{col:5.05,row:r-1+0.04},ext:{width:Math.round(dim.w*fit),height:Math.round(dim.h*fit)}});
+  }
+  const buf=await wb.xlsx.writeBuffer();
+  downloadBlob(new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),`FPPDPF65_${s.date}_${s.shift}.xlsx`);
 }
 
-/* ========================= EMAIL (mailto summary) ========================= */
+/* ========================= EMAIL ========================= */
 function composeEmail(){
-  const filtered = getFiltered();
-  const pass = filtered.filter(r=>r.result==='pass').length;
-  const fail = filtered.filter(r=>r.result==='fail').length;
-  let body = `สรุปผลตรวจผลิตภัณฑ์ทูโทน\nช่วงข้อมูล: ${filtered.length} รายการ\nผ่าน: ${pass} | ไม่ผ่าน: ${fail}\n\n`;
-  filtered.slice(0,25).forEach((r,i)=>{
-    body += `${i+1}. ${r.date} [${r.shift}] ${r.product} - ${r.result==='pass'?'ผ่าน':'ไม่ผ่าน'}${r.reason ? ' ('+r.reason+')' : ''}\n`;
-  });
-  if(filtered.length > 25) body += `... และอีก ${filtered.length-25} รายการ (ดูรายละเอียดในไฟล์ Excel/PDF ที่แนบ)\n`;
-  body += `\n(กรุณาแนบไฟล์ PDF หรือ Excel ที่ดาวน์โหลดไว้ด้วยตนเอง เนื่องจากอีเมลจากเบราว์เซอร์ไม่สามารถแนบไฟล์อัตโนมัติได้)`;
-  const subject = 'รายงานผลตรวจผลิตภัณฑ์ทูโทน ' + todayStr();
-  window.location.href = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  const s=curSheet(); if(!s) return;
+  const ents=sortedEntries(s), pass=ents.filter(e=>e.result==='pass').length, fail=ents.length-pass;
+  let body=`บันทึกการตรวจสอบ Ratio สินค้า Two tone (FPPDPF65)\nวันที่ ${dmy(s.date)}  กะ ${s.shift}\nProduct: ${prodLabel(s)}\nตรวจทั้งหมด ${ents.length} ครั้ง  ผ่าน ${pass}  ไม่ผ่าน ${fail}\nผู้ทวนสอบ: ${s.verifierSig?'เซ็นแล้ว':'ยังไม่เซ็น'}\n\n`;
+  ents.slice(0,30).forEach(e=>{ body+=`${e.time}  ${e.code}  ${e.line||'-'}  ${e.result==='pass'?'ผ่าน':'ไม่ผ่าน'}${e.remark?' ('+e.remark+')':''}\n`; });
+  body+='\n(กรุณาแนบไฟล์ PDF/Excel ที่ดาวน์โหลดไว้เอง — อีเมลจากเบราว์เซอร์แนบไฟล์อัตโนมัติไม่ได้)';
+  location.href='mailto:?subject='+encodeURIComponent(`ใบบันทึก Two tone ${dmy(s.date)} ${s.shift}`)+'&body='+encodeURIComponent(body);
 }
 
 /* ========================= INIT ========================= */
-document.getElementById('fltFrom').value = '';
-document.getElementById('fltTo').value = '';
-render();
+initHeader(); updateHeader();
 
 </script>
 </body>
