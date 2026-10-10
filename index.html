@@ -256,6 +256,9 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
 #sigCanvas{ width:100%; height:200px; border:1.5px solid var(--itail-border); border-radius:12px; touch-action:none; background:#fff; display:block; }
 
 /* Report tab */
+.flt-row{ display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:8px; margin-bottom:10px; }
+.flt-row .itail-input,.flt-row .itail-select{ padding:8px 8px; font-size:14px; min-width:0; }
+.flt-note{ font-size:12.5px; color:#5b7780; margin:-2px 0 10px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
 .rep-bar{ display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; }
 .rep-bar > div:first-child{ flex:1; min-width:220px; }
 .stat-inline{ display:flex; gap:8px; flex-wrap:wrap; margin:12px 0; }
@@ -298,6 +301,11 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
 .rpt-tbl td{ height:24px; font-size:10.5px; padding:0 3px; line-height:1.12; }
 .rpt-tbl td.code{ font-size:9px; text-align:left; word-break:break-all; }
 .rpt-tbl td img{ max-height:20px; max-width:96%; vertical-align:middle; }
+.rpt-tbl td.sg{ position:relative; padding:0 4px; text-align:center; vertical-align:middle; }
+.rpt-tbl td.sg img{ max-height:30px; max-width:76px; display:inline-block; vertical-align:middle; }
+.rpt-tbl td.sg.br{ padding-left:15px; }
+.rpt-tbl td.sg .brace{ position:absolute; left:2px; top:3px; bottom:3px; width:10px; }
+.rpt-tbl td.sg .brace svg{ width:100%; height:100%; display:block; }
 .rpt-fail{ color:#c00; font-weight:700; }
 .rpt-note{ font-size:8.5px; margin-top:4px; }
 .rpt-foot{ position:absolute; right:30px; bottom:34px; width:250px; text-align:center; font-size:11px; }
@@ -397,6 +405,7 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
       <label class="itail-label" id="rsSheetLbl">เลือกใบบันทึก</label>
       <select class="itail-select" id="rsSheet"></select>
       <div id="rsBody" style="display:none;">
+        <div style="margin:6px 0 2px;"><button class="link-btn" onclick="openSheetEdit()">✏️ แก้หัวใบนี้ (วันที่ / กะ / Product)</button></div>
         <div class="stat-inline" id="rsStats"></div>
         <div class="capture-hint" id="rsLegacy" style="text-align:left;"></div>
       </div>
@@ -408,6 +417,12 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
   <!-- REPORT -->
   <div class="section" id="section-report">
     <div class="itail-card card-gap">
+      <div class="flt-row">
+        <div><label class="itail-label">วันที่</label><input type="date" class="itail-input" id="fltDate"></div>
+        <div><label class="itail-label">กะ</label><select class="itail-select" id="fltShift"><option value="">ทั้งหมด</option><option value="DS">DS</option><option value="NS">NS</option></select></div>
+        <div><label class="itail-label">Product</label><select class="itail-select" id="fltProd"><option value="">ทั้งหมด</option><option value="sachet">Sachet</option><option value="spoon">Spoon</option><option value="other">อื่นๆ</option></select></div>
+      </div>
+      <div class="flt-note"><span id="fltNote"></span><button class="link-btn" onclick="clearFilters()">ล้างตัวกรอง</button></div>
       <div class="rep-bar">
         <div>
           <label class="itail-label">เลือกใบบันทึก</label>
@@ -432,9 +447,10 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
           <button class="itail-btn itail-btn-primary" onclick="exportExcel()">⬇️ Excel</button>
           <button class="itail-btn itail-btn-outline" onclick="printReport()">🖨️ พิมพ์</button>
           <button class="itail-btn itail-btn-cta" id="btnEmail" onclick="composeEmail()">✉️ อีเมล</button>
+          <button class="itail-btn itail-btn-outline" onclick="openSheetEdit()">✏️ แก้หัวใบนี้</button>
           <button class="itail-btn itail-btn-outline" onclick="deleteSheet()" style="color:var(--itail-danger);border-color:var(--itail-danger);">🗑️ ลบใบนี้</button>
         </div>
-        <label class="chk"><input type="checkbox" id="chkPhotos"> แนบภาพถ่ายท้ายรายงาน (ใน PDF / พิมพ์) — Excel มีชีตภาพถ่ายให้เสมอ</label>
+        <label class="chk"><input type="checkbox" id="chkPhotos" checked> แนบภาพถ่ายท้ายรายงาน (ใน PDF / พิมพ์ / อีเมล) — Excel มีชีตภาพถ่ายให้เสมอ</label>
       </div>
     </div>
 
@@ -444,7 +460,7 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
     <div class="itail-card table-scroll" id="entriesCard" style="display:none;">
       <div class="h-title">รายการในใบนี้</div>
       <table class="itail-table">
-        <thead><tr><th>รอบ</th><th>รูป</th><th>เวลา</th><th>Code</th><th>Line</th><th>ผล</th><th>Remark</th><th></th></tr></thead>
+        <thead><tr><th>รอบ</th><th>ภาพรวม</th><th>ภาพโค้ด</th><th>เวลา</th><th>Code</th><th>Line</th><th>ผล</th><th>Remark</th><th></th></tr></thead>
         <tbody id="entriesBody"></tbody>
       </table>
     </div>
@@ -470,8 +486,8 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
         <div class="crop-wrap" id="cropWrap"><img id="modalImg2" src=""><div class="crop-sel" id="cropSel"></div></div>
         <div class="ocr-status" id="ocrStatus">👆 ลากบนรูปเพื่อกรอบตำแหน่งโค้ด แล้วระบบจะอ่านให้ใหม่</div>
         <div class="ph-btns">
-          <button class="itail-btn itail-btn-outline" onclick="pick('p2','camera')">📷 ถ่ายใหม่</button>
-          <button class="itail-btn itail-btn-outline" onclick="pick('p2','file')">🖼️</button>
+          <button class="itail-btn itail-btn-outline" onclick="retakeP2('camera')">📷 ถ่ายใหม่</button>
+          <button class="itail-btn itail-btn-outline" onclick="retakeP2('file')">🖼️</button>
           <button class="itail-btn itail-btn-outline" onclick="rereadWhole()">🔎 อ่านใหม่</button>
         </div>
       </div>
@@ -490,7 +506,7 @@ AC 1417" style="white-space:pre-wrap;"></textarea>
         <input type="time" class="itail-input" id="fTime">
       </div>
       <div>
-        <label class="itail-label">Line</label>
+        <label class="itail-label">Line <span class="req">*</span></label>
         <input type="text" class="itail-input" id="fLine" placeholder="เช่น AUTOB2.2/2">
       </div>
     </div>
@@ -507,6 +523,7 @@ AC 1417" style="white-space:pre-wrap;"></textarea>
       <textarea class="itail-input" id="fRemark" rows="2" placeholder="ระบุเหตุผลกรณีไม่ผ่าน"></textarea>
     </div>
 
+    <div id="saveHint" style="display:none;color:#b8860b;background:#fff7e0;border-radius:10px;padding:8px 12px;font-size:13px;margin-top:10px;"></div>
     <div class="modal-actions" style="flex-wrap:wrap;">
       <button class="itail-btn itail-btn-outline" onclick="closeEntry()">ยกเลิก</button>
       <button class="itail-btn itail-btn-primary" id="btnSave" onclick="saveEntry(false)" disabled>💾 บันทึก</button>
@@ -530,6 +547,24 @@ AC 1417" style="white-space:pre-wrap;"></textarea>
 </div>
 
 <!-- VERSION PANEL -->
+<div class="modal-backdrop" id="shEditModal">
+  <div class="modal-box">
+    <div class="h-title">แก้หัวใบบันทึก</div>
+    <div class="row2 field">
+      <div><label class="itail-label">Date</label><input type="date" class="itail-input" id="seDate"></div>
+      <div><label class="itail-label">Shift</label><select class="itail-select" id="seShift"><option value="DS">DS (เช้า)</option><option value="NS">NS (ดึก)</option></select></div>
+    </div>
+    <label class="itail-label">Product <span class="req">*</span></label>
+    <div class="prod-line"><input type="checkbox" id="seSachet"><label for="seSachet">Sachet 2.2 Fl.</label><input type="text" class="itail-input" id="seSachetText" placeholder="ระบุ (ถ้ามี)"></div>
+    <div class="prod-line"><input type="checkbox" id="seSpoon"><label for="seSpoon">Spoon</label></div>
+    <div class="prod-line"><input type="checkbox" id="seOther"><label for="seOther">อื่นๆ</label><input type="text" class="itail-input" id="seOtherText" placeholder="ระบุ"></div>
+    <div class="modal-actions" style="margin-top:14px;">
+      <button class="itail-btn itail-btn-outline" onclick="closeSheetEdit()">ยกเลิก</button>
+      <button class="itail-btn itail-btn-primary" onclick="saveSheetEdit()">💾 บันทึก</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-backdrop" id="verModal">
   <div class="modal-box" style="max-width:460px;">
     <div class="modal-title">🆕 รายการเปลี่ยนแปลง</div>
@@ -599,9 +634,20 @@ AC 1417" style="white-space:pre-wrap;"></textarea>
    1) เปลี่ยน APP_VERSION  2) เพิ่มรายการใหม่ "บนสุด" ของ CHANGELOG
    (รูปแบบเลขเวอร์ชัน: มาก.กลาง.น้อย — ฟีเจอร์ใหม่เพิ่มเลขกลาง, แก้บั๊กเล็กน้อยเพิ่มเลขท้าย)
    ===================================================================== */
-const APP_VERSION = '1.10.0';
+const APP_VERSION = '1.12.1';
 const APP_BUILD_DATE = '10/10/2026';
 const CHANGELOG = [
+  { v:'1.12.1', d:'10/10/2026', items:['เชื่อมต่อ Firebase ในตัวไฟล์แล้ว — เปิดไฟล์บนเครื่องไหนก็ซิงค์อัตโนมัติ ไม่ต้องตั้งค่า'] },
+  { v:'1.12.0', d:'10/10/2026', items:[
+    'แก้ไขหัวใบที่สร้างแล้วได้: วันที่ / กะ (DS-NS) / Product — ปุ่ม ✏️ แก้หัวใบนี้ ในแท็บ "ผล" และ "รายงาน" (ซิงค์ไปเครื่องอื่นให้อัตโนมัติ และกันไม่ให้ซ้ำกับใบที่มีอยู่)',
+    'แท็บรายงาน: กรองใบตาม วันที่ / กะ / Product ได้ — เริ่มต้นแสดงใบที่กำลังตรวจอยู่ตอนนี้ (กด "ล้างตัวกรอง" เพื่อดูทั้งหมด)',
+    'ตัวเลือก "แนบภาพถ่ายท้ายรายงาน" เปิดไว้เป็นค่าเริ่มต้น ใช้กับ PDF / พิมพ์ / อีเมล และจำค่าที่เลือกไว้; Excel มีชีตภาพถ่ายให้เสมอ' ] },
+  { v:'1.11.0', d:'10/10/2026', items:[
+    'ใบรายงาน: ลายเซ็น QC/PD เล็กลงและอยู่กลางช่อง พร้อมปีกกา } รวมแถวของแต่ละรอบที่คอลัมน์ QC',
+    'ตาราง "รายการในใบนี้" มีคอลัมน์ "ภาพรวม" ของแต่ละรอบ (แตะเพื่อดูภาพใหญ่)',
+    'บันทึกรายการต้องใส่ Line เสมอ — ถ้ายังไม่ใส่ ปุ่มบันทึกจะไม่ทำงานและมีข้อความบอก',
+    'OCR แม่นขึ้น: หลังอ่านแบบทั้งบล็อกแล้ว แอปตัดภาพทีละบรรทัดจากรูปต้นฉบับ อ่านซ้ำหลายแบบแล้วโหวต พร้อมแก้ตัวสับสนตามชนิดข้อมูล (O/0, I/1, S/5, 8/B)',
+    'ทุกการลบ/เขียนทับมีหน้าต่างยืนยัน: ลบรายการ/รอบ/ใบ, เซ็นใหม่, ล้างลายเซ็น, ถ่ายภาพกลุ่มใหม่, ถ่ายภาพโค้ดใหม่' ] },
   { v:'1.10.0', d:'10/10/2026', items:[
     'หน้าจอใช้ง่ายขึ้น: หัวใบ (วันที่/กะ/Product) ย่อเป็นบรรทัดเดียว แตะ ✏️ เพื่อแก้',
     'หน้า "ถ่าย" มีปุ่มใหญ่ปุ่มเดียวบอกขั้นต่อไป (ถ่ายภาพกลุ่ม → ถ่ายโค้ดรายการที่ N → ไปใส่ผล)',
@@ -779,6 +825,32 @@ function readHdr(){
 ['hSachet','hSpoon','hOther','hSachetText','hOtherText'].forEach(id=>$(id).addEventListener('input',()=>{
   const h=readHdr(); lsSet('twotone_hdr_prod', JSON.stringify(h)); updateRemind();
 }));
+let sheetEditId=null;
+function openSheetEdit(){
+  const s=curSheet(); if(!s) return; sheetEditId=s.id;
+  $('seDate').value=s.date; $('seShift').value=s.shift; $('seSachet').checked=!!s.sachet; $('seSpoon').checked=!!s.spoon; $('seOther').checked=!!s.other;
+  $('seSachetText').value=s.sachetText||''; $('seOtherText').value=s.otherText||'';
+  $('shEditModal').classList.add('show');
+}
+function closeSheetEdit(){ $('shEditModal').classList.remove('show'); sheetEditId=null; }
+function saveSheetEdit(){
+  const s=getSheet(sheetEditId); if(!s){ closeSheetEdit(); return; }
+  const n={ date:$('seDate').value, shift:$('seShift').value, sachet:$('seSachet').checked, spoon:$('seSpoon').checked, other:$('seOther').checked, sachetText:$('seSachetText').value.trim(), otherText:$('seOtherText').value.trim() };
+  if(!n.date){ toast('เลือกวันที่ก่อน',3000); return; }
+  if(!(n.sachet||n.spoon||n.other)){ toast('เลือก Product อย่างน้อย 1 อย่าง',3000); return; }
+  const clash=sheets.find(x=>x!==s && x.date===n.date && x.shift===n.shift && sameProducts(x,n));
+  if(clash){ alert('มีใบของ '+dmy(n.date)+' • '+n.shift+' • '+prodLabel(n)+' อยู่แล้ว\nแก้เป็นค่าอื่น หรือลบใบนั้นก่อน'); return; }
+  const oldKey=skey(s), keyChanged = oldKey!==skey(n);
+  if(!confirm('เปลี่ยนหัวใบเป็น\n'+dmy(n.date)+' • '+n.shift+' • '+prodLabel(n)+'\n('+(s.rounds||[]).length+' รอบ / '+s.entries.length+' รายการจะย้ายไปอยู่ใต้หัวใบใหม่)'+(keyChanged&&syncOn()?'\nและอัปเดตบน Firebase ให้เครื่องอื่นด้วย':'')+'\nใช่ไหม?')) return;
+  const wasCur = findSheet(readHdr())===s;
+  if(keyChanged){ if(s.syncSig) queueDelete('sheet',oldKey); s.syncSig=null; s.entries.forEach(touchE); (s.rounds||[]).forEach(touchR); }
+  Object.assign(s,n);
+  if(wasCur){ $('hDate').value=n.date; $('hShift').value=n.shift; $('hSachet').checked=n.sachet; $('hSpoon').checked=n.spoon; $('hOther').checked=n.other; $('hSachetText').value=n.sachetText; $('hOtherText').value=n.otherText; hdrTouched=true; lsSet('twotone_hdr_prod', JSON.stringify(readHdr())); }
+  selectedSheetId=s.id; $('fltDate').value=n.date; $('fltShift').value=n.shift; $('fltProd').value=''; fltTouched=true;
+  closeSheetEdit(); persist(); syncSoon(); rerenderAll(); toast('แก้หัวใบแล้ว',2500);
+}
+try{ const pv=localStorage.getItem('twotone_photos'); if(pv!==null) $('chkPhotos').checked = pv==='1'; }catch(e){}
+$('chkPhotos').addEventListener('change',()=>{ try{ localStorage.setItem('twotone_photos',$('chkPhotos').checked?'1':'0'); }catch(e){} });
 function sameProducts(s,h){ return !!s.sachet===h.sachet && !!s.spoon===h.spoon && !!s.other===h.other; }
 function findSheet(h){ return sheets.find(s=>s.date===h.date && s.shift===h.shift && sameProducts(s,h)); }
 
@@ -1084,6 +1156,108 @@ function fix8BConfusion(canvas, text){
   }
   return lines.join('\n');
 }
+/* ===== OCR v2: หาตำแหน่งบรรทัด -> ตัดจากภาพต้นฉบับทีละบรรทัด -> อ่านหลายแบบ -> โหวต -> แก้ตัวอักษรสับสนตามชนิดข้อมูล ===== */
+const OCR_WL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .:/-';
+const normLine = s => String(s||'').replace(/[^A-Za-z0-9 .:\/\-]/g,' ').replace(/\s+/g,' ').trim();
+function tidyLine(t){
+  t=normLine(t).toUpperCase().replace(/^[.:\/\-\s]+|[.:\/\-\s]+$/g,'');
+  // โทเคนที่เป็นตัวเลขเป็นหลัก: แก้ตัวอักษรหน้าตาคล้ายเลข (O→0 I→1 S→5 Z→2 G→6)
+  return t.split(' ').map(tok=>{ const dg=(tok.match(/[0-9]/g)||[]).length; if(tok.length>=4 && dg/tok.length>=0.65 && /^[0-9OISZGBQ.:\/\-]+$/.test(tok)) return tok.replace(/O|Q/g,'0').replace(/I/g,'1').replace(/S/g,'5').replace(/Z/g,'2').replace(/G/g,'6').replace(/B/g,'8'); return tok; }).join(' ');
+}
+const alnumCount = s => (String(s).match(/[A-Za-z0-9]/g)||[]).length;
+
+// กล่องบรรทัดจากผลอ่านบล็อก -> พิกัดบนภาพต้นฉบับ (รองรับครอป + หมุน 180)
+function lineBoxesFromPass(data, canvas, img, rect, rot){
+  const nw=img.naturalWidth||img.width, nh=img.naturalHeight||img.height;
+  const rx=rect?rect.x*nw:0, ry=rect?rect.y*nh:0, rw=rect?rect.w*nw:nw, k=canvas.width/rw;
+  const out=[];
+  for(const l of (data.lines||[])){
+    const t=normLine(l.text); if(alnumCount(t)<3 || (l.confidence||0)<40) continue;
+    let {x0,y0,x1,y1}=l.bbox;
+    if(rot===180){ const X0=canvas.width-x1, X1=canvas.width-x0, Y0=canvas.height-y1, Y1=canvas.height-y0; x0=X0; x1=X1; y0=Y0; y1=Y1; }
+    out.push({ x0:rx+x0/k, x1:rx+x1/k, y0:ry+y0/k, y1:ry+y1/k, conf:l.confidence||0, txt:t });
+  }
+  return out;
+}
+// รวมกล่องที่ซ้อนกันในแนวตั้ง = บรรทัดเดียวกัน
+function clusterBoxes(boxes){
+  boxes=boxes.slice().sort((a,b)=>b.conf-a.conf); const cl=[];
+  for(const b of boxes){
+    let hit=null;
+    for(const c of cl){ const ov=Math.min(b.y1,c.y1)-Math.max(b.y0,c.y0), mn=Math.min(b.y1-b.y0,c.y1-c.y0); if(mn>0 && ov/mn>0.55){ hit=c; break; } }
+    if(hit){ if(b.conf>=hit.top-8){ hit.x0=Math.min(hit.x0,b.x0); hit.x1=Math.max(hit.x1,b.x1); } }
+    else cl.push({ x0:b.x0,x1:b.x1,y0:b.y0,y1:b.y1,top:b.conf,txt:b.txt });
+  }
+  return cl.sort((a,b)=>a.y0-b.y0);
+}
+// ตัดบรรทัดจากภาพต้นฉบับ แล้วทำภาพหลายแบบสำหรับอ่านบรรทัดเดียว
+function lineCrops(img, box, rot){
+  const nw=img.naturalWidth||img.width, nh=img.naturalHeight||img.height, hh=box.y1-box.y0;
+  const px=hh*0.45, py=hh*0.18;
+  const sx=Math.max(0,box.x0-px), sy=Math.max(0,box.y0-py), ex=Math.min(nw,box.x1+px), ey=Math.min(nh,box.y1+py);
+  const sw=ex-sx, sh=ey-sy, sc=Math.min(6,Math.max(1,70/hh)), W=Math.round(sw*sc), H=Math.round(sh*sc), B=20;
+  const base=document.createElement('canvas'); base.width=W; base.height=H; const bx=base.getContext('2d'); bx.imageSmoothingQuality='high'; if(rot===180){ bx.translate(W,H); bx.rotate(Math.PI); } bx.drawImage(img,sx,sy,sw,sh,0,0,W,H);
+  const id=bx.getImageData(0,0,W,H), d=id.data, g=new Uint8Array(W*H), hist=new Array(256).fill(0);
+  for(let p=0,i=0;p<W*H;p++,i+=4){ const v=Math.round(0.299*d[i]+0.587*d[i+1]+0.114*d[i+2]); g[p]=v; hist[v]++; }
+  let acc=0, lo=0, hi=255, tot=W*H;
+  for(let v=0;v<256;v++){ acc+=hist[v]; if(acc>=tot*0.01){ lo=v; break; } }
+  acc=0; for(let v=255;v>=0;v--){ acc+=hist[v]; if(acc>=tot*0.30){ hi=v; break; } }   // ขาว = ตัดที่ 30% บน (ตัวหนังสือบางเมื่อเทียบกับพื้น)
+  const rng=Math.max(20,hi-lo), s=new Uint8Array(W*H), h2=new Array(256).fill(0);
+  for(let p=0;p<W*H;p++){ let v=(g[p]-lo)*255/rng; v=v<0?0:v>255?255:v; s[p]=v; h2[v|0]++; }
+  const thr=otsuThreshold(h2,W*H);
+  const mk=(arr)=>{ const c=document.createElement('canvas'); c.width=W+B*2; c.height=H+B*2; const x=c.getContext('2d'); x.fillStyle='#fff'; x.fillRect(0,0,c.width,c.height);
+    const t=document.createElement('canvas'); t.width=W; t.height=H; const tx=t.getContext('2d'), o=tx.createImageData(W,H);
+    for(let p=0;p<W*H;p++){ const v=arr[p]; o.data[p*4]=o.data[p*4+1]=o.data[p*4+2]=v; o.data[p*4+3]=255; } tx.putImageData(o,0,0); x.drawImage(t,B,B); return c; };
+  const bin=new Uint8Array(W*H); for(let p=0;p<W*H;p++) bin[p]=s[p]<thr?0:255;
+  // ลบหมึกที่ติดขอบกรอบ (เศษบรรทัดข้างเคียง / ขอบซอง / พื้นหลังมืด) ออกจากทุกแบบ
+  { const rm=new Uint8Array(W*H), q=[]; const push=p=>{ if(bin[p]===0 && !rm[p]){ rm[p]=1; q.push(p); } };
+    for(let x=0;x<W;x++){ push(x); push((H-1)*W+x); } for(let y=0;y<H;y++){ push(y*W); push(y*W+W-1); }
+    for(let qi=0;qi<q.length;qi++){ const p=q[qi], x=p%W, y=(p/W)|0; if(x>0)push(p-1); if(x<W-1)push(p+1); if(y>0)push(p-W); if(y<H-1)push(p+W); }
+    // ขยายพื้นที่ที่ลบอีก 2px กันขอบจาง
+    for(let p=0;p<W*H;p++) if(rm[p]){ bin[p]=255; s[p]=255; }
+    for(let p=0;p<W*H;p++){ if(s[p]<thr+30 && !rm[p]){ const x=p%W,y=(p/W)|0; let near=false; for(let dy=-2;dy<=2&&!near;dy++) for(let dx=-2;dx<=2;dx++){ const xx=x+dx,yy=y+dy; if(xx>=0&&xx<W&&yy>=0&&yy<H&&rm[yy*W+xx]){ near=true; break; } } if(near && bin[p]===0){ /* ขอบติดกับส่วนที่ลบ */ } } } }
+  // "dot": เบลอเล็กน้อยก่อนตัดขาวดำ ช่วยอุดช่องว่างของตัวอักษรหมึกพ่น (dot-matrix)
+  const bl=document.createElement('canvas'); bl.width=W; bl.height=H; const blx=bl.getContext('2d'); blx.filter='blur('+Math.max(1,Math.round(sc*0.45))+'px)'; blx.drawImage(mk(s),-B,-B);
+  const bd=blx.getImageData(0,0,W,H).data, dot=new Uint8Array(W*H), h3=new Array(256).fill(0); for(let p=0;p<W*H;p++) h3[bd[p*4]]++;
+  const t3=otsuThreshold(h3,W*H); for(let p=0;p<W*H;p++) dot[p]=bd[p*4]<t3+8?0:255;
+  return { gray:mk(s), bin:mk(bin), dot:mk(dot) };
+}
+async function readLine(worker, c){
+  const { data } = await worker.recognize(c);
+  const ws=(data.words||[]).filter(w=>w.confidence>30 && /[A-Za-z0-9]/.test(w.text));
+  return { txt:normLine(data.text), conf:data.confidence||0, score:ws.reduce((s,w)=>s+w.text.length*w.confidence,0) };
+}
+async function readLinesV2(worker, img, rots, rects, my, tokenFn){
+  // 1) ค้นหากล่องบรรทัดจากหลายภาพ (ครอป/เต็มภาพ × ปกติ/CLAHE)
+  const boxes=[];
+  await setPsm(worker,'6');
+  for(const rot of rots) for(const rect of rects) for(const prep of [prepCanvas, prepCanvasCLAHE]){
+    const c=prep(img,rect,rot); const { data }=await worker.recognize(c); if(tokenFn&&!tokenFn()) return null;
+    boxes.push(...lineBoxesFromPass(data,c,img,rect,rot));
+  }
+  const cl=clusterBoxes(boxes); if(!cl.length) return null;
+  // 2) อ่านทีละบรรทัดจากภาพต้นฉบับ
+  await worker.setParameters({ tessedit_pageseg_mode:'7', tessedit_char_whitelist:OCR_WL }); ocrPsm='7';
+  const lines=[];
+  try{
+    for(const box of cl){
+      const cr=lineCrops(img, box, rots[0]), reads=[];
+      for(const k of ['gray','bin','dot']){ const r=await readLine(worker, cr[k]); if(tokenFn&&!tokenFn()) return null; if(r.txt && alnumCount(r.txt)>=2) reads.push(r); }
+      if(box.txt) reads.push({ txt:box.txt, conf:box.top, score:0 });          // ผลอ่านแบบบล็อกนับเป็นอีก 1 เสียง
+      if(!reads.length) continue;
+      const g=new Map();
+      for(const r of reads){ const t=tidyLine(r.txt); if(alnumCount(t)<2) continue; const e=g.get(t)||{ txt:t, n:0, conf:0 }; e.n++; e.conf+=r.conf; g.set(t,e); }
+      if(!g.size) continue;
+      const pick=[...g.values()].sort((a,b)=>(b.n-a.n)||(b.conf/b.n-a.conf/a.n))[0], conf=pick.conf/pick.n;
+      if(alnumCount(pick.txt)<3 || (conf<55 && pick.n<2)) continue;           // ตัดบรรทัดขยะ (พื้นหลัง/ลวดลาย)
+      let txt=pick.txt;
+      try{ txt=fix8BConfusion(cr.bin, txt); }catch(e){}
+      lines.push({ y:box.y0, txt, n:pick.n, of:reads.length, conf, alts:[...g.keys()] });
+    }
+  } finally { await worker.setParameters({ tessedit_pageseg_mode:'4', tessedit_char_whitelist:'' }); ocrPsm='4'; }
+  return lines;
+}
+
 const OCR_GOOD = 1100;
 async function runOCR(force){
   const st = $('ocrStatus');
@@ -1123,6 +1297,19 @@ async function runOCR(force){
         const winCanvas = bestMeta.prep(img, bestMeta.rect, bestMeta.rot);
         code = fix8BConfusion(winCanvas, code);
       }catch(e){ console.error('fix8BConfusion skipped:', e); }
+    }
+    // รอบสอง: ตัดภาพทีละบรรทัดจากรูปต้นฉบับ อ่านหลายแบบแล้วโหวต (แม่นกว่าอ่านทั้งบล็อกกับภาพถ่ายยาก ๆ)
+    if(bestMeta && my===ocrToken){
+      st.textContent='🔎 กำลังตรวจอ่านทีละบรรทัดอีกรอบ เพื่อความแม่นยำ...';
+      try{
+        const rects=[bestMeta.rect]; if(bestMeta.rect && !cropSel) rects.push(null);
+        const ls=await readLinesV2(worker,img,[bestMeta.rot],rects,my,()=>my===ocrToken);
+        if(my!==ocrToken) return;
+        if(ls && ls.length){
+          const v2=ls.map(l=>l.txt).join('\n');
+          if(alnumCount(v2) >= alnumCount(code)*0.85) code=v2;
+        }
+      }catch(e){ console.error('OCR v2 skipped:', e); try{ await setPsm(worker,'4'); await worker.setParameters({ tessedit_char_whitelist:'' }); }catch(_){} }
     }
     if(!code){ st.textContent='ℹ️ อ่านโค้ดไม่ได้ — ลองลากกรอบครอบเฉพาะบรรทัดโค้ด หรือพิมพ์เอง'; return; }
     if(force || !$('fCode').value.trim()) $('fCode').value = code;
@@ -1165,9 +1352,10 @@ function drawSel(){
   csel.style.left=(ir.left-wr.left+x1*ir.width)+'px'; csel.style.top=(ir.top-wr.top+y1*ir.height)+'px';
   csel.style.width=((x2-x1)*ir.width)+'px'; csel.style.height=((y2-y1)*ir.height)+'px';
 }
+function retakeP2(src){ if(P2 && !confirm('ถ่าย/เลือกภาพโค้ดใหม่จะแทนที่ภาพเดิมของรายการนี้ ใช่ไหม?')) return; pick('p2',src); }
 function rereadWhole(){ cropSel=null; csel.style.display='none'; runOCR(true); }
 
-function signVerifier(){ openSigPad('ลายเซ็นผู้ทวนสอบ (PD. Leader up)', sig=>{ const s=curSheet(); s.verifierSig=sig; s.verifierAt=nowIso(); persist(); renderSheet(); syncSoon(); }); }
+function signVerifier(){ { const s0=curSheet(); if(s0&&s0.verifierSig&&!confirm('เซ็นใหม่จะแทนที่ลายเซ็นผู้ทวนสอบเดิม ใช่ไหม?')) return; } openSigPad('ลายเซ็นผู้ทวนสอบ (PD. Leader up)', sig=>{ const s=curSheet(); s.verifierSig=sig; s.verifierAt=nowIso(); persist(); renderSheet(); syncSoon(); }); }
 
 /* ========================= EXPORT: PDF (render form via html2canvas → jsPDF) ========================= */
 /* สร้าง PDF เป็น Blob (ใช้ทั้งปุ่มดาวน์โหลดและปุ่มอีเมล) — throw ถ้าไม่สำเร็จ */
@@ -1466,7 +1654,7 @@ function replaceGroup(img,ctx){
   r.image=resizeToDataUrl(img,240,0.6); r.imageFull=resizeToDataUrl(img,1000,0.66); r.imgSynced=false; r.imgAt=nowIso(); touchR(r);
   persist(); syncSoon(); rerenderAll(); toast('เปลี่ยนภาพกลุ่มของรอบแล้ว',3000);
 }
-function regroup(rid){ const s=curSheet(); if(s) pick('gr','camera',{ sheetId:s.id, roundId:rid }); }
+function regroup(rid){ const s=curSheet(); if(!s) return; if(!confirm('ถ่ายภาพกลุ่มใหม่จะแทนที่ภาพกลุ่มเดิมของรอบนี้ ใช่ไหม?')) return; pick('gr','camera',{ sheetId:s.id, roundId:rid }); }
 
 /* ========================= CAPTURE TAB: การ์ดรอบที่กำลังทำ ========================= */
 function renderCapture(){
@@ -1524,15 +1712,22 @@ function openEntry(ctx, edit){
 }
 function closeEntry(){ ocrToken++; $('entryModal').classList.remove('show'); resetInputs(); P2=null; P2new=false; entryCtx=null; }
 function selectResult(t){ selResult = (selResult===t) ? null : t; applyResultUI(); validate(); }
-['fCode','fRemark','fTime'].forEach(id=>$(id).addEventListener('input',validate));
+['fCode','fRemark','fTime','fLine'].forEach(id=>$(id).addEventListener('input',validate));
 function validate(){
-  let ok = $('fCode').value.trim().length>0 && !!$('fTime').value;
-  if(selResult==='fail') ok = ok && $('fRemark').value.trim().length>0;
+  const miss=[];
+  if(!$('fCode').value.trim()) miss.push('Code');
+  if(!$('fTime').value) miss.push('เวลา');
+  if(!$('fLine').value.trim()) miss.push('Line');
+  if(selResult==='fail' && !$('fRemark').value.trim()) miss.push('หมายเหตุ (เพราะเลือกไม่ผ่าน)');
+  const ok=!miss.length;
   $('btnSave').disabled = !ok; $('btnSaveNext').disabled = !ok;
+  const hn=$('saveHint'); if(hn){ hn.textContent = ok ? '' : 'ยังบันทึกไม่ได้ — ต้องใส่: '+miss.join(', '); hn.style.display = ok?'none':'block'; }
 }
 function saveEntry(next){
   const c=entryCtx; if(!c) return; const sh=getSheet(c.sheetId); if(!sh){ closeEntry(); return; }
-  const line=$('fLine').value.trim(); lsSet(LINE_KEY,line);
+  const line=$('fLine').value.trim();
+  if(!line || !$('fCode').value.trim()){ toast('ต้องใส่ Line และ Code ก่อนบันทึก',3500); validate(); $(line?'fCode':'fLine').focus(); return; }
+  lsSet(LINE_KEY,line);
   const vals={ time:$('fTime').value, code:$('fCode').value.trim(), line, result:selResult, remark:$('fRemark').value.trim() };
   if(c.editId){
     const e=sh.entries.find(x=>x.id===c.editId); if(!e){ closeEntry(); return; }
@@ -1558,10 +1753,10 @@ function openSigPad(title, cb){
   sigCb=cb; $('sigTitle').textContent=title; $('sigModal').classList.add('show');
   requestAnimationFrame(()=>{
     const r=sc.getBoundingClientRect(), dpr=window.devicePixelRatio||1;
-    sc.width=Math.round(r.width*dpr); sc.height=Math.round(r.height*dpr); sigClear();
+    sc.width=Math.round(r.width*dpr); sc.height=Math.round(r.height*dpr); sigClear(true);
   });
 }
-function sigClear(){ sctx.clearRect(0,0,sc.width,sc.height); sigHas=false; }
+function sigClear(force){ if(!force && sigHas && !confirm('ล้างลายเซ็นที่เขียนไว้ทั้งหมดใช่ไหม?')) return; sctx.clearRect(0,0,sc.width,sc.height); sigHas=false; }
 function sigCancel(){ $('sigModal').classList.remove('show'); sigCb=null; }
 function sigPos(e){ const r=sc.getBoundingClientRect(); return { x:(e.clientX-r.left)*sc.width/r.width, y:(e.clientY-r.top)*sc.height/r.height }; }
 sc.addEventListener('pointerdown', e=>{ sc.setPointerCapture(e.pointerId); sigDown=true; sigLast=sigPos(e); sigHas=true;
@@ -1593,8 +1788,8 @@ function prodLabel(s){
 }
 function curSheet(){ return sheets.find(s=>s.id===selectedSheetId); }
 function sheetList(){ return sheets.slice().sort((a,b)=> (b.date+b.shift)>(a.date+a.shift)?1:-1); }
-function fillSheetSelect(sel){
-  const list=sheetList(); sel.innerHTML='';
+function fillSheetSelect(sel,pred){
+  const list=sheetList().filter(s=>!pred||pred(s)); sel.innerHTML='';
   list.forEach(s=>{ const o=document.createElement('option'); o.value=s.id; o.textContent=`${dmy(s.date)} • ${s.shift} • ${prodLabel(s)} (${(s.rounds||[]).length} รอบ/${s.entries.length})`; sel.appendChild(o); });
   if(list.length){ if(!list.find(s=>s.id===selectedSheetId)) selectedSheetId=list[0].id; sel.value=selectedSheetId; }
   return list;
@@ -1650,6 +1845,7 @@ function passRest(rid){
 }
 function signRound(rid,role){
   const s=curSheet(), r=getRound(s,rid); if(!r) return;
+  if((role==='qc'?r.qcSig:r.pdSig) && !confirm('เซ็นใหม่จะแทนที่ลายเซ็น '+role.toUpperCase()+' เดิมของรอบนี้ ใช่ไหม?')) return;
   const pend=roundEntries(s,r).filter(e=>!e.result).length;
   if(pend && !confirm('รอบนี้ยังมี '+pend+' รายการที่ไม่ได้ใส่ผล — เซ็นต่อเลยไหม?')) return;
   openSigPad(role==='qc'?'ลายเซ็นผู้ตรวจสอบ QC (ทั้งรอบ)':'ลายเซ็นผู้ตรวจสอบ PD (ทั้งรอบ)', sig=>{ r[role+'Sig']=sig; touchR(r); persist(); syncSoon(); rerenderAll(); });
@@ -1666,13 +1862,28 @@ function deleteRound(rid){
 function openGroupLightbox(sid,rid){ const r=getRound(getSheet(sid),rid); if(!r) return; $('lightboxImg').src=r.imageFull||r.image; $('lightbox').classList.add('show'); }
 
 /* ========================= REPORT TAB ========================= */
+let fltTouched=false;
+function reportFilter(){ return { date:$('fltDate').value, shift:$('fltShift').value, prod:$('fltProd').value }; }
+function matchFilter(s,f){ return (!f.date||s.date===f.date) && (!f.shift||s.shift===f.shift) && (!f.prod||!!s[f.prod]); }
+function defaultFilterFromCurrent(){
+  const a=activeRound(); const cur=(a&&a.sh)||findSheet(readHdr())||curSheet();
+  if(!cur) return;
+  $('fltDate').value=cur.date; $('fltShift').value=cur.shift;
+  const ps=['sachet','spoon','other'].filter(k=>cur[k]); $('fltProd').value = ps.length===1?ps[0]:'';
+  selectedSheetId=cur.id;
+}
+function clearFilters(){ $('fltDate').value=''; $('fltShift').value=''; $('fltProd').value=''; fltTouched=true; renderReportTab(); }
+['fltDate','fltShift','fltProd'].forEach(id=>$(id).addEventListener('change',()=>{ fltTouched=true; renderReportTab(); }));
 function renderReportTab(){
-  const list=fillSheetSelect($('sheetSelect')); const has=list.length>0;
+  if(!fltTouched) defaultFilterFromCurrent();
+  const f=reportFilter(), list=fillSheetSelect($('sheetSelect'),s=>matchFilter(s,f)); const has=list.length>0;
+  $('fltNote').textContent = sheets.length ? ('พบ '+list.length+' จาก '+sheets.length+' ใบ'+((f.date||f.shift||f.prod)?'':' (แสดงทั้งหมด)')) : '';
+  $('reportEmpty').textContent = sheets.length ? 'ไม่มีใบที่ตรงกับตัวกรอง — ปรับตัวกรอง หรือกด "ล้างตัวกรอง"' : 'ยังไม่มีใบบันทึก — ไปที่แท็บ "ถ่าย" เพื่อถ่ายภาพกลุ่มและเริ่มรอบแรก';
   $('reportEmpty').style.display=has?'none':'block';
   $('sheetBody').style.display=has?'block':'none';
   $('previewWrap').style.display=has?'block':'none';
   $('entriesCard').style.display=has?'block':'none';
-  if(!has){ selectedSheetId=null; return; }
+  if(!has){ if(!sheets.length) selectedSheetId=null; return; }
   renderSheet();
 }
 $('sheetSelect').addEventListener('change',e=>{ selectedSheetId=e.target.value; renderSheet(); });
@@ -1700,23 +1911,31 @@ function renderPreview(){
 window.addEventListener('resize',()=>{ if($('section-report').classList.contains('active') && curSheet()) renderPreview(); });
 function renderEntries(){
   const s=curSheet(); const b=$('entriesBody'); b.innerHTML='';
-  sortedEntries(s).forEach(e=>{
+  const all=sortedEntries(s);
+  all.forEach((e,idx)=>{
     const r=getRound(s,e.roundId), tr=document.createElement('tr');
+    let gcell='';
+    if(!r) gcell = idx===0||all[idx-1].roundId ? '<td>-</td>' : '<td>-</td>';
+    else if(idx===0 || all[idx-1].roundId!==e.roundId){
+      let span=1; while(idx+span<all.length && all[idx+span].roundId===e.roundId) span++;
+      gcell=`<td rowspan="${span}" style="background:#f4f9fa">${r.image?`<img class="thumb" src="${r.image}" onclick="openGroupLightbox('${s.id}','${r.id}')">`:'-'}<div style="font-size:11px;color:#5b7780">รอบ ${roundNo(s,r)}</div></td>`;
+    }
     const res = e.result==='pass' ? '<span class="itail-badge itail-badge-success">ผ่าน</span>' : (e.result==='fail' ? '<span class="itail-badge itail-badge-danger">ไม่ผ่าน</span>' : '<span class="itail-badge itail-badge-warning">รอผล</span>');
-    tr.innerHTML=`<td>${r?roundNo(s,r):'-'}</td><td>${e.image?`<img class="thumb" src="${e.image}" onclick="openLightbox('${e.id}',1)">`:''}${e.image2?`<img class="thumb thumb2" src="${e.image2}" onclick="openLightbox('${e.id}',2)">`:''}</td><td>${esc(e.time)}</td><td style="font-size:12px;white-space:pre-line;">${esc(e.code)}</td><td>${esc(e.line||'-')}</td>
+    tr.innerHTML=`<td>${r?roundNo(s,r):'-'}</td>${gcell}<td>${e.image?`<img class="thumb" src="${e.image}" onclick="openLightbox('${e.id}',1)">`:''}${e.image2?`<img class="thumb thumb2" src="${e.image2}" onclick="openLightbox('${e.id}',2)">`:''}</td><td>${esc(e.time)}</td><td style="font-size:12px;white-space:pre-line;">${esc(e.code)}</td><td>${esc(e.line||'-')}</td>
     <td>${res}</td><td>${esc(e.remark||'-')}</td>
     <td><button class="link-btn danger" onclick="deleteEntry('${e.id}')">ลบ</button></td>`;
     b.appendChild(tr);
   });
 }
 function openLightbox(id,n){ const s=curSheet(); const e=s&&s.entries.find(x=>x.id===id); if(!e) return; const src=(n===2?(e.image2Full||e.image2):(e.imageFull||e.image)); if(!src) return; $('lightboxImg').src=src; $('lightbox').classList.add('show'); }
-function deleteEntry(id){ if(!confirm('ลบรายการนี้หรือไม่?')) return; const s=curSheet(); const ex=s.entries.find(e=>e.id===id); if(ex&&ex.synced) queueDelete('entry',id); s.entries=s.entries.filter(e=>e.id!==id); persist(); rerenderAll(); }
+function deleteEntry(id){ const s0=curSheet(), ex0=s0&&s0.entries.find(e=>e.id===id); if(!confirm('ลบรายการนี้หรือไม่?'+(ex0?'\n'+(ex0.time||'')+' • '+oneLine(ex0.code||'')+(ex0.line?' • Line '+ex0.line:''):'')+'\n(กู้คืนไม่ได้)')) return; const s=curSheet(); const ex=s.entries.find(e=>e.id===id); if(ex&&ex.synced) queueDelete('entry',id); s.entries=s.entries.filter(e=>e.id!==id); persist(); rerenderAll(); }
 function deleteSheet(){ if(!confirm('ลบทั้งใบบันทึกนี้ (รวมทุกรอบ/รายการ) หรือไม่?'+(syncOn()?'\n(จะลบบน Firebase ด้วย และเครื่องอื่นจะเห็นว่าถูกลบ)':''))) return; const ds=curSheet(); if(ds){ ds.entries.forEach(e=>{ if(e.synced) queueDelete('entry',e.id); }); (ds.rounds||[]).forEach(r=>{ if(r.synced) queueDelete('round',r.id); }); if(ds.syncSig) queueDelete('sheet',skey(ds)); } sheets=sheets.filter(s=>s.id!==selectedSheetId); persist(); selectedSheetId=null; rerenderAll(); }
 
 /* ========================= REPORT FORM HTML (A4, matches FPPDPF65) ========================= */
 function formPage(s, pageIdx, total, rows){
   const cb=on=>`<span class="cb${on?' on':''}"></span>`;
   const sigImg=(sg,h)=> sg ? `<img src="${sg.d}" style="max-height:${h}px">` : '';
+  const BRACE='<div class="brace"><svg viewBox="0 0 10 100" preserveAspectRatio="none"><path d="M0 1 C5 1 5 1 5 10 L5 40 C5 47 7 50 10 50 C7 50 5 53 5 60 L5 90 C5 99 5 99 0 99" fill="none" stroke="#000" stroke-width="1.3" vector-effect="non-scaling-stroke"/></svg></div>';
   let body='', i=0;
   while(i<30){
     const e=rows[i];
@@ -1728,7 +1947,7 @@ function formPage(s, pageIdx, total, rows){
       const x=rows[i+k];
       body+=`<tr${k===0&&r?' class="rpt-r0"':''}><td>${esc(x.time)}</td><td class="code">${esc(x.code)}</td><td>${esc(x.line)}</td>
         <td class="${x.result==='fail'?'rpt-fail':''}">${resultText(x)}</td><td>${esc(x.remark)}</td>`;
-      if(r){ if(k===0) body+=`<td rowspan="${span}">${sigImg(r.qcSig,Math.min(56,span*22))}</td><td rowspan="${span}">${sigImg(r.pdSig,Math.min(56,span*22))}</td>`; }
+      if(r){ if(k===0){ const sh=Math.max(16,Math.min(30,span*20-4)); body+=`<td class="sg${span>1?' br':''}" rowspan="${span}">${span>1?BRACE:''}${sigImg(r.qcSig,sh)}</td><td class="sg" rowspan="${span}">${sigImg(r.pdSig,sh)}</td>`; } }
       else body+=`<td>${sigImg(x.qcSig,20)}</td><td>${sigImg(x.pdSig,20)}</td>`;
       body+='</tr>';
     }
@@ -1797,8 +2016,8 @@ async function buildXlsxBlob(s){
   const total=Math.max(30,ents.length);
   const addSig=(sg,col0,rowTop,span)=>{
     if(!sg) return;
-    const fit=Math.min(100/sg.w,(span*34-8)/sg.h,1.5); const id=wb.addImage({base64:sg.d.split(',')[1],extension:'png'});
-    ws.addImage(id,{tl:{col:col0+0.08,row:rowTop-1+Math.floor((span-1)/2)+0.1},ext:{width:Math.round(sg.w*fit),height:Math.round(sg.h*fit)}});
+    const fit=Math.min(80/sg.w,(span*40-14)/sg.h,1.2); const w=Math.round(sg.w*fit), hh=Math.round(sg.h*fit); const id=wb.addImage({base64:sg.d.split(',')[1],extension:'png'});
+    ws.addImage(id,{tl:{col:col0+Math.max(0,(138-w)/2/138),row:rowTop-1+Math.max(0,(span*45-hh)/2/45)},ext:{width:w,height:hh}});
   };
   for(let i=0;i<total;i++){
     const r=4+i, row=ws.getRow(r); row.height=34; const e=ents[i];
@@ -1894,7 +2113,7 @@ let fb = null, fbStarting = null, fbUnsubs = [], fbDeferred = [], fbQueue = Prom
 
 /* ค่าเชื่อมต่อที่ฝังมากับไฟล์ — ใส่ firebaseConfig + รหัสทีมตรงนี้ครั้งเดียว ทุกเครื่องที่เปิดไฟล์นี้จะเชื่อมต่อเองอัตโนมัติ (ไม่ต้องตั้งค่าในแอป)
    ตัวอย่าง: const FB_DEFAULT = { config:{ apiKey:"...", authDomain:"...", projectId:"...", appId:"..." }, team:"รหัสทีมสุ่มยาวๆ" }; */
-const FB_DEFAULT = { config:null, team:'' };
+const FB_DEFAULT = { config:{"apiKey": "AIzaSyByy9WOu0aJDoP1EuAbdXuXqRFu64AH5aM", "authDomain": "itail-qc.firebaseapp.com", "projectId": "itail-qc", "storageBucket": "itail-qc.firebasestorage.app", "messagingSenderId": "228016988803", "appId": "1:228016988803:web:cf049b21df024dbb4371b6"}, team:'itail-qc-FBL6zKGgwx14yycoWmnkg66K' };
 function syncCfg(){
   let c={}; try{ c=JSON.parse(lsGet(SYNC_CFG_KEY)||'{}')||{}; }catch(e){}
   if(c.off) return { config:null, team:'', auto:false, days:7, off:true };
