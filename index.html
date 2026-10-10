@@ -216,6 +216,28 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
 .cloud-pill{ border:1.5px solid rgba(255,255,255,.7); background:rgba(255,255,255,.15); color:#fff; border-radius:999px; padding:3px 11px; font-size:12.5px; font-weight:600; cursor:pointer; }
 .cloud-pill.ok{ background:rgba(76,200,140,.35); } .cloud-pill.wait{ background:rgba(245,166,35,.5); } .cloud-pill.err{ background:rgba(249,83,109,.6); } .cloud-pill.busy{ background:rgba(255,255,255,.3); }
 #syncModal{ z-index:67; }
+/* ===== v1.10 UI: ง่ายขึ้น ===== */
+#shiftNowBadge{ display:none; }
+.itail-tab{ padding:11px 6px; font-size:15px; white-space:nowrap; }
+.tab-badge{ display:inline-block; min-width:20px; height:20px; line-height:20px; border-radius:10px; background:var(--itail-coral,#f9536d); color:#fff; font-size:12px; margin-left:5px; padding:0 5px; }
+.itail-tab.active .tab-badge{ background:#fff; color:var(--itail-coral,#f9536d); }
+.hdr-sum{ display:flex; align-items:center; gap:10px; background:#fff; border-radius:16px; padding:12px 14px; box-shadow:var(--itail-shadow-sm); }
+.hdr-sum .hs-txt{ flex:1; min-width:0; } .hs-a{ font-size:15px; font-weight:600; } .hs-b{ font-size:13px; color:var(--itail-text-muted); margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.hs-edit{ width:44px; height:44px; border-radius:50%; border:1.5px solid var(--itail-border); background:#fff; font-size:18px; cursor:pointer; }
+.btn-xl{ width:100%; min-height:64px; font-size:18px !important; font-weight:700; border-radius:20px !important; display:flex; align-items:center; justify-content:center; gap:8px; }
+.capture-card .capture-btns{ flex-direction:column; align-items:stretch; } .capture-card .link-btn{ min-height:44px; }
+.capture-card .cam-ico{ width:88px; height:88px; line-height:88px; font-size:42px; border-radius:50%; background:var(--itail-teal-light); margin:0 auto 14px; }
+#startTitle{ font-size:21px !important; }
+.rc-main{ display:flex; flex-direction:column; gap:10px; margin-top:14px; }
+.rc-main .itail-btn-outline{ min-height:52px; font-size:16px; border-radius:18px; }
+.rc-links{ display:flex; justify-content:center; gap:18px; flex-wrap:wrap; } .rc-links .link-btn{ min-height:44px; color:var(--itail-text-muted); }
+.rc-res{ flex-direction:row !important; align-items:center !important; gap:8px !important; flex-wrap:wrap; justify-content:flex-end; }
+.rc-res .mini{ width:54px; height:48px; border-radius:16px !important; font-size:22px !important; margin:0 !important; }
+.rc-res .link-btn{ flex-basis:100%; text-align:right; min-height:32px; }
+.rc-res .mini.pass{ background:#1f9d6b; color:#fff; } .rc-res .mini.fail{ background:#fff; border:1.5px solid #f3c6cd !important; }
+.sig-note{ font-size:13px; color:var(--itail-amber-dark); margin:2px 0 8px; }
+.sig-slot .itail-btn{ min-height:48px; } .sig-slot .itail-btn[disabled]{ opacity:.5; cursor:not-allowed; }
+
 .sync-sub{ font-size:12px; color:var(--itail-text-muted); margin-top:4px; }
 .sync-msg{ font-size:13px; margin:6px 0 2px; min-height:18px; } .sync-msg.ok{ color:var(--itail-success,#1e8e5a); font-weight:600; } .sync-msg.bad{ color:var(--itail-danger); font-weight:600; }
 .sync-box{ background:var(--itail-bg,#f3f7f8); border-radius:12px; padding:10px 12px; margin-bottom:12px; font-size:13.5px; line-height:1.5; }
@@ -301,7 +323,7 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
 <div class="itail-topbar">
   <div class="topbar-inner">
     <div>
-      <div class="topbar-title">🥣 บันทึกการตรวจสอบ Ratio สินค้า Two tone</div>
+      <div class="topbar-title">🥣 Ratio Two tone</div>
       <div class="topbar-sub" id="todayLabel"></div>
     </div>
     <div style="display:flex;gap:8px;align-items:center;"><button class="cloud-pill" id="cloudBadge" onclick="openSync()" title="ซิงค์ข้อมูล">☁️</button><button class="ver-pill" id="verBadge" onclick="openVersion()" title="ดูรายการเปลี่ยนแปลง">v</button><div class="itail-badge itail-badge-info" id="shiftNowBadge">กะ —</div></div>
@@ -310,14 +332,18 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
 
 <div class="wrap">
   <div class="tabs-row itail-tabs">
-    <div class="itail-tab active" data-tab="capture">📷 ตรวจ / บันทึก</div>
-    <div class="itail-tab" data-tab="results">📝 ผล / เซ็น</div>
-    <div class="itail-tab" data-tab="report">📋 ใบรายงาน</div>
+    <div class="itail-tab active" data-tab="capture">📷 ถ่าย</div>
+    <div class="itail-tab" data-tab="results">📝 ผล<span class="tab-badge" id="tabBadge" style="display:none"></span></div>
+    <div class="itail-tab" data-tab="report">📋 รายงาน</div>
   </div>
 
   <!-- CAPTURE -->
   <div class="section active" id="section-capture">
-    <div class="itail-card card-gap">
+    <div class="hdr-sum card-gap" id="hdrSum">
+      <div class="hs-txt"><div class="hs-a" id="hdrSumA"></div><div class="hs-b" id="hdrSumB"></div></div>
+      <button class="hs-edit" onclick="toggleHdr(true)" aria-label="แก้หัวใบบันทึก">✏️</button>
+    </div>
+    <div class="itail-card card-gap" id="hdrCard" style="display:none;">
       <div class="h-title">ข้อมูลหัวใบบันทึก</div>
       <div class="row2 field">
         <div>
@@ -344,37 +370,38 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
         <input type="checkbox" id="hOther"><label for="hOther">อื่นๆ</label>
         <input type="text" class="itail-input" id="hOtherText" placeholder="ระบุ">
       </div>
+      <div style="margin-top:12px;"><button class="itail-btn itail-btn-primary" onclick="toggleHdr(false)">เสร็จ</button></div>
     </div>
 
-    <div class="remind" id="remindBox">ยังไม่มีการตรวจในใบนี้</div>
+    <div class="remind" id="remindBox" style="display:none;"></div>
 
     <div class="itail-card card-gap round-card" id="roundCard" style="display:none;"></div>
 
-    <div class="itail-card capture-card">
-      <div style="font-size:44px;">📸</div>
-      <div style="font-weight:600; font-size:15.5px;" id="startTitle">ขั้นที่ 1 — ถ่ายภาพกลุ่ม (เริ่มรอบใหม่)</div>
-      <div class="capture-hint">ถ่ายผลิตภัณฑ์หลายโค้ดรวมในภาพเดียว = <b>1 รอบ</b> → จากนั้นถ่าย<b>ภาพโค้ดทีละใบ</b> (ระบบอ่านโค้ดให้) แล้วกลับมา<b>ใส่ผล</b>และ<b>เซ็นชื่อ</b>ที่แท็บ "ผล / เซ็น" ทีหลังได้</div>
+    <div class="itail-card capture-card" id="startCard">
+      <div class="cam-ico">📸</div>
+      <div style="font-weight:600; font-size:15.5px;" id="startTitle">เริ่มตรวจรอบใหม่</div>
+      <div class="capture-hint">ถ่ายรูปรวมโค้ดทั้งหมดในภาพเดียว<br>ก่อนถ่ายโค้ดทีละใบ</div>
       <div class="capture-btns">
-        <button class="itail-btn itail-btn-primary" onclick="pick('g','camera')">📷 ถ่ายภาพกลุ่ม</button>
-        <button class="itail-btn itail-btn-outline" onclick="pick('g','file')">🖼️ เลือกรูปจากคลัง</button>
+        <button class="itail-btn itail-btn-primary btn-xl" onclick="pick('g','camera')">📷 ถ่ายภาพกลุ่ม</button>
+        <button class="link-btn" onclick="pick('g','file')">เลือกรูปจากคลัง</button>
       </div>
       <div class="capture-hint" id="privacyHint" style="margin-top:12px;">🔒 OCR ทำงานในเครื่องทั้งหมด ไม่ส่งรูป/ข้อมูลออกอินเทอร์เน็ต</div>
-      <input type="file" id="cameraInput" accept="image/*" capture="environment">
-      <input type="file" id="fileInput" accept="image/*">
     </div>
+    <input type="file" id="cameraInput" accept="image/*" capture="environment">
+    <input type="file" id="fileInput" accept="image/*">
   </div>
 
   <!-- RESULTS -->
   <div class="section" id="section-results">
     <div class="itail-card card-gap">
-      <label class="itail-label">เลือกใบบันทึก</label>
+      <label class="itail-label" id="rsSheetLbl">เลือกใบบันทึก</label>
       <select class="itail-select" id="rsSheet"></select>
       <div id="rsBody" style="display:none;">
         <div class="stat-inline" id="rsStats"></div>
         <div class="capture-hint" id="rsLegacy" style="text-align:left;"></div>
       </div>
     </div>
-    <div id="rsEmpty" class="itail-card empty-row">ยังไม่มีใบบันทึก — ไปที่แท็บ "ตรวจ / บันทึก" เพื่อถ่ายภาพกลุ่มและเริ่มรอบแรก</div>
+    <div id="rsEmpty" class="itail-card empty-row">ยังไม่มีใบบันทึก — ไปที่แท็บ "ถ่าย" เพื่อถ่ายภาพกลุ่มและเริ่มรอบแรก</div>
     <div id="rsRounds"></div>
   </div>
 
@@ -411,7 +438,7 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
       </div>
     </div>
 
-    <div id="reportEmpty" class="itail-card empty-row">ยังไม่มีใบบันทึก — ไปที่แท็บ "ตรวจ / บันทึก" เพื่อถ่ายภาพกลุ่มและเริ่มรอบแรก</div>
+    <div id="reportEmpty" class="itail-card empty-row">ยังไม่มีใบบันทึก — ไปที่แท็บ "ถ่าย" เพื่อถ่ายภาพกลุ่มและเริ่มรอบแรก</div>
     <div class="preview-area card-gap" id="previewWrap" style="display:none;"></div>
 
     <div class="itail-card table-scroll" id="entriesCard" style="display:none;">
@@ -572,14 +599,21 @@ AC 1417" style="white-space:pre-wrap;"></textarea>
    1) เปลี่ยน APP_VERSION  2) เพิ่มรายการใหม่ "บนสุด" ของ CHANGELOG
    (รูปแบบเลขเวอร์ชัน: มาก.กลาง.น้อย — ฟีเจอร์ใหม่เพิ่มเลขกลาง, แก้บั๊กเล็กน้อยเพิ่มเลขท้าย)
    ===================================================================== */
-const APP_VERSION = '1.9.0';
+const APP_VERSION = '1.10.0';
 const APP_BUILD_DATE = '10/10/2026';
 const CHANGELOG = [
+  { v:'1.10.0', d:'10/10/2026', items:[
+    'หน้าจอใช้ง่ายขึ้น: หัวใบ (วันที่/กะ/Product) ย่อเป็นบรรทัดเดียว แตะ ✏️ เพื่อแก้',
+    'หน้า "ถ่าย" มีปุ่มใหญ่ปุ่มเดียวบอกขั้นต่อไป (ถ่ายภาพกลุ่ม → ถ่ายโค้ดรายการที่ N → ไปใส่ผล)',
+    'แท็บสั้นลงบรรทัดเดียว มีเลขแดงบอกจำนวนรายการที่รอผล/รอเซ็น',
+    'หน้า "ผล": ปุ่ม ✅ ❌ ใหญ่ขึ้น, ซ่อนช่องเลือกใบเมื่อมีใบเดียว, ปุ่มเซ็นเปิดเมื่อใส่ผลครบ',
+    'ข้อความแจ้งเตือนย้ายไปอยู่ด้านบน ไม่บังปุ่ม' ] },
   { v:'1.9.0', d:'10/10/2026', items:[
     'เปลี่ยนที่เก็บข้อมูลซิงค์จาก Cloudflare เป็น Firebase (Firestore + ล็อกอินแบบ Anonymous) — ใช้แผนฟรี Spark ไม่ต้องผูกบัตร จึงไม่มีค่าใช้จ่ายเกินโดยไม่รู้ตัว',
     'หน้าจอทุกหน้าอ่านจากในเครื่องเสมอ: เน็ตหลุดก็กรอกต่อได้ พอกลับมาออนไลน์แอปส่งขึ้นเอง และรับของเครื่องอื่นแบบสด',
     'ไม่ใช้ Firebase Storage — รูปบีบอัด (ด้านยาว ≤ ~1000px) เก็บเป็นเอกสารย่อย; เขียนรูปก่อนแล้วค่อยเขียนรายการ',
     'รหัสทีมแบบสุ่มยาว + "รหัสเชื่อมต่อ" (TT1:...) คัดลอกไปวางตั้งค่าเครื่องอื่นได้ในครั้งเดียว',
+    'ฝังค่าเชื่อมต่อ (firebaseConfig + รหัสทีม) ไว้ในไฟล์ได้ — เปิดแอปแล้วเชื่อมต่ออัตโนมัติ ไม่ต้องตั้งค่าในแต่ละเครื่อง',
     'ไม่ต้องใช้ worker.js / Cloudflare อีกต่อไป' ] },
   { v:'1.8.0', d:'10/10/2026', items:[
     'ขั้นตอนทำงานแบบใหม่: ถ่ายภาพกลุ่ม (หลายโค้ดในภาพเดียว) = เริ่ม 1 รอบ → ถ่ายภาพโค้ดทีละใบ (OCR/พิมพ์เอง + ใส่ Line) เพิ่มกี่รายการก็ได้ → ใส่ผลทีหลัง',
@@ -707,6 +741,23 @@ function updateHeader(){
   updateRemind();
 }
 setInterval(updateHeader, 30000);
+
+/* ========================= HEADER SUMMARY (หัวใบย่อบรรทัดเดียว) ========================= */
+let hdrOpen = false;
+function hdrProdText(h){ const p=[]; if(h.sachet) p.push('Sachet 2.2 Fl.'+(h.sachetText?' ('+h.sachetText+')':'')); if(h.spoon) p.push('Spoon'); if(h.other) p.push(h.otherText||'อื่นๆ'); return p.join(' + '); }
+function updateHdrSummary(){
+  const h=readHdr(), noProd=!(h.sachet||h.spoon||h.other);
+  if(noProd) hdrOpen=true;
+  $('hdrCard').style.display=hdrOpen?'block':'none'; $('hdrSum').style.display=hdrOpen?'none':'flex';
+  $('hdrSumA').textContent = dmy(h.date)+' • '+(h.shift==='DS'?'กะเช้า (DS)':'กะดึก (NS)');
+  $('hdrSumB').textContent = hdrProdText(h)||'ยังไม่ได้เลือก Product';
+}
+function toggleHdr(open){ hdrOpen=!!open; updateHdrSummary(); if(open) setTimeout(()=>$('hdrCard').scrollIntoView({block:'nearest',behavior:'smooth'}),50); }
+function updateTabBadge(){
+  const b=$('tabBadge'); if(!b) return;
+  const sh=findSheet(readHdr()); const n=sh?pendingResults(sh)+unsignedRounds(sh):0;
+  b.textContent=n; b.style.display=n?'inline-block':'none';
+}
 
 /* ========================= SHEET HEADER (Date / Shift / Product) ========================= */
 let hdrTouched = false;
@@ -1166,7 +1217,7 @@ async function exportExcel(){
 let emailBusy=false;
 function toast(msg,ms){
   let t=$('toastBar');
-  if(!t){ t=document.createElement('div'); t.id='toastBar'; t.style='position:fixed;left:50%;bottom:24px;transform:translateX(-50%);max-width:90vw;background:#073e4a;color:#fff;padding:12px 18px;border-radius:14px;font-size:13.5px;z-index:120;box-shadow:0 8px 20px rgba(0,0,0,.25);text-align:center;'; document.body.appendChild(t); }
+  if(!t){ t=document.createElement('div'); t.id='toastBar'; t.style='position:fixed;left:50%;top:128px;transform:translateX(-50%);max-width:90vw;background:#073e4a;color:#fff;padding:12px 18px;border-radius:14px;font-size:13.5px;z-index:120;box-shadow:0 8px 20px rgba(0,0,0,.25);text-align:center;'; document.body.appendChild(t); }
   t.textContent=msg; t.style.display='block'; clearTimeout(t._h); t._h=setTimeout(()=>{ t.style.display='none'; }, ms||5000);
 }
 /*
@@ -1342,17 +1393,14 @@ function gotoTab(name){ document.querySelector('.itail-tab[data-tab="'+name+'"]'
 
 /* ========================= REMIND ========================= */
 function updateRemind(){
-  renderCapture();
+  renderCapture(); updateHdrSummary(); updateTabBadge();
   const box=$('remindBox'); const sh=findSheet(readHdr());
-  if(!sh || (!sh.entries.length && !(sh.rounds||[]).length)){ box.className='remind'; box.textContent='ยังไม่มีการตรวจในใบนี้ — ตรวจทุก 30 นาทีขณะผลิต (เริ่มจากถ่ายภาพกลุ่ม)'; return; }
+  if(!sh || (!sh.entries.length && !(sh.rounds||[]).length)){ box.style.display='none'; return; }
   const times=sh.entries.map(e=>e.createdAt).concat((sh.rounds||[]).map(r=>r.createdAt));
   const last=times.reduce((a,b)=>a>b?a:b);
   const mins=Math.floor((Date.now()-new Date(last).getTime())/60000);
-  const nx=new Date(new Date(last).getTime()+30*60000);
-  const pend=pendingResults(sh), uns=unsignedRounds(sh);
-  const info=' • '+(sh.rounds||[]).length+' รอบ '+sh.entries.length+' รายการ'+(pend?' • ⏳ รอผล '+pend:'')+(uns?' • ✍️ รอเซ็น '+uns+' รอบ':'');
-  if(mins>=30){ box.className='remind due'; box.textContent='⏰ ครบรอบตรวจแล้ว — ตรวจล่าสุด '+hhmm(last)+' (ผ่านมา '+mins+' นาที)'+info; }
-  else { box.className='remind'; box.textContent='ตรวจล่าสุด '+hhmm(last)+' ('+mins+' นาทีที่แล้ว) • รอบถัดไป ~'+pad(nx.getHours())+':'+pad(nx.getMinutes())+info; }
+  if(mins>=30){ box.className='remind due'; box.style.display='block'; box.textContent='⏰ ครบรอบตรวจแล้ว — ตรวจล่าสุด '+hhmm(last)+' (ผ่านมา '+mins+' นาที)'; }
+  else box.style.display='none';
 }
 
 /* ========================= IMAGE CAPTURE: 'g' = ภาพกลุ่ม (เริ่มรอบ) • 'gr' = ถ่ายภาพกลุ่มใหม่ของรอบเดิม • 'p2' = ภาพโค้ดทีละรายการ ========================= */
@@ -1423,7 +1471,7 @@ function regroup(rid){ const s=curSheet(); if(s) pick('gr','camera',{ sheetId:s.
 /* ========================= CAPTURE TAB: การ์ดรอบที่กำลังทำ ========================= */
 function renderCapture(){
   const card=$('roundCard'), a=activeRound();
-  $('startTitle').textContent = a ? 'ถ่ายภาพกลุ่มใหม่ = เริ่มรอบถัดไป' : 'ขั้นที่ 1 — ถ่ายภาพกลุ่ม (เริ่มรอบใหม่)';
+  $('startCard').style.display = a ? 'none' : 'block';
   let html='';
   if(a){
     const { sh, r }=a, ents=roundEntries(sh,r), rounds=roundOrder(sh), n=roundNo(sh,r);
@@ -1434,8 +1482,9 @@ function renderCapture(){
         ${rounds.length>1?`<select class="itail-select rc-sel" onchange="setActiveRound(this.value)">${rounds.slice().reverse().map(x=>`<option value="${x.id}"${x.id===r.id?' selected':''}>รอบที่ ${roundNo(sh,x)} • ${esc(x.time)} (${roundEntries(sh,x).length} รายการ)</option>`).join('')}</select>`:''}
       </div></div>
       ${ents.length?`<div class="rc-list">${ents.map((e,i)=>`<div class="rc-li"><span class="rc-n">${i+1}</span><span class="rc-lc">${esc(oneLine(e.code))}</span><span class="rc-ll">${esc(e.line||'')}</span>${e.result?`<span class="rc-ls ${e.result}">${e.result==='pass'?'✅':'❌'}</span>`:'<span class="rc-ls">⏳</span>'}</div>`).join('')}</div>`:'<div class="capture-hint" style="margin:8px 0;">ยังไม่มีรายการในรอบนี้ — ถ่ายภาพโค้ดใบแรกได้เลย</div>'}
-      <div class="rc-btns"><button class="itail-btn itail-btn-primary" onclick="addItemActive('camera')">📷 ถ่ายภาพโค้ด (รายการที่ ${ents.length+1})</button><button class="itail-btn itail-btn-outline" onclick="addItemActive('file')">🖼️</button></div>
-      <div style="margin-top:8px;"><button class="link-btn" onclick="gotoResults()">ไปใส่ผล / เซ็นชื่อ →</button></div>`;
+      <div class="rc-main"><button class="itail-btn itail-btn-primary btn-xl" onclick="addItemActive('camera')">📷 ถ่ายโค้ด รายการที่ ${ents.length+1}</button>
+        ${ents.length?`<button class="itail-btn itail-btn-outline" onclick="gotoResults()">${pend?'ถ่ายครบแล้ว — ไปใส่ผล':'ไปเซ็นชื่อ'}</button>`:''}
+        <div class="rc-links"><button class="link-btn" onclick="addItemActive('file')">🖼️ เลือกรูปโค้ด</button><button class="link-btn" onclick="openEntry({sheetId:'${sh.id}',roundId:'${r.id}'})">⌨️ พิมพ์โค้ดเอง</button><button class="link-btn" onclick="pick('g','camera')">เริ่มรอบใหม่</button></div></div>`;
   }
   if(html===lastCaptureHtml) return;
   lastCaptureHtml=html; card.innerHTML=html; card.style.display=a?'block':'none';
@@ -1552,19 +1601,19 @@ function fillSheetSelect(sel){
 }
 $('rsSheet').addEventListener('change',e=>{ selectedSheetId=e.target.value; renderResultsTab(); });
 function renderResultsTab(){
-  const list=fillSheetSelect($('rsSheet'));
+  const list=fillSheetSelect($('rsSheet')); $('rsSheet').style.display=list.length>1?'':'none'; $('rsSheetLbl').style.display=list.length>1?'':'none';
   $('rsEmpty').style.display=list.length?'none':'block'; $('rsBody').style.display=list.length?'block':'none';
   if(!list.length) return;
   const s=curSheet(), pass=s.entries.filter(e=>e.result==='pass').length, fl=s.entries.filter(e=>e.result==='fail').length, pend=pendingResults(s);
   $('rsStats').innerHTML=`<span class="itail-badge itail-badge-info">${(s.rounds||[]).length} รอบ • ${s.entries.length} รายการ</span> <span class="itail-badge itail-badge-success">ผ่าน ${pass}</span> <span class="itail-badge itail-badge-danger">ไม่ผ่าน ${fl}</span>${pend?` <span class="itail-badge itail-badge-warning">⏳ รอผล ${pend}</span>`:''}`;
   const rounds=roundOrder(s).reverse();
-  $('rsRounds').innerHTML = rounds.length ? rounds.map(r=>rsRoundHtml(s,r)).join('') : '<div class="itail-card empty-row">ใบนี้ยังไม่มีรอบ — ไปแท็บ "ตรวจ / บันทึก" เพื่อถ่ายภาพกลุ่ม</div>';
+  $('rsRounds').innerHTML = rounds.length ? rounds.map(r=>rsRoundHtml(s,r)).join('') : '<div class="itail-card empty-row">ใบนี้ยังไม่มีรอบ — ไปแท็บ "ถ่าย" เพื่อถ่ายภาพกลุ่ม</div>';
   const leg=s.entries.filter(e=>!e.roundId).length;
   $('rsLegacy').textContent = leg ? `มีรายการแบบเดิม ${leg} รายการ (บันทึกจากเวอร์ชันก่อนมีระบบรอบ) — ดู/ลบได้ในแท็บใบรายงาน` : '';
 }
-function sigSlot(r,role,label){
+function sigSlot(r,role,label,lock){
   const sg=r[role+'Sig'];
-  return `<div class="sig-slot${sg?' done':''}"><div class="lbl">${label}</div>${sg?`<img style="display:block" src="${sg.d}">`:''}<button class="itail-btn itail-btn-outline" onclick="signRound('${r.id}','${role}')">✍️ ${sg?'เซ็นใหม่':'เซ็น'}</button></div>`;
+  return `<div class="sig-slot${sg?' done':''}"><div class="lbl">${label}</div>${sg?`<img style="display:block" src="${sg.d}">`:''}<button class="itail-btn itail-btn-outline"${lock&&!sg?' disabled':''} onclick="signRound('${r.id}','${role}')">✍️ ${sg?'เซ็นใหม่':'เซ็น'}</button></div>`;
 }
 function rsRoundHtml(s,r){
   const ents=roundEntries(s,r), n=roundNo(s,r), pend=ents.filter(e=>!e.result).length, signed=r.qcSig&&r.pdSig;
@@ -1581,7 +1630,7 @@ function rsRoundHtml(s,r){
         <div class="rc-badges"><span class="itail-badge itail-badge-info">${ents.length} รายการ</span>${pend?` <span class="itail-badge itail-badge-warning">⏳ รอผล ${pend}</span>`:(ents.length?' <span class="itail-badge itail-badge-success">ใส่ผลครบ</span>':'')} ${signed?'<span class="itail-badge itail-badge-success">เซ็นแล้ว</span>':'<span class="itail-badge itail-badge-warning">✍️ รอเซ็น</span>'}</div></div></div>
     <div class="rc-items">${items||'<div class="capture-hint" style="margin:8px 0;">ยังไม่มีรายการในรอบนี้</div>'}</div>
     <div class="rc-btns"><button class="itail-btn itail-btn-outline" onclick="addItem('${s.id}','${r.id}','camera')">➕ เพิ่มรายการ</button>${pend?`<button class="itail-btn itail-btn-outline" onclick="passRest('${r.id}')">✅ ผ่านที่เหลือ (${pend})</button>`:''}</div>
-    <div class="field" style="margin-top:12px;"><label class="itail-label">ผู้ตรวจสอบ (เซ็นครั้งเดียวต่อรอบ)</label><div class="sig-row">${sigSlot(r,'qc','QC')}${sigSlot(r,'pd','PD')}</div></div>
+    <div class="field" style="margin-top:12px;"><label class="itail-label">ผู้ตรวจสอบ (เซ็นครั้งเดียวต่อรอบ)</label>${(pend||!ents.length)&&!signed?'<div class="sig-note">ใส่ผลให้ครบทุกรายการก่อน จึงเซ็นได้</div>':''}<div class="sig-row">${sigSlot(r,'qc','QC',pend||!ents.length)}${sigSlot(r,'pd','PD',pend||!ents.length)}</div></div>
     <div class="rc-foot"><button class="link-btn" onclick="regroup('${r.id}')">📷 ถ่ายภาพกลุ่มใหม่</button><button class="link-btn danger" onclick="deleteRound('${r.id}')">🗑️ ลบรอบนี้</button></div>
   </div>`;
 }
@@ -1843,9 +1892,14 @@ let syncBusy = false, syncAgain = false, syncTimer = null, syncFull = false;
 let syncState = { last:'', err:'', phase:'idle', msg:'', live:false };
 let fb = null, fbStarting = null, fbUnsubs = [], fbDeferred = [], fbQueue = Promise.resolve(), fbChanged = false, fbFlushT = null;
 
+/* ค่าเชื่อมต่อที่ฝังมากับไฟล์ — ใส่ firebaseConfig + รหัสทีมตรงนี้ครั้งเดียว ทุกเครื่องที่เปิดไฟล์นี้จะเชื่อมต่อเองอัตโนมัติ (ไม่ต้องตั้งค่าในแอป)
+   ตัวอย่าง: const FB_DEFAULT = { config:{ apiKey:"...", authDomain:"...", projectId:"...", appId:"..." }, team:"รหัสทีมสุ่มยาวๆ" }; */
+const FB_DEFAULT = { config:null, team:'' };
 function syncCfg(){
-  try{ const c = JSON.parse(lsGet(SYNC_CFG_KEY)||'{}'); return { config:c.config||null, team:(c.team||'').trim(), auto:c.auto!==false, days:(c.days==null?7:+c.days) }; }
-  catch(e){ return { config:null, team:'', auto:true, days:7 }; }
+  let c={}; try{ c=JSON.parse(lsGet(SYNC_CFG_KEY)||'{}')||{}; }catch(e){}
+  if(c.off) return { config:null, team:'', auto:false, days:7, off:true };
+  const own=!!(c.config && c.team), cfg=own?c.config:FB_DEFAULT.config, team=own?(c.team||'').trim():(FB_DEFAULT.team||'');
+  return { config:cfg||null, team:team, auto:c.auto!==false, days:(c.days==null?7:+c.days), builtin:!own && !!cfg };
 }
 function syncOn(){ const c=syncCfg(); return !!(c.config && c.config.projectId && c.config.apiKey && c.team); }
 function skey(s){ return [s.date, s.shift, (s.sachet?1:0)+''+(s.spoon?1:0)+(s.other?1:0)].join('_'); }
@@ -2115,9 +2169,9 @@ function encodeConn(cfg,team){ return 'TT1:'+btoa(unescape(encodeURIComponent(JS
 function decodeConn(s){ try{ s=(s||'').trim(); if(!/^TT1:/.test(s)) return null; const o=JSON.parse(decodeURIComponent(escape(atob(s.slice(4))))); return (o&&o.c&&o.c.apiKey&&o.t) ? o : null; }catch(e){ return null; } }
 function openSync(){
   const c=syncCfg();
-  $('fbCfg').value = c.config ? JSON.stringify(c.config,null,1) : '';
-  $('fbTeam').value = c.team; $('fbConn').value=''; $('syncAuto').checked=c.auto; $('syncDays').value=String(c.days);
-  $('syncTestMsg').textContent=''; renderSyncStatus(); $('syncModal').classList.add('show');
+  $('fbCfg').value = (c.config&&!c.builtin) ? JSON.stringify(c.config,null,1) : '';
+  $('fbTeam').value = c.builtin ? '' : c.team; $('fbConn').value=''; $('syncAuto').checked=c.auto; $('syncDays').value=String(c.days);
+  $('syncTestMsg').textContent=c.builtin?'เชื่อมต่ออัตโนมัติด้วยค่าที่ฝังมากับไฟล์ — ไม่ต้องกรอกอะไร':''; renderSyncStatus(); $('syncModal').classList.add('show');
 }
 function closeSync(){ $('syncModal').classList.remove('show'); }
 function readSyncForm(){ return { config:parseFbConfig($('fbCfg').value), team:$('fbTeam').value.trim(), auto:$('syncAuto').checked, days:+$('syncDays').value }; }
@@ -2167,8 +2221,8 @@ async function syncTest(){
 async function syncSave(){
   const f=readSyncForm(); const m=$('syncTestMsg');
   if(f.config || f.team){ if(!f.config || !f.team){ m.className='sync-msg bad'; m.textContent='กรอก firebaseConfig และรหัสทีมให้ครบทั้งสองช่อง'; return; } if(!(await syncTest())) return; }
-  lsSet(SYNC_CFG_KEY, JSON.stringify(f));
-  const id=f.config ? f.config.projectId+'|'+f.team : '';
+  lsSet(SYNC_CFG_KEY, (f.config||f.team) ? JSON.stringify(f) : JSON.stringify({auto:f.auto,days:f.days}));
+  const cc=syncCfg(), id=cc.config ? cc.config.projectId+'|'+cc.team : '';
   const prev=lsGet('twotone_sync_target');
   if(prev!==id){   // เปลี่ยนปลายทาง = ถือว่าทุกอย่างยังไม่ได้ส่ง แล้วรีโหลดเพื่อเริ่ม SDK ใหม่
     sheets.forEach(s=>{ s.syncSig=null; (s.rounds||[]).forEach(r=>{ r.synced=false; r.imgSynced=false; }); s.entries.forEach(e=>{ e.synced=false; e.imgSynced=false; }); });
@@ -2180,7 +2234,7 @@ async function syncSave(){
 }
 function syncOff(){
   if(!confirm('ปิดการซิงค์บนเครื่องนี้? (ข้อมูลที่อยู่บน Firebase และในเครื่องไม่ถูกลบ)')) return;
-  lsSet(SYNC_CFG_KEY,''); lsSet('twotone_sync_target',''); syncPendingDel=[]; saveSyncDel(); stopListeners(); syncState={ last:'', err:'', phase:'idle', msg:'', live:false };
+  lsSet(SYNC_CFG_KEY, JSON.stringify({off:true})); lsSet('twotone_sync_target',''); syncPendingDel=[]; saveSyncDel(); stopListeners(); syncState={ last:'', err:'', phase:'idle', msg:'', live:false };
   updateSyncBadge(); updateCaptureHint(); closeSync(); toast('ปิดการซิงค์แล้ว');
 }
 function updateCaptureHint(){
@@ -2211,7 +2265,7 @@ function initVersion(){
   sheets = await loadSheets(); sheets.forEach(migrateSheet);
   await loadSyncDel(); updateSyncBadge(); updateCaptureHint(); if(syncOn()) syncRun(true);
   initVersion();
-  initHeader(); updateHeader(); renderCapture();
+  initHeader(); updateHeader(); renderCapture(); updateHdrSummary(); updateTabBadge();
   try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist(); }catch(e){}
 })();
 
