@@ -187,6 +187,41 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
 .msub{ font-size:12.5px; color:var(--itail-text-muted); margin-top:5px; line-height:1.4; }
 .mnote{ font-size:13.5px; color:var(--itail-navy); background:var(--itail-amber-light); border-radius:12px; padding:10px 12px; margin-bottom:12px; line-height:1.45; }
 #mailModal{ z-index:65; }
+.round-card .rc-head{ display:flex; gap:12px; align-items:flex-start; }
+.rc-thumb{ width:96px; height:72px; object-fit:cover; border-radius:10px; cursor:pointer; box-shadow:var(--itail-shadow-sm); flex:none; background:#222; }
+.rc-meta{ flex:1; min-width:0; } .rc-title{ font-weight:700; font-size:16px; color:var(--itail-navy); } .rc-time{ font-weight:500; font-size:12.5px; color:var(--itail-text-muted); margin-left:6px; }
+.rc-badges{ display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; } .rc-sel{ margin-top:8px; min-height:38px !important; padding:6px 12px; font-size:13.5px; }
+.rc-list{ margin:10px 0 2px; border-top:1px dashed var(--itail-border); }
+.rc-li{ display:flex; gap:8px; align-items:center; font-size:13px; padding:6px 0; border-bottom:1px dashed var(--itail-border); }
+.rc-n{ width:22px; height:22px; border-radius:50%; background:var(--itail-teal-light); color:var(--itail-teal-dark); font-size:12px; font-weight:700; display:inline-flex; align-items:center; justify-content:center; flex:none; }
+.rc-lc{ flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; } .rc-ll{ color:var(--itail-text-muted); font-size:12px; flex:none; } .rc-ls{ flex:none; width:22px; text-align:center; }
+.rc-btns{ display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; } .rc-btns .itail-btn{ padding:9px 18px; font-size:14px; }
+.rc-btns .itail-btn-primary{ flex:1; }
+.rc-items{ margin-top:10px; } .rc-item{ display:flex; gap:8px; align-items:center; padding:8px 0; border-bottom:1px solid var(--itail-border); }
+.rc-item .thumb{ flex:none; } .thumb.ph{ background:var(--itail-teal-light); }
+.rc-info{ flex:1; min-width:0; } .rc-code{ font-size:12.5px; white-space:pre-line; line-height:1.3; word-break:break-all; } .rc-sub{ font-size:11.5px; color:var(--itail-text-muted); margin-top:2px; }
+.rc-res{ display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex:none; }
+.rc-res .mini{ border:none; border-radius:999px; padding:5px 14px; font-size:15px; cursor:pointer; margin-bottom:2px; }
+.rc-res .mini.pass{ background:#DDF2E8; } .rc-res .mini.fail{ background:var(--itail-danger-light); }
+.rc-res > .mini + .mini{ margin-left:0; }
+.rc-foot{ display:flex; justify-content:space-between; margin-top:10px; }
+.entry-round{ display:none; gap:10px; align-items:center; background:var(--itail-teal-light); border-radius:12px; padding:8px 10px; margin-bottom:12px; font-size:13px; color:var(--itail-teal-dark); }
+.entry-round img{ width:64px; height:48px; object-fit:cover; border-radius:8px; flex:none; background:#222; }
+.optional{ font-weight:400; color:var(--itail-text-muted); font-size:12px; margin-left:6px; }
+.group-photo{ margin-top:8px; border:1px solid #999; background:#f3f3f3; text-align:center; }
+.group-photo img{ width:100%; height:228px; object-fit:contain; display:block; }
+.photo-cell .noimg{ flex:1; height:130px; display:flex; align-items:center; justify-content:center; color:#888; background:#f3f3f3; font-size:10px; }
+.rpt-tbl tr.rpt-r0 td{ border-top-width:2.2px; }
+
+.cloud-pill{ border:1.5px solid rgba(255,255,255,.7); background:rgba(255,255,255,.15); color:#fff; border-radius:999px; padding:3px 11px; font-size:12.5px; font-weight:600; cursor:pointer; }
+.cloud-pill.ok{ background:rgba(76,200,140,.35); } .cloud-pill.wait{ background:rgba(245,166,35,.5); } .cloud-pill.err{ background:rgba(249,83,109,.6); } .cloud-pill.busy{ background:rgba(255,255,255,.3); }
+#syncModal{ z-index:67; }
+.sync-sub{ font-size:12px; color:var(--itail-text-muted); margin-top:4px; }
+.sync-msg{ font-size:13px; margin:6px 0 2px; min-height:18px; } .sync-msg.ok{ color:var(--itail-success,#1e8e5a); font-weight:600; } .sync-msg.bad{ color:var(--itail-danger); font-weight:600; }
+.sync-box{ background:var(--itail-bg,#f3f7f8); border-radius:12px; padding:10px 12px; margin-bottom:12px; font-size:13.5px; line-height:1.5; }
+.sync-row{ display:flex; gap:8px; align-items:center; } .sync-row .itail-input{ flex:1; }
+.sync-btns{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+
 .ver-pill{ border:1.5px solid rgba(255,255,255,.7); background:rgba(255,255,255,.15); color:#fff; border-radius:999px; padding:3px 12px; font-size:12.5px; font-weight:600; cursor:pointer; }
 .ver-foot{ text-align:center; font-size:12px; color:var(--itail-text-muted); margin:18px 0 6px; }
 .ver-item{ border-left:3px solid var(--itail-border); padding:2px 0 2px 12px; margin-bottom:14px; }
@@ -250,7 +285,7 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
 .photo-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:12px; }
 .photo-cell .pp{ display:flex; gap:4px; margin-bottom:3px; }
 .photo-cell{ border:1px solid #999; padding:4px; font-size:10px; text-align:center; }
-.photo-cell img{ flex:1; min-width:0; width:100%; height:140px; object-fit:contain; background:#f3f3f3; display:block; }
+.photo-cell img{ flex:1; min-width:0; width:100%; height:130px; object-fit:contain; background:#f3f3f3; display:block; }
 
 #printArea{ display:none; }
 @media print{
@@ -269,13 +304,14 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
       <div class="topbar-title">🥣 บันทึกการตรวจสอบ Ratio สินค้า Two tone</div>
       <div class="topbar-sub" id="todayLabel"></div>
     </div>
-    <div style="display:flex;gap:8px;align-items:center;"><button class="ver-pill" id="verBadge" onclick="openVersion()" title="ดูรายการเปลี่ยนแปลง">v</button><div class="itail-badge itail-badge-info" id="shiftNowBadge">กะ —</div></div>
+    <div style="display:flex;gap:8px;align-items:center;"><button class="cloud-pill" id="cloudBadge" onclick="openSync()" title="ซิงค์ข้อมูล">☁️</button><button class="ver-pill" id="verBadge" onclick="openVersion()" title="ดูรายการเปลี่ยนแปลง">v</button><div class="itail-badge itail-badge-info" id="shiftNowBadge">กะ —</div></div>
   </div>
 </div>
 
 <div class="wrap">
   <div class="tabs-row itail-tabs">
     <div class="itail-tab active" data-tab="capture">📷 ตรวจ / บันทึก</div>
+    <div class="itail-tab" data-tab="results">📝 ผล / เซ็น</div>
     <div class="itail-tab" data-tab="report">📋 ใบรายงาน</div>
   </div>
 
@@ -312,18 +348,34 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
 
     <div class="remind" id="remindBox">ยังไม่มีการตรวจในใบนี้</div>
 
+    <div class="itail-card card-gap round-card" id="roundCard" style="display:none;"></div>
+
     <div class="itail-card capture-card">
       <div style="font-size:44px;">📸</div>
-      <div style="font-weight:600; font-size:15.5px;">ถ่าย 2 รูปต่อ 1 รายการ</div>
-      <div class="capture-hint"><b>รูปที่ 1</b> ผลิตภัณฑ์ (ดูสัดส่วนสองสี) → <b>รูปที่ 2</b> ซูมที่โค้ดบนซอง (ให้ระบบอ่านโค้ด)</div>
+      <div style="font-weight:600; font-size:15.5px;" id="startTitle">ขั้นที่ 1 — ถ่ายภาพกลุ่ม (เริ่มรอบใหม่)</div>
+      <div class="capture-hint">ถ่ายผลิตภัณฑ์หลายโค้ดรวมในภาพเดียว = <b>1 รอบ</b> → จากนั้นถ่าย<b>ภาพโค้ดทีละใบ</b> (ระบบอ่านโค้ดให้) แล้วกลับมา<b>ใส่ผล</b>และ<b>เซ็นชื่อ</b>ที่แท็บ "ผล / เซ็น" ทีหลังได้</div>
       <div class="capture-btns">
-        <button class="itail-btn itail-btn-primary" onclick="pick('p1','camera')">📷 ถ่ายรูปที่ 1</button>
-        <button class="itail-btn itail-btn-outline" onclick="pick('p1','file')">🖼️ เลือกรูปจากคลัง</button>
+        <button class="itail-btn itail-btn-primary" onclick="pick('g','camera')">📷 ถ่ายภาพกลุ่ม</button>
+        <button class="itail-btn itail-btn-outline" onclick="pick('g','file')">🖼️ เลือกรูปจากคลัง</button>
       </div>
-      <div class="capture-hint" style="margin-top:12px;">🔒 OCR ทำงานในเครื่องทั้งหมด ไม่ส่งรูป/ข้อมูลออกอินเทอร์เน็ต</div>
+      <div class="capture-hint" id="privacyHint" style="margin-top:12px;">🔒 OCR ทำงานในเครื่องทั้งหมด ไม่ส่งรูป/ข้อมูลออกอินเทอร์เน็ต</div>
       <input type="file" id="cameraInput" accept="image/*" capture="environment">
       <input type="file" id="fileInput" accept="image/*">
     </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="section" id="section-results">
+    <div class="itail-card card-gap">
+      <label class="itail-label">เลือกใบบันทึก</label>
+      <select class="itail-select" id="rsSheet"></select>
+      <div id="rsBody" style="display:none;">
+        <div class="stat-inline" id="rsStats"></div>
+        <div class="capture-hint" id="rsLegacy" style="text-align:left;"></div>
+      </div>
+    </div>
+    <div id="rsEmpty" class="itail-card empty-row">ยังไม่มีใบบันทึก — ไปที่แท็บ "ตรวจ / บันทึก" เพื่อถ่ายภาพกลุ่มและเริ่มรอบแรก</div>
+    <div id="rsRounds"></div>
   </div>
 
   <!-- REPORT -->
@@ -340,6 +392,7 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
           <span class="itail-badge itail-badge-info" id="stTotal"></span>
           <span class="itail-badge itail-badge-success" id="stPass"></span>
           <span class="itail-badge itail-badge-danger" id="stFail"></span>
+          <span class="itail-badge itail-badge-warning" id="stPend" style="display:none;"></span>
         </div>
         <div class="verif-box card-gap">
           <div style="font-weight:600; font-size:14px;">ผู้ทวนสอบ (PD. Leader up):</div>
@@ -358,13 +411,13 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
       </div>
     </div>
 
-    <div id="reportEmpty" class="itail-card empty-row">ยังไม่มีใบบันทึก — ไปที่แท็บ "ตรวจ / บันทึก" เพื่อถ่ายภาพและบันทึกผลรายการแรก</div>
+    <div id="reportEmpty" class="itail-card empty-row">ยังไม่มีใบบันทึก — ไปที่แท็บ "ตรวจ / บันทึก" เพื่อถ่ายภาพกลุ่มและเริ่มรอบแรก</div>
     <div class="preview-area card-gap" id="previewWrap" style="display:none;"></div>
 
     <div class="itail-card table-scroll" id="entriesCard" style="display:none;">
       <div class="h-title">รายการในใบนี้</div>
       <table class="itail-table">
-        <thead><tr><th>รูป 1/2</th><th>เวลา</th><th>Code</th><th>Line</th><th>ผล</th><th>Remark</th><th></th></tr></thead>
+        <thead><tr><th>รอบ</th><th>รูป</th><th>เวลา</th><th>Code</th><th>Line</th><th>ผล</th><th>Remark</th><th></th></tr></thead>
         <tbody id="entriesBody"></tbody>
       </table>
     </div>
@@ -374,23 +427,15 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
 <!-- ENTRY MODAL -->
 <div class="modal-backdrop" id="entryModal">
   <div class="modal-box">
-    <div class="modal-title">บันทึกผลการตรวจ</div>
-    <div class="photo-step">
-      <div class="ph-title">📷 รูปที่ 1 — ผลิตภัณฑ์</div>
-      <img id="modalImg1" class="ph-img" src="">
-      <div class="ph-btns">
-        <button class="itail-btn itail-btn-outline" onclick="pick('p1','camera')">📷 ถ่ายใหม่</button>
-        <button class="itail-btn itail-btn-outline" onclick="pick('p1','file')">🖼️ เลือกรูป</button>
-      </div>
-      <div class="hint-box" id="ratioBox">กำลังประมาณสัดส่วน...</div>
-    </div>
+    <div class="modal-title" id="entryTitle">เพิ่มรายการ</div>
+    <div class="entry-round" id="entryRound"></div>
 
     <div class="photo-step">
-      <div class="ph-title">🔎 รูปที่ 2 — ซูมที่โค้ดบนซอง (ให้ระบบอ่าน)</div>
+      <div class="ph-title">🔎 ภาพโค้ดบนซอง (ให้ระบบอ่านโค้ด)</div>
       <div id="p2Empty" class="ph-empty">
-        <div style="margin-bottom:8px;">ยังไม่มีรูปโค้ด — ถ่ายให้เห็นบรรทัดโค้ดชัดๆ ใกล้ๆ</div>
+        <div style="margin-bottom:8px;">ยังไม่มีรูปโค้ด — ถ่ายให้เห็นบรรทัดโค้ดชัดๆ ใกล้ๆ (หรือพิมพ์โค้ดเองด้านล่าง)</div>
         <div class="ph-btns" style="justify-content:center;">
-          <button class="itail-btn itail-btn-primary" onclick="pick('p2','camera')">📷 ถ่ายรูปที่ 2</button>
+          <button class="itail-btn itail-btn-primary" onclick="pick('p2','camera')">📷 ถ่ายภาพโค้ด</button>
           <button class="itail-btn itail-btn-outline" onclick="pick('p2','file')">🖼️ เลือกรูป</button>
         </div>
       </div>
@@ -407,7 +452,10 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
 
     <div class="field" style="margin-top:14px;">
       <label class="itail-label">Code <span class="req">*</span></label>
-      <textarea class="itail-input" id="fCode" rows="2" placeholder="โค้ดบนซอง เช่น T88 VCN.104 26.05.2027"></textarea>
+      <textarea class="itail-input" id="fCode" rows="3" placeholder="โค้ดบนซอง เช่น
+SEP 2028
+6265182902
+AC 1417" style="white-space:pre-wrap;"></textarea>
     </div>
     <div class="row2 field">
       <div>
@@ -421,7 +469,7 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
     </div>
 
     <div class="field">
-      <label class="itail-label">การตรวจสอบ (Appearance) <span class="req">*</span></label>
+      <label class="itail-label">การตรวจสอบ (Appearance) <span class="optional">ใส่ตอนนี้หรือใส่ทีหลังก็ได้</span></label>
       <div class="result-toggle">
         <button class="itail-btn itail-btn-pass" id="btnPass" onclick="selectResult('pass')">✅ ผ่าน</button>
         <button class="itail-btn itail-btn-fail" id="btnFail" onclick="selectResult('fail')">❌ ไม่ผ่าน</button>
@@ -432,17 +480,10 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
       <textarea class="itail-input" id="fRemark" rows="2" placeholder="ระบุเหตุผลกรณีไม่ผ่าน"></textarea>
     </div>
 
-    <div class="field">
-      <label class="itail-label">ผู้ตรวจสอบ (เซ็นด้วยมือ) <span class="req">*</span></label>
-      <div class="sig-row">
-        <div class="sig-slot" id="slotQC"><div class="lbl">QC</div><img id="imgQC"><button class="itail-btn itail-btn-outline" id="btnQC" onclick="signRole('qc')">✍️ เซ็น</button></div>
-        <div class="sig-slot" id="slotPD"><div class="lbl">PD</div><img id="imgPD"><button class="itail-btn itail-btn-outline" id="btnPD" onclick="signRole('pd')">✍️ เซ็น</button></div>
-      </div>
-    </div>
-
-    <div class="modal-actions">
+    <div class="modal-actions" style="flex-wrap:wrap;">
       <button class="itail-btn itail-btn-outline" onclick="closeEntry()">ยกเลิก</button>
-      <button class="itail-btn itail-btn-primary" id="btnSave" onclick="saveEntry()" disabled>💾 บันทึก</button>
+      <button class="itail-btn itail-btn-primary" id="btnSave" onclick="saveEntry(false)" disabled>💾 บันทึก</button>
+      <button class="itail-btn itail-btn-cta" id="btnSaveNext" style="flex:1 1 100%;" onclick="saveEntry(true)" disabled>💾 บันทึก + ถ่ายภาพโค้ดใบถัดไป</button>
     </div>
   </div>
 </div>
@@ -479,6 +520,40 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
   </div>
 </div>
 
+
+<!-- CLOUD SYNC PANEL -->
+<div class="modal-backdrop" id="syncModal">
+  <div class="modal-box" style="max-width:500px;">
+    <div class="modal-title">☁️ ซิงค์ขึ้น Firebase</div>
+    <div class="sync-box" id="syncStatus"></div>
+    <div class="mnote">ข้อมูล รูปถ่าย และลายเซ็น จะถูกเก็บในโปรเจกต์ Firebase (แผนฟรี Spark) ของคุณเอง • OCR ยังอ่านในเครื่อง • ถ้าไม่กรอกอะไร แอปจะไม่ส่งข้อมูลออกนอกเครื่อง</div>
+    <div class="field">
+      <label class="itail-label">รหัสเชื่อมต่อ (ถ้าเครื่องอื่นตั้งไว้แล้ว วางตรงนี้)</label>
+      <div class="sync-row"><input type="text" class="itail-input" id="fbConn" placeholder="TT1:..." autocapitalize="off" autocomplete="off" spellcheck="false"><button class="itail-btn itail-btn-outline" style="padding:8px 12px;" onclick="importConn()">นำเข้า</button></div>
+    </div>
+    <div class="field">
+      <label class="itail-label">firebaseConfig (คัดลอกจาก Firebase Console)</label>
+      <textarea class="itail-input" id="fbCfg" rows="5" style="font-family:monospace;font-size:12px;" placeholder='{ "apiKey":"...", "authDomain":"...", "projectId":"...", "appId":"..." }' autocapitalize="off" autocomplete="off" spellcheck="false"></textarea>
+    </div>
+    <div class="field">
+      <label class="itail-label">รหัสทีม (เป็นความลับของทีม — ทุกเครื่องต้องตรงกัน)</label>
+      <div class="sync-row"><input type="text" class="itail-input" id="fbTeam" autocapitalize="off" autocomplete="off" spellcheck="false"><button class="itail-btn itail-btn-outline" style="padding:8px 12px;" onclick="genTeam()" title="สร้างรหัสสุ่ม">🎲</button><button class="itail-btn itail-btn-outline" style="padding:8px 12px;" onclick="copyConn()" title="คัดลอกรหัสเชื่อมต่อ">📋</button></div>
+    </div>
+    <div class="row2 field">
+      <div><label class="itail-label">ดึงข้อมูลย้อนหลัง</label>
+        <select class="itail-select" id="syncDays"><option value="3">3 วัน</option><option value="7">7 วัน</option><option value="14">14 วัน</option><option value="30">30 วัน</option><option value="90">90 วัน</option><option value="0">ทั้งหมด</option></select></div>
+      <div style="display:flex;align-items:flex-end;"><label class="chk" style="margin:0 0 10px;"><input type="checkbox" id="syncAuto" checked> ซิงค์อัตโนมัติ</label></div>
+    </div>
+    <div class="sync-msg" id="syncTestMsg"></div>
+    <div class="sync-btns">
+      <button class="itail-btn itail-btn-outline" onclick="syncTest()">🔌 ทดสอบการเชื่อมต่อ</button>
+      <button class="itail-btn itail-btn-outline" onclick="syncNow(); toast('กำลังซิงค์...')">🔄 ซิงค์ตอนนี้</button>
+      <button class="link-btn danger" onclick="syncOff()">ปิดการซิงค์</button>
+    </div>
+    <div class="modal-actions"><button class="itail-btn itail-btn-outline" onclick="closeSync()">ปิด</button><button class="itail-btn itail-btn-primary" onclick="syncSave()">💾 บันทึก</button></div>
+  </div>
+</div>
+
 <div class="lightbox" id="lightbox" onclick="this.classList.remove('show')"><img id="lightboxImg" src=""></div>
 
 <div id="verFoot" class="ver-foot"></div>
@@ -497,9 +572,34 @@ input[type=date].itail-input::-webkit-date-and-time-value, input[type=time].itai
    1) เปลี่ยน APP_VERSION  2) เพิ่มรายการใหม่ "บนสุด" ของ CHANGELOG
    (รูปแบบเลขเวอร์ชัน: มาก.กลาง.น้อย — ฟีเจอร์ใหม่เพิ่มเลขกลาง, แก้บั๊กเล็กน้อยเพิ่มเลขท้าย)
    ===================================================================== */
-const APP_VERSION = '1.3.1';
-const APP_BUILD_DATE = '28/09/2026';
+const APP_VERSION = '1.9.0';
+const APP_BUILD_DATE = '10/10/2026';
 const CHANGELOG = [
+  { v:'1.9.0', d:'10/10/2026', items:[
+    'เปลี่ยนที่เก็บข้อมูลซิงค์จาก Cloudflare เป็น Firebase (Firestore + ล็อกอินแบบ Anonymous) — ใช้แผนฟรี Spark ไม่ต้องผูกบัตร จึงไม่มีค่าใช้จ่ายเกินโดยไม่รู้ตัว',
+    'หน้าจอทุกหน้าอ่านจากในเครื่องเสมอ: เน็ตหลุดก็กรอกต่อได้ พอกลับมาออนไลน์แอปส่งขึ้นเอง และรับของเครื่องอื่นแบบสด',
+    'ไม่ใช้ Firebase Storage — รูปบีบอัด (ด้านยาว ≤ ~1000px) เก็บเป็นเอกสารย่อย; เขียนรูปก่อนแล้วค่อยเขียนรายการ',
+    'รหัสทีมแบบสุ่มยาว + "รหัสเชื่อมต่อ" (TT1:...) คัดลอกไปวางตั้งค่าเครื่องอื่นได้ในครั้งเดียว',
+    'ไม่ต้องใช้ worker.js / Cloudflare อีกต่อไป' ] },
+  { v:'1.8.0', d:'10/10/2026', items:[
+    'ขั้นตอนทำงานแบบใหม่: ถ่ายภาพกลุ่ม (หลายโค้ดในภาพเดียว) = เริ่ม 1 รอบ → ถ่ายภาพโค้ดทีละใบ (OCR/พิมพ์เอง + ใส่ Line) เพิ่มกี่รายการก็ได้ → ใส่ผลทีหลัง',
+    'แท็บใหม่ "ผล / เซ็น": ใส่ผ่าน/ไม่ผ่านทีละรายการ (หรือผ่านที่เหลือทั้งหมด) และให้ QC กับ PD เซ็นครั้งเดียวต่อรอบ',
+    'ใบรายงาน: ลายเซ็น QC/PD รวมช่องเดียวต่อรอบ, ภาพถ่ายท้ายรายงานแสดงภาพกลุ่มของรอบเหนือภาพโค้ดทีละรายการ, Excel มีชีต "ภาพกลุ่ม"',
+    'ซิงค์ Cloudflare รองรับรอบ/ภาพกลุ่ม/ผลที่ใส่ทีหลัง (ต้องวาง worker.js เวอร์ชัน 1.1.0 ใหม่) — ข้อมูลเดิมยังเปิดดูและส่งออกได้' ] },
+  { v:'1.7.0', d:'10/10/2026', items:[
+    'ซิงค์ข้อมูล รูปถ่าย และลายเซ็น ขึ้น Cloudflare ของคุณเอง (D1 + R2) — เปิดใช้ได้ที่ปุ่ม ☁️ มุมบน',
+    'ทำงานออฟไลน์ได้เหมือนเดิม: ถ้าไม่มีเน็ตจะเก็บในเครื่องก่อน แล้วอัปโหลดเองเมื่อออนไลน์',
+    'หลายเครื่องเห็นใบบันทึกเดียวกัน (ดึงรายการที่เครื่องอื่นบันทึกมาให้อัตโนมัติ) และลบแล้วซิงค์ตามกัน',
+    'ถ้าไม่กรอกที่อยู่ Worker แอปจะไม่ส่งข้อมูลออกนอกเครื่องเลย' ] },
+  { v:'1.6.0', d:'08/10/2026', items:[
+    'แก้ OCR อ่านสับสนระหว่างเลข 8 กับตัว B: ตรวจรูปร่างขอบซ้ายของตัวอักษรเพิ่ม (เส้นตรง = B, โค้ง = 8) แล้วแก้ให้อัตโนมัติ' ] },
+  { v:'1.5.0', d:'08/10/2026', items:[
+    'OCR อ่านซองที่ยับ/มีรอยพับ หรือพิมพ์บนพื้นสี (ไม่ใช่พื้นขาว) ได้แม่นขึ้น: เพิ่มโหมดปรับภาพแบบละเอียด (ปรับความคมชัดเฉพาะจุด) ใช้เป็นตัวสำรองอัตโนมัติเมื่อโหมดปกติอ่านไม่ออก',
+    'ระบบหาโค้ดอัตโนมัติ (ครอบกรอบ) รองรับซองพื้นสีด้วย ไม่ใช่แค่พื้นขาวเหมือนเดิม' ] },
+  { v:'1.4.0', d:'08/10/2026', items:[
+    'OCR อ่านโค้ดแม่นขึ้น: เปลี่ยนโหมดอ่านภาพเป็นแบบ "คอลัมน์ข้อความ" ซึ่งอ่านป้ายที่พิมพ์เป็นบรรทัดซ้อนกันได้ถูกต้องกว่าโหมดเดิมมาก (แก้เคสอ่านเลขหาย เช่น 6265182902 เคยอ่านเพี้ยนเป็น 265182902)',
+    'ช่อง Code เก็บรูปแบบ 3 บรรทัดตามที่พิมพ์บนซองไว้ให้ (ไม่รวบเป็นบรรทัดเดียวอีกต่อไป) ตรวจสอบง่ายขึ้น',
+    'ถ้าโหมดใหม่อ่านไม่ออก ระบบจะลองโหมดเดิมเป็นทางเลือกสำรองให้อัตโนมัติ' ] },
   { v:'1.3.1', d:'28/09/2026', items:[
     'อีเมลบน Chrome/Android: ข้ามปุ่มแนบ Excel อัตโนมัติ (Chrome ไม่อนุญาตไฟล์ .xlsx) ไปใช้ขั้นตอน "ดาวน์โหลด Excel → ส่ง PDF → แนบ Excel เอง"',
     'เพิ่มตัวเลือก "ส่ง PDF + ข้อมูลตาราง (CSV)" แนบอัตโนมัติในครั้งเดียว',
@@ -608,17 +708,6 @@ function updateHeader(){
 }
 setInterval(updateHeader, 30000);
 
-/* ========================= TABS ========================= */
-document.querySelectorAll('.itail-tab').forEach(tab=>{
-  tab.addEventListener('click', ()=>{
-    document.querySelectorAll('.itail-tab').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-    tab.classList.add('active');
-    $('section-'+tab.dataset.tab).classList.add('active');
-    if(tab.dataset.tab==='report') renderReportTab();
-  });
-});
-
 /* ========================= SHEET HEADER (Date / Shift / Product) ========================= */
 let hdrTouched = false;
 function initHeader(){
@@ -642,60 +731,9 @@ function readHdr(){
 function sameProducts(s,h){ return !!s.sachet===h.sachet && !!s.spoon===h.spoon && !!s.other===h.other; }
 function findSheet(h){ return sheets.find(s=>s.date===h.date && s.shift===h.shift && sameProducts(s,h)); }
 
-function updateRemind(){
-  const box = $('remindBox'); const h = readHdr(); const sh = findSheet(h);
-  if(!sh || !sh.entries.length){ box.className='remind'; box.textContent='ยังไม่มีการตรวจในใบนี้ — ตรวจทุก 30 นาทีขณะผลิต'; return; }
-  const last = sh.entries.reduce((a,b)=> a.createdAt>b.createdAt ? a : b);
-  const mins = Math.floor((Date.now()-new Date(last.createdAt).getTime())/60000);
-  const nx = new Date(new Date(last.createdAt).getTime()+30*60000);
-  if(mins>=30){ box.className='remind due'; box.textContent=`⏰ ครบรอบตรวจแล้ว — ตรวจล่าสุด ${last.time} (ผ่านมา ${mins} นาที) • ในใบนี้ ${sh.entries.length} รายการ`; }
-  else { box.className='remind'; box.textContent=`ตรวจล่าสุด ${last.time} (${mins} นาทีที่แล้ว) • รอบถัดไป ~${pad(nx.getHours())}:${pad(nx.getMinutes())} • ในใบนี้ ${sh.entries.length} รายการ`; }
-}
-
-/* ========================= IMAGE CAPTURE (2 photos: P1 product, P2 code close-up) ========================= */
-let P1 = null, P2 = null;           // {el, full, thumb}
-let pickTarget = 'p1';
-const modalOpen = ()=> $('entryModal').classList.contains('show');
-function pick(target, src){ pickTarget = target; (src==='camera' ? $('cameraInput') : $('fileInput')).click(); }
-$('cameraInput').addEventListener('change', e=>handleFile(e.target.files[0]));
-$('fileInput').addEventListener('change', e=>handleFile(e.target.files[0]));
-
-function handleFile(file){
-  const target = pickTarget;
-  resetInputs();
-  if(!file) return;
-  if(target==='p1' && !modalOpen()){
-    const h = readHdr();
-    if(!h.sachet && !h.spoon && !h.other){ alert('กรุณาเลือก Product อย่างน้อย 1 รายการก่อน'); return; }
-  }
-  if(target==='p2' && !modalOpen()) return;
-  const reader = new FileReader();
-  reader.onload = ev=>{
-    const img = new Image();
-    img.onload = ()=>{
-      if(target==='p1'){
-        P1 = { el:img, full:resizeToDataUrl(img,720,0.62), thumb:resizeToDataUrl(img,200,0.6) };
-        if(modalOpen()){ refreshP1(); } else { openEntry(); }
-      } else {
-        P2 = { el:img, full:resizeToDataUrl(img,900,0.72), thumb:resizeToDataUrl(img,200,0.6) };
-        refreshP2();
-      }
-    };
-    img.src = ev.target.result;
-  };
-  reader.readAsDataURL(file);
-}
-function resetInputs(){ $('cameraInput').value=''; $('fileInput').value=''; }
-function resizeToDataUrl(img, maxW, q){
-  const nw = img.naturalWidth||img.width, nh = img.naturalHeight||img.height;
-  const sc = Math.min(1, maxW/nw);
-  const c = document.createElement('canvas'); c.width=Math.round(nw*sc); c.height=Math.round(nh*sc);
-  c.getContext('2d').drawImage(img,0,0,c.width,c.height);
-  return c.toDataURL('image/jpeg', q);
-}
 
 /* ========================= OCR — 100% offline (tesseract.js + core + eng model embedded in this file) ========================= */
-let ocrWorkerPromise = null, ocrToken = 0;
+let ocrWorkerPromise = null, ocrToken = 0, ocrPsm = null;
 
 // Put the embedded eng.traineddata into the IndexedDB cache tesseract.js reads from (no network needed)
 async function seedLang(){
@@ -707,6 +745,7 @@ async function seedLang(){
   }
   db.close();
 }
+async function setPsm(worker, mode){ if(ocrPsm!==mode){ await worker.setParameters({ tessedit_pageseg_mode:mode }); ocrPsm=mode; } }
 function getWorker(){
   if(!ocrWorkerPromise){
     ocrWorkerPromise = (async()=>{
@@ -714,21 +753,18 @@ function getWorker(){
       await seedLang();
       const workerUrl = await libBlobUrl('lib-tess-worker');   // worker.min.js with wasm core prepended
       const w = await Tesseract.createWorker('eng', 1, { workerPath:workerUrl, workerBlobURL:false, langPath:'about:blank', cacheMethod:'readOnly', logger:()=>{} });
-      await w.setParameters({ tessedit_pageseg_mode:'6', preserve_interword_spaces:'1' });
+      await w.setParameters({ tessedit_pageseg_mode:'4', preserve_interword_spaces:'1' });
+      ocrPsm='4';
       return w;
     })().catch(e=>{ ocrWorkerPromise=null; throw e; });
   }
   return ocrWorkerPromise;
 }
 
-// find the big white label (where the code is printed) in a close-up photo
-function detectLabel(img){
-  const W=120, nw=img.naturalWidth||img.width, nh=img.naturalHeight||img.height, H=Math.max(1,Math.round(nh*W/nw));
-  const c=document.createElement('canvas'); c.width=W; c.height=H;
-  const x=c.getContext('2d'); x.drawImage(img,0,0,W,H);
-  let d; try{ d=x.getImageData(0,0,W,H).data; }catch(e){ return null; }
+// shared: flood-fill the largest connected blob matching `test(r,g,b)`, downsampled to W×H
+function biggestBlob(d, W, H, test){
   const mask=new Uint8Array(W*H);
-  for(let i=0;i<W*H;i++){ const r=d[i*4],g=d[i*4+1],b=d[i*4+2], mn=Math.min(r,g,b), mx=Math.max(r,g,b); mask[i]=(mn>160 && mx-mn<50)?1:0; }
+  for(let i=0;i<W*H;i++){ const r=d[i*4],g=d[i*4+1],b=d[i*4+2]; mask[i]=test(r,g,b)?1:0; }
   const seen=new Uint8Array(W*H); let best=null;
   for(let s=0;s<W*H;s++){
     if(!mask[s]||seen[s]) continue;
@@ -741,10 +777,39 @@ function detectLabel(img){
     }
     if(!best||area>best.area) best={area,x0,y0,x1,y1};
   }
-  if(!best) return null;
+  return best;
+}
+// find the big white label (where the code is printed) in a close-up photo
+function detectLabel(img){
+  const W=120, nw=img.naturalWidth||img.width, nh=img.naturalHeight||img.height, H=Math.max(1,Math.round(nh*W/nw));
+  const c=document.createElement('canvas'); c.width=W; c.height=H;
+  const x=c.getContext('2d'); x.drawImage(img,0,0,W,H);
+  let d; try{ d=x.getImageData(0,0,W,H).data; }catch(e){ return null; }
+  let best=biggestBlob(d,W,H,(r,g,b)=>{ const mn=Math.min(r,g,b), mx=Math.max(r,g,b); return mn>160 && mx-mn<50; });
+  let pad=0.02;
+  if(!best || best.area < W*H*0.04 || (best.x1-best.x0+1)*(best.y1-best.y0+1) > W*H*0.85 || (best.x1-best.x0+1)<W*0.15 || (best.y1-best.y0+1)<H*0.08){
+    // fallback for labels printed on a colored (non-white) background: flood-fill from several
+    // seed points near the photo's center using each seed's local median color, keep the largest result
+    best=null;
+    const cx=(W/2)|0, cy=(H/2)|0;
+    const offs=[[0,0],[-8,-8],[8,-8],[-8,8],[8,8],[-12,0],[12,0],[0,-12],[0,12]];
+    for(const [ox,oy] of offs){
+      const sx=Math.min(W-1,Math.max(0,cx+ox)), sy=Math.min(H-1,Math.max(0,cy+oy));
+      const x0=Math.max(0,sx-2), x1=Math.min(W,sx+3), y0=Math.max(0,sy-2), y1=Math.min(H,sy+3);
+      const rs=[],gs=[],bs=[];
+      for(let yy=y0;yy<y1;yy++) for(let xx=x0;xx<x1;xx++){ const i=(yy*W+xx)*4; rs.push(d[i]); gs.push(d[i+1]); bs.push(d[i+2]); }
+      const med=a=>{ const s=a.slice().sort((p,q)=>p-q); return s[s.length>>1]; };
+      const sr=med(rs), sg=med(gs), sb=med(bs);
+      const blob=biggestBlob(d,W,H,(r,g,b)=>{ const dr=r-sr,dg=g-sg,db=b-sb; return Math.sqrt(dr*dr+dg*dg+db*db)<36; });
+      if(blob && (!best||blob.area>best.area)) best=blob;
+    }
+    if(!best) return null;
+    const bw=best.x1-best.x0+1, bh=best.y1-best.y0+1;
+    if(best.area < W*H*0.04 || bw*bh > W*H*0.95 || bw<W*0.15 || bh<H*0.08) return null;
+    pad=0.06; // colored-background crop is coarser, so keep more margin to avoid clipping text lines
+  }
   const bw=best.x1-best.x0+1, bh=best.y1-best.y0+1;
-  if(best.area < W*H*0.04 || bw*bh > W*H*0.85 || bw<W*0.15 || bh<H*0.08) return null;
-  const px=Math.round(W*0.02), py=Math.round(H*0.02);
+  const px=Math.round(W*pad), py=Math.round(H*pad);
   const X0=Math.max(0,best.x0-px), Y0=Math.max(0,best.y0-py), X1=Math.min(W,best.x1+1+px), Y1=Math.min(H,best.y1+1+py);
   return { x:X0/W, y:Y0/H, w:(X1-X0)/W, h:(Y1-Y0)/H };
 }
@@ -770,13 +835,203 @@ function prepCanvas(img, rect, rot){
   ctx.putImageData(id,0,0);
   return c;
 }
+// heavier preprocessing for hard cases (wrinkled/creased labels, uneven lighting, colored packaging):
+// local (tile-based) contrast normalization instead of one global stretch, plus an unsharp-mask sharpen.
+// Slower than prepCanvas, so it's only tried as a fallback when the plain pass can't read the code.
+function prepCanvasCLAHE(img, rect, rot){
+  const nw=img.naturalWidth||img.width, nh=img.naturalHeight||img.height;
+  const sx=rect?Math.round(rect.x*nw):0, sy=rect?Math.round(rect.y*nh):0;
+  const sw=rect?Math.max(8,Math.round(rect.w*nw)):nw, sh=rect?Math.max(8,Math.round(rect.h*nh)):nh;
+  let k=Math.min(4,Math.max(1,900/sw)); if(sw*k>1800) k=1800/sw;
+  const w=Math.round(sw*k), h=Math.round(sh*k);
+  const c=document.createElement('canvas'); c.width=w; c.height=h;
+  const ctx=c.getContext('2d');
+  if(rot===180){ ctx.translate(w,h); ctx.rotate(Math.PI); }
+  ctx.drawImage(img,sx,sy,sw,sh,0,0,w,h);
+  ctx.setTransform(1,0,0,1,0,0);
+  const id=ctx.getImageData(0,0,w,h), d=id.data, n=w*h;
+  const gray=new Float32Array(n);
+  for(let i=0,p=0;i<d.length;i+=4,p++) gray[p]=0.299*d[i]+0.587*d[i+1]+0.114*d[i+2];
+
+  // per-tile 2%-clip contrast stretch
+  const tx=8, ty=8, tw=Math.ceil(w/tx), th=Math.ceil(h/ty);
+  const loT=new Float32Array(tx*ty), hiT=new Float32Array(tx*ty);
+  for(let tyi=0; tyi<ty; tyi++){
+    for(let txi=0; txi<tx; txi++){
+      const x0=txi*tw, y0=tyi*th, x1=Math.min(w,x0+tw), y1=Math.min(h,y0+th);
+      const hist=new Array(256).fill(0); let cnt=0;
+      for(let yy=y0; yy<y1; yy++) for(let xx=x0; xx<x1; xx++){ hist[gray[yy*w+xx]|0]++; cnt++; }
+      const clip=Math.max(1,Math.round(cnt*0.02));
+      let acc=0, lo=0, hi=255;
+      for(let v=0; v<256; v++){ acc+=hist[v]; if(acc>=clip){ lo=v; break; } }
+      acc=0; for(let v=255; v>=0; v--){ acc+=hist[v]; if(acc>=clip){ hi=v; break; } }
+      if(hi-lo<20){ lo=Math.max(0,lo-10); hi=Math.min(255,hi+10); }
+      loT[tyi*tx+txi]=lo; hiT[tyi*tx+txi]=hi;
+    }
+  }
+  // bilinear-interpolate the per-tile lo/hi across pixels and apply the stretch
+  const norm=new Float32Array(n);
+  for(let y=0; y<h; y++){
+    const fy=(y+0.5)/th-0.5, ty0=Math.min(ty-1,Math.max(0,Math.floor(fy))), ty1=Math.min(ty-1,ty0+1), wy=Math.min(1,Math.max(0,fy-ty0));
+    for(let x=0; x<w; x++){
+      const fx=(x+0.5)/tw-0.5, tx0=Math.min(tx-1,Math.max(0,Math.floor(fx))), tx1=Math.min(tx-1,tx0+1), wx=Math.min(1,Math.max(0,fx-tx0));
+      const lo=loT[ty0*tx+tx0]*(1-wx)*(1-wy)+loT[ty0*tx+tx1]*wx*(1-wy)+loT[ty1*tx+tx0]*(1-wx)*wy+loT[ty1*tx+tx1]*wx*wy;
+      const hi=hiT[ty0*tx+tx0]*(1-wx)*(1-wy)+hiT[ty0*tx+tx1]*wx*(1-wy)+hiT[ty1*tx+tx0]*(1-wx)*wy+hiT[ty1*tx+tx1]*wx*wy;
+      const rng=Math.max(1,hi-lo);
+      let g=(gray[y*w+x]-lo)*255/rng; g=g<0?0:g>255?255:g;
+      norm[y*w+x]=g;
+    }
+  }
+  // light unsharp mask (3x3 box blur) to crisp up edges after the local stretch
+  const amt=1.5;
+  for(let y=0; y<h; y++){
+    for(let x=0; x<w; x++){
+      let sum=0, cnt=0;
+      for(let dy=-1; dy<=1; dy++){ const yy=y+dy; if(yy<0||yy>=h) continue; for(let dx=-1; dx<=1; dx++){ const xx=x+dx; if(xx<0||xx>=w) continue; sum+=norm[yy*w+xx]; cnt++; } }
+      const blur=sum/cnt;
+      let v=norm[y*w+x]*amt-blur*(amt-1); v=v<0?0:v>255?255:v;
+      const i=(y*w+x)*4; d[i]=d[i+1]=d[i+2]=v; d[i+3]=255;
+    }
+  }
+  ctx.putImageData(id,0,0);
+  return c;
+}
 function cleanCode(t){
   const lines = String(t||'').split(/\r?\n/).map(l=>{
     let s = l.replace(/[^A-Za-z0-9 .\/:\-_]/g,' ').replace(/\s+/g,' ').trim();
     s = s.split(' ').filter(tok=>!(tok.length<=2 && /^[a-z]+$/.test(tok)) && !/^[.\/:\-_]+$/.test(tok)).join(' ');
     return s;
   }).filter(s=>(s.match(/[A-Za-z0-9]/g)||[]).length>=3);
-  return lines.join(' ').trim();
+  return lines.join('\n').trim();
+}
+
+function otsuThreshold(hist, total){
+  let sum=0; for(let t=0;t<256;t++) sum+=t*hist[t];
+  let sumB=0, wB=0, varMax=0, threshold=127;
+  for(let t=0;t<256;t++){
+    wB+=hist[t]; if(wB===0) continue;
+    const wF=total-wB; if(wF===0) break;
+    sumB+=t*hist[t];
+    const mB=sumB/wB, mF=(sum-sumB)/wF;
+    const v=wB*wF*(mB-mF)*(mB-mF);
+    if(v>varMax){ varMax=v; threshold=t; }
+  }
+  return threshold;
+}
+// printed "8" vs "B" look alike to OCR, but the left side of the glyph tells them apart:
+// B has a straight vertical stroke on the left (near-constant left edge across the glyph's height),
+// while 8 is made of two curves and its left edge bulges in and out. We re-segment the exact image
+// the winning OCR pass used into text-line bands and then per-character columns, and for every
+// recognized '8' or 'B' measure how flat that glyph's left edge is to confirm or flip the letter.
+function fix8BConfusion(canvas, text){
+  const w=canvas.width, h=canvas.height;
+  if(!w || !h) return text;
+  const ctx=canvas.getContext('2d');
+  const d=ctx.getImageData(0,0,w,h).data;
+  const gray=new Uint8ClampedArray(w*h), hist=new Array(256).fill(0);
+  for(let i=0,p=0;i<d.length;i+=4,p++){ const g=d[i]; gray[p]=g; hist[g]++; }
+  const thr=otsuThreshold(hist, w*h);
+  const inkRaw=new Uint8Array(w*h);
+  for(let p=0;p<w*h;p++) inkRaw[p]=gray[p]<thr?1:0;
+  // despeckle: the CLAHE pass can amplify faint noise into isolated 1px "ink" specks in otherwise
+  // blank areas; drop any ink pixel that doesn't have at least 2 ink neighbors so row/column
+  // projections aren't bridged by noise instead of real strokes
+  const ink=new Uint8Array(w*h);
+  for(let y=0;y<h;y++){
+    for(let x=0;x<w;x++){
+      const p=y*w+x; if(!inkRaw[p]) continue;
+      let n=0;
+      if(x>0&&inkRaw[p-1]) n++; if(x<w-1&&inkRaw[p+1]) n++;
+      if(y>0&&inkRaw[p-w]) n++; if(y<h-1&&inkRaw[p+w]) n++;
+      ink[p]= n>=2 ? 1:0;
+    }
+  }
+
+  const rowSum=new Int32Array(h);
+  for(let y=0;y<h;y++){ let s=0; for(let x=0;x<w;x++) s+=ink[y*w+x]; rowSum[y]=s; }
+
+  const lines = text.split('\n');
+  const nonEmptyIdx = []; lines.forEach((l,i)=>{ if(l.trim()) nonEmptyIdx.push(i); });
+
+  // the right row threshold/gap depends on the image (crease shadows can bridge two text lines
+  // with faint noise), so search a small range and keep whichever reproduces the known line count
+  let mbands=null;
+  outer: for(const threshPct of [0.005,0.01,0.02,0.035,0.05]){
+    const rowThresh=Math.max(1,Math.round(w*threshPct));
+    for(const gapPct of [0.008,0.015,0.02,0.03]){
+      const bands=[]; let inb=false, rstart=0;
+      for(let y=0;y<h;y++){
+        if(rowSum[y]>rowThresh && !inb){ rstart=y; inb=true; }
+        else if(rowSum[y]<=rowThresh && inb){ bands.push([rstart,y]); inb=false; }
+      }
+      if(inb) bands.push([rstart,h]);
+      const rowGap=Math.max(2,Math.round(h*gapPct));
+      const merged=[];
+      for(const b of bands){
+        if(merged.length && b[0]-merged[merged.length-1][1] < rowGap) merged[merged.length-1][1]=b[1];
+        else merged.push(b.slice());
+      }
+      if(merged.length===nonEmptyIdx.length){ mbands=merged; break outer; }
+    }
+  }
+  if(!mbands && nonEmptyIdx.length>0){
+    // fallback for a label where a crease/shadow's shading bridges two lines of ink together so no
+    // row-gap split works: printed code lines are evenly spaced, so divide the band that actually
+    // has ink into N even strips (one per text line) and trim each strip to its own ink extent
+    let y0=0, y1=h;
+    for(let y=0;y<h;y++){ if(rowSum[y]>0){ y0=y; break; } }
+    for(let y=h-1;y>=0;y--){ if(rowSum[y]>0){ y1=y+1; break; } }
+    const n=nonEmptyIdx.length, stripH=(y1-y0)/n, strips=[];
+    for(let i=0;i<n;i++){
+      const sy0=Math.round(y0+i*stripH), sy1=Math.round(y0+(i+1)*stripH);
+      let ty0=sy1, ty1=sy0;
+      for(let y=sy0;y<sy1;y++){ if(rowSum[y]>0){ if(y<ty0) ty0=y; if(y+1>ty1) ty1=y+1; } }
+      strips.push(ty1>ty0 ? [ty0,ty1] : [sy0,sy1]);
+    }
+    mbands=strips;
+  }
+  if(!mbands) return text; // couldn't line up the right number of text-line bands — leave text untouched
+
+  for(let li=0; li<nonEmptyIdx.length; li++){
+    const lineIdx = nonEmptyIdx[li], [y0,y1] = mbands[li], line = lines[lineIdx];
+    const colSum=new Int32Array(w);
+    for(let x=0;x<w;x++){ let s=0; for(let y=y0;y<y1;y++) s+=ink[y*w+x]; colSum[x]=s; }
+    const segs=[]; let inr=false, cstart=0;
+    for(let x=0;x<w;x++){
+      if(colSum[x]>0 && !inr){ cstart=x; inr=true; }
+      else if(colSum[x]===0 && inr){ segs.push([cstart,x]); inr=false; }
+    }
+    if(inr) segs.push([cstart,w]);
+    const mseg=[];
+    for(const s of segs){
+      if(mseg.length && s[0]-mseg[mseg.length-1][1] < 2) mseg[mseg.length-1][1]=s[1];
+      else mseg.push(s.slice());
+    }
+    let chars=[];
+    for(let i=0;i<line.length;i++){ if(line[i]!==' ') chars.push({ ch:line[i], pos:i }); }
+    // a stray trailing punctuation mark (a '.' or ',' tesseract sometimes hallucinates at a line's
+    // end) shouldn't block matching the rest of a line that otherwise segments 1:1
+    while(mseg.length !== chars.length && chars.length && /[.,'"`]/.test(chars[chars.length-1].ch)){
+      chars = chars.slice(0,-1);
+    }
+    if(mseg.length !== chars.length) continue; // segmentation didn't match this line 1:1 — skip it
+
+    const arr = line.split('');
+    for(let i=0;i<chars.length;i++){
+      const ch = chars[i].ch;
+      if(ch!=='8' && ch!=='B') continue;
+      const [x0,x1] = mseg[i], charw=Math.max(1,x1-x0);
+      const lefts=[];
+      for(let y=y0;y<y1;y++){ for(let x=x0;x<x1;x++){ if(ink[y*w+x]){ lefts.push(x-x0); break; } } }
+      if(lefts.length<4) continue;
+      const mean=lefts.reduce((a,b)=>a+b,0)/lefts.length;
+      const std=Math.sqrt(lefts.reduce((a,b)=>a+(b-mean)*(b-mean),0)/lefts.length);
+      const guess = (std/charw)<0.05 ? 'B' : '8';
+      if(guess!==ch) arr[chars[i].pos]=guess;
+    }
+    lines[lineIdx]=arr.join('');
+  }
+  return lines.join('\n');
 }
 const OCR_GOOD = 1100;
 async function runOCR(force){
@@ -789,17 +1044,35 @@ async function runOCR(force){
     const cands=[];
     if(cropSel) cands.push({ r:cropSel });
     else { const lab=detectLabel(img); if(lab) cands.push({ r:lab }); cands.push({ r:null }); }
-    let best={ score:-1, text:'' };
-    outer: for(const c of cands){
-      for(const rot of [0,180]){
-        const { data } = await worker.recognize(prepCanvas(img,c.r,rot)); if(my!==ocrToken) return;
-        const good=(data.words||[]).filter(w=>w.confidence>50 && /[A-Za-z0-9]/.test(w.text));
-        const score=good.reduce((s,w)=>s+w.text.length*w.confidence,0);
-        if(score>best.score) best={ score, text:data.text };
-        if(best.score>=OCR_GOOD) break outer;
+    let best={ score:-1, text:'' }, bestMeta=null;
+    // tryPass: returns 'good' (hit OCR_GOOD, stop everything), 'abort' (user moved on), or 'done'
+    async function tryPass(prep, psm){
+      await setPsm(worker, psm);
+      for(const c of cands){
+        for(const rot of [0,180]){
+          const { data } = await worker.recognize(prep(img,c.r,rot)); if(my!==ocrToken) return 'abort';
+          const good=(data.words||[]).filter(w=>w.confidence>50 && /[A-Za-z0-9]/.test(w.text));
+          const score=good.reduce((s,w)=>s+w.text.length*w.confidence,0);
+          if(score>best.score){ best={ score, text:data.text }; bestMeta={ prep, rect:c.r, rot }; }
+          if(best.score>=OCR_GOOD) return 'good';
+        }
       }
+      return 'done';
     }
-    const code = cleanCode(best.text);
+    // tier 1: fast plain-contrast passes (psm 4 "column", then 6 "block") — covers clean, flat labels
+    let r = await tryPass(prepCanvas,'4'); if(r==='abort') return;
+    if(r!=='good' && best.score<=0) { r = await tryPass(prepCanvas,'6'); if(r==='abort') return; }
+    // tier 2: heavier local-contrast + sharpen passes — only for hard cases (wrinkled/creased labels,
+    // uneven lighting, colored packaging) where tier 1 couldn't read anything confidently
+    if(r!=='good' && best.score<OCR_GOOD){ r = await tryPass(prepCanvasCLAHE,'6'); if(r==='abort') return; }
+    if(r!=='good' && best.score<OCR_GOOD){ r = await tryPass(prepCanvasCLAHE,'4'); if(r==='abort') return; }
+    let code = cleanCode(best.text);
+    if(code && bestMeta){
+      try{
+        const winCanvas = bestMeta.prep(img, bestMeta.rect, bestMeta.rot);
+        code = fix8BConfusion(winCanvas, code);
+      }catch(e){ console.error('fix8BConfusion skipped:', e); }
+    }
     if(!code){ st.textContent='ℹ️ อ่านโค้ดไม่ได้ — ลองลากกรอบครอบเฉพาะบรรทัดโค้ด หรือพิมพ์เอง'; return; }
     if(force || !$('fCode').value.trim()) $('fCode').value = code;
     st.textContent = '✅ อ่านได้: ' + code.slice(0,70) + ' — โปรดตรวจ/แก้ให้ตรงกับซองจริง (ลากกรอบบนรูปเพื่ออ่านซ้ำได้)';
@@ -843,212 +1116,7 @@ function drawSel(){
 }
 function rereadWhole(){ cropSel=null; csel.style.display='none'; runOCR(true); }
 
-/* ========================= ENTRY MODAL ========================= */
-let selResult = null, qcSig = null, pdSig = null;
-function refreshP1(){
-  $('modalImg1').src = P1.full;
-  $('ratioBox').textContent='👀 ดูรอยเหลื่อม/สัดส่วนของสองสีจากรูปนี้ แล้วเลือกผ่าน/ไม่ผ่านด้านล่าง';
-}
-function refreshP2(){
-  cropSel=null; csel.style.display='none';
-  $('p2Empty').style.display = P2 ? 'none' : 'block';
-  $('p2Has').style.display = P2 ? 'block' : 'none';
-  if(P2){ $('modalImg2').src = P2.full; runOCR(true); }
-}
-function openEntry(){
-  selResult=null; qcSig=null; pdSig=null; P2=null; cropSel=null;
-  $('fCode').value=''; $('fTime').value=nowTime(); $('fLine').value=lsGet(LINE_KEY); $('fRemark').value='';
-  $('btnPass').classList.remove('selected'); $('btnFail').classList.remove('selected');
-  $('remarkLbl').innerHTML='หมายเหตุ Remark';
-  setSigUI('qc',null); setSigUI('pd',null);
-  if(!hdrTouched){ $('hDate').value=todayStr(); $('hShift').value=getShiftNow(); }
-  refreshP1(); refreshP2();
-  $('entryModal').classList.add('show');
-  validate();
-}
-function closeEntry(){ ocrToken++; $('entryModal').classList.remove('show'); resetInputs(); P1=null; P2=null; }
-function selectResult(t){
-  selResult=t;
-  $('btnPass').classList.toggle('selected',t==='pass'); $('btnFail').classList.toggle('selected',t==='fail');
-  $('remarkLbl').innerHTML = t==='fail' ? 'หมายเหตุ Remark (เหตุผลที่ไม่ผ่าน) <span class="req">*</span>' : 'หมายเหตุ Remark';
-  validate();
-}
-['fCode','fRemark','fTime'].forEach(id=>$(id).addEventListener('input',validate));
-function validate(){
-  let ok = $('fCode').value.trim().length>0 && selResult!==null && !!qcSig && !!pdSig && !!$('fTime').value;
-  if(selResult==='fail') ok = ok && $('fRemark').value.trim().length>0;
-  $('btnSave').disabled = !ok;
-}
-function setSigUI(role, sig){
-  const slot = $(role==='qc'?'slotQC':'slotPD'), img=$(role==='qc'?'imgQC':'imgPD'), btn=$(role==='qc'?'btnQC':'btnPD');
-  if(sig){ img.src=sig.d; img.style.display='block'; slot.classList.add('done'); btn.textContent='✍️ เซ็นใหม่'; }
-  else { img.style.display='none'; slot.classList.remove('done'); btn.textContent='✍️ เซ็น'; }
-}
-function signRole(role){
-  openSigPad(role==='qc' ? 'ลายเซ็นผู้ตรวจสอบ QC' : 'ลายเซ็นผู้ตรวจสอบ PD', sig=>{
-    if(role==='qc') qcSig=sig; else pdSig=sig;
-    setSigUI(role,sig); validate();
-  });
-}
-async function saveEntry(){
-  const h = readHdr();
-  let sh = findSheet(h);
-  if(!sh){ sh = { id:uid(), date:h.date, shift:h.shift, sachet:h.sachet, spoon:h.spoon, other:h.other, sachetText:'', otherText:'', verifierSig:null, entries:[] }; sheets.push(sh); }
-  sh.sachetText=h.sachetText; sh.otherText=h.otherText;
-  const line = $('fLine').value.trim(); lsSet(LINE_KEY, line);
-  sh.entries.push({
-    id:uid(), time:$('fTime').value, code:$('fCode').value.trim(), line,
-    result:selResult, remark:$('fRemark').value.trim(),
-    qcSig, pdSig, image:P1.thumb, imageFull:P1.full,
-    image2:P2?P2.thumb:null, image2Full:P2?P2.full:null, createdAt:new Date().toISOString()
-  });
-  selectedSheetId = sh.id;
-  $('btnSave').disabled = true;
-  await persist();
-  closeEntry(); updateRemind();
-  document.querySelector('.itail-tab[data-tab="report"]').click();
-}
-
-/* ========================= SIGNATURE PAD ========================= */
-let sigCb=null, sigDown=false, sigLast=null, sigHas=false;
-const sc = $('sigCanvas'); const sctx = sc.getContext('2d');
-function openSigPad(title, cb){
-  sigCb=cb; $('sigTitle').textContent=title; $('sigModal').classList.add('show');
-  requestAnimationFrame(()=>{
-    const r=sc.getBoundingClientRect(), dpr=window.devicePixelRatio||1;
-    sc.width=Math.round(r.width*dpr); sc.height=Math.round(r.height*dpr); sigClear();
-  });
-}
-function sigClear(){ sctx.clearRect(0,0,sc.width,sc.height); sigHas=false; }
-function sigCancel(){ $('sigModal').classList.remove('show'); sigCb=null; }
-function sigPos(e){ const r=sc.getBoundingClientRect(); return { x:(e.clientX-r.left)*sc.width/r.width, y:(e.clientY-r.top)*sc.height/r.height }; }
-sc.addEventListener('pointerdown', e=>{ sc.setPointerCapture(e.pointerId); sigDown=true; sigLast=sigPos(e); sigHas=true;
-  sctx.fillStyle='#111'; sctx.beginPath(); sctx.arc(sigLast.x,sigLast.y,1.4*(window.devicePixelRatio||1),0,7); sctx.fill(); e.preventDefault(); });
-sc.addEventListener('pointermove', e=>{
-  if(!sigDown) return; const p=sigPos(e);
-  sctx.strokeStyle='#111'; sctx.lineWidth=2.6*(window.devicePixelRatio||1); sctx.lineCap='round'; sctx.lineJoin='round';
-  sctx.beginPath(); sctx.moveTo(sigLast.x,sigLast.y); sctx.lineTo(p.x,p.y); sctx.stroke(); sigLast=p; e.preventDefault();
-});
-['pointerup','pointercancel'].forEach(ev=>sc.addEventListener(ev,()=>{ sigDown=false; }));
-function sigConfirm(){
-  if(!sigHas){ alert('กรุณาเซ็นชื่อก่อน'); return; }
-  const id=sctx.getImageData(0,0,sc.width,sc.height), d=id.data;
-  let x0=sc.width,y0=sc.height,x1=0,y1=0;
-  for(let y=0;y<sc.height;y++) for(let x=0;x<sc.width;x++){ if(d[(y*sc.width+x)*4+3]>20){ if(x<x0)x0=x; if(x>x1)x1=x; if(y<y0)y0=y; if(y>y1)y1=y; } }
-  const p=6; x0=Math.max(0,x0-p); y0=Math.max(0,y0-p); x1=Math.min(sc.width-1,x1+p); y1=Math.min(sc.height-1,y1+p);
-  const cw2=x1-x0+1, ch2=y1-y0+1, k=Math.min(1, 300/cw2, 100/ch2);
-  const o=document.createElement('canvas'); o.width=Math.max(1,Math.round(cw2*k)); o.height=Math.max(1,Math.round(ch2*k));
-  o.getContext('2d').drawImage(sc,x0,y0,cw2,ch2,0,0,o.width,o.height);
-  const sig={ d:o.toDataURL('image/png'), w:o.width, h:o.height };
-  const cb=sigCb; sigCancel(); if(cb) cb(sig);
-}
-
-/* ========================= REPORT TAB ========================= */
-let selectedSheetId = null;
-function prodLabel(s){
-  const p=[]; if(s.sachet) p.push('Sachet 2.2 Fl.'+(s.sachetText?' '+s.sachetText:'')); if(s.spoon) p.push('Spoon'); if(s.other) p.push(s.otherText||'อื่นๆ');
-  return p.join(', ');
-}
-function curSheet(){ return sheets.find(s=>s.id===selectedSheetId); }
-function sortedEntries(s){ return s.entries.slice().sort((a,b)=> a.createdAt<b.createdAt?-1:1); }
-
-function renderReportTab(){
-  const sel=$('sheetSelect');
-  const list=sheets.slice().sort((a,b)=> (b.date+b.shift)>(a.date+a.shift)?1:-1);
-  sel.innerHTML='';
-  list.forEach(s=>{ const o=document.createElement('option'); o.value=s.id; o.textContent=`${dmy(s.date)} • ${s.shift} • ${prodLabel(s)} (${s.entries.length})`; sel.appendChild(o); });
-  const has=list.length>0;
-  $('reportEmpty').style.display=has?'none':'block';
-  $('sheetBody').style.display=has?'block':'none';
-  $('previewWrap').style.display=has?'block':'none';
-  $('entriesCard').style.display=has?'block':'none';
-  if(!has){ selectedSheetId=null; return; }
-  if(!list.find(s=>s.id===selectedSheetId)) selectedSheetId=list[0].id;
-  sel.value=selectedSheetId; renderSheet();
-}
-$('sheetSelect').addEventListener('change',e=>{ selectedSheetId=e.target.value; renderSheet(); });
-
-function renderSheet(){
-  const s=curSheet(); if(!s) return;
-  const pass=s.entries.filter(e=>e.result==='pass').length, fail=s.entries.length-pass;
-  $('stTotal').textContent='ตรวจ '+s.entries.length+' ครั้ง'; $('stPass').textContent='ผ่าน '+pass; $('stFail').textContent='ไม่ผ่าน '+fail;
-  if(s.verifierSig){ $('verifImg').src=s.verifierSig.d; $('verifImg').style.display='block'; $('verifNone').style.display='none'; }
-  else { $('verifImg').style.display='none'; $('verifNone').style.display='inline-block'; }
-  renderPreview(); renderEntries(); if(typeof refreshEmailBtn==='function') refreshEmailBtn();
-}
-function renderPreview(){
-  const s=curSheet(); const wrap=$('previewWrap'); wrap.innerHTML='';
-  const html=buildPages(s,false);
-  const scale=Math.min(1,(wrap.clientWidth-20)/794);
-  html.forEach(h=>{
-    const holder=document.createElement('div'); holder.className='page-holder';
-    holder.style.width=(794*scale)+'px'; holder.style.height=(1123*scale)+'px';
-    holder.innerHTML=h; const pg=holder.firstElementChild; pg.style.transform=`scale(${scale})`;
-    wrap.appendChild(holder);
-  });
-}
-window.addEventListener('resize',()=>{ if($('section-report').classList.contains('active') && curSheet()) renderPreview(); });
-
-function renderEntries(){
-  const s=curSheet(); const b=$('entriesBody'); b.innerHTML='';
-  sortedEntries(s).forEach(e=>{
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td><img class="thumb" src="${e.image}" onclick="openLightbox('${e.id}',1)">${e.image2?`<img class="thumb thumb2" src="${e.image2}" onclick="openLightbox('${e.id}',2)">`:''}</td><td>${esc(e.time)}</td><td style="font-size:12px;">${esc(e.code)}</td><td>${esc(e.line||'-')}</td>
-    <td>${e.result==='pass'?'<span class="itail-badge itail-badge-success">ผ่าน</span>':'<span class="itail-badge itail-badge-danger">ไม่ผ่าน</span>'}</td><td>${esc(e.remark||'-')}</td>
-    <td><button class="link-btn danger" onclick="deleteEntry('${e.id}')">ลบ</button></td>`;
-    b.appendChild(tr);
-  });
-}
-function openLightbox(id,n){ const s=curSheet(); const e=s&&s.entries.find(x=>x.id===id); if(!e) return; $('lightboxImg').src=(n===2?(e.image2Full||e.image2):(e.imageFull||e.image)); $('lightbox').classList.add('show'); }
-function deleteEntry(id){ if(!confirm('ลบรายการนี้หรือไม่?')) return; const s=curSheet(); s.entries=s.entries.filter(e=>e.id!==id); persist(); renderReportTab(); updateRemind(); }
-function deleteSheet(){ if(!confirm('ลบทั้งใบบันทึกนี้ (รวมทุกรายการ) หรือไม่?')) return; sheets=sheets.filter(s=>s.id!==selectedSheetId); persist(); selectedSheetId=null; renderReportTab(); updateRemind(); }
-function signVerifier(){ openSigPad('ลายเซ็นผู้ทวนสอบ (PD. Leader up)', sig=>{ const s=curSheet(); s.verifierSig=sig; persist(); renderSheet(); }); }
-
-/* ========================= REPORT FORM HTML (A4, matches FPPDPF65) ========================= */
-function formPage(s, pageIdx, total, rows){
-  const cb=on=>`<span class="cb${on?' on':''}"></span>`;
-  let body='';
-  for(let i=0;i<30;i++){
-    const e=rows[i];
-    if(!e){ body+='<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>'; continue; }
-    body+=`<tr><td>${esc(e.time)}</td><td class="code">${esc(e.code)}</td><td>${esc(e.line)}</td>
-      <td class="${e.result==='fail'?'rpt-fail':''}">${e.result==='pass'?'ผ่าน':'ไม่ผ่าน'}</td><td>${esc(e.remark)}</td>
-      <td><img src="${e.qcSig.d}"></td><td><img src="${e.pdSig.d}"></td></tr>`;
-  }
-  return `<div class="rpt-page">
-    <table class="rpt-head"><tr>
-      <td style="width:190px" class="rpt-logo"><b>✦</b> i-TAIL CORPORATION PCL.</td>
-      <td class="rpt-title">บันทึกการตรวจสอบ Ratio สินค้า Two tone</td>
-      <td style="width:170px;white-space:nowrap;font-size:11px" class="rpt-code">FPPDPF65-0-25/09/26</td></tr></table>
-    <div class="rpt-info">
-      <span>Date : <span class="ul" style="min-width:110px">${dmy(s.date)}</span></span>
-      <span>Shift : ${cb(s.shift==='DS')}DS ${cb(s.shift==='NS')}NS</span>
-      <span>Product : ${cb(s.sachet)}Sachet 2.2 Fl. <span class="ul" style="min-width:40px">${esc(s.sachetText)}</span> ${cb(s.spoon)}Spoon ${cb(s.other)}<span class="ul" style="min-width:60px">${esc(s.other?s.otherText:'')}</span></span>
-    </div>
-    <table class="rpt-tbl">
-      <colgroup><col style="width:66px"><col style="width:158px"><col style="width:70px"><col style="width:108px"><col style="width:112px"><col style="width:112px"><col style="width:112px"></colgroup>
-      <thead>
-        <tr><th rowspan="2">เวลา</th><th rowspan="2">Code</th><th rowspan="2">Line</th><th>การตรวจสอบ<small>Appreance</small></th><th>หมายเหตุ<small>Remark</small></th><th colspan="2">ผู้ตรวจสอบ</th></tr>
-        <tr><th style="font-size:10px">&nbsp;</th><th style="font-size:10px">&nbsp;</th><th style="font-size:10.5px">QC</th><th style="font-size:10.5px">PD</th></tr>
-      </thead>
-      <tbody>${body}</tbody>
-    </table>
-    <div class="rpt-note">หมายเหตุ : ขณะผลิตสินค้า ตรวจเช็คการเหลื่อมของสินค้า Two tone ความถี่ทุก 30 นาที</div>
-    ${total>1?`<div class="rpt-pg">หน้า ${pageIdx+1}/${total}</div>`:''}
-    <div class="rpt-foot"><div class="sigbox">${s.verifierSig?`<img src="${s.verifierSig.d}">`:''}</div>ผู้ทวนสอบ PD. Leader up</div>
-  </div>`;
-}
-function photoPage(s, ents, idx, total){
-  return `<div class="rpt-page"><div style="font-weight:700;font-size:14px;">ภาพถ่ายประกอบ — ${dmy(s.date)} • ${s.shift} • ${esc(prodLabel(s))}</div>
-    <div class="photo-grid">${ents.map(e=>`<div class="photo-cell"><div class="pp"><img src="${e.imageFull||e.image}">${e.image2Full||e.image2?`<img src="${e.image2Full||e.image2}">`:''}</div>${esc(e.time)} • ${esc(e.code)}<br>${e.result==='pass'?'ผ่าน':'<b style="color:#c00">ไม่ผ่าน</b>'}${e.line?' • '+esc(e.line):''}</div>`).join('')}</div>
-    <div class="rpt-pg" style="bottom:30px">ภาพถ่าย ${idx+1}/${total}</div></div>`;
-}
-function buildPages(s, withPhotos){
-  const ents=sortedEntries(s); const n=Math.max(1,Math.ceil(ents.length/30)); const out=[];
-  for(let i=0;i<n;i++) out.push(formPage(s,i,n,ents.slice(i*30,i*30+30)));
-  if(withPhotos && ents.length){ const per=10, pn=Math.ceil(ents.length/per); for(let i=0;i<pn;i++) out.push(photoPage(s,ents.slice(i*per,i*per+per),i,pn)); }
-  return out;
-}
+function signVerifier(){ openSigPad('ลายเซ็นผู้ทวนสอบ (PD. Leader up)', sig=>{ const s=curSheet(); s.verifierSig=sig; s.verifierAt=nowIso(); persist(); renderSheet(); syncSoon(); }); }
 
 /* ========================= EXPORT: PDF (render form via html2canvas → jsPDF) ========================= */
 /* สร้าง PDF เป็น Blob (ใช้ทั้งปุ่มดาวน์โหลดและปุ่มอีเมล) — throw ถ้าไม่สำเร็จ */
@@ -1069,68 +1137,20 @@ async function buildPdfBlob(s){
   } finally { host.remove(); }
 }
 async function exportPDF(){
-  const s=curSheet(); if(!s) return;
+  const s=curSheet(); if(!s) return; if(!exportCheck(s)) return;
   try{ const f=await buildPdfBlob(s); downloadBlob(f.blob,f.name); }
   catch(e){ alert('สร้าง PDF ไม่สำเร็จ: '+e.message+' — ลองใช้ปุ่ม "พิมพ์" แล้วเลือก Save as PDF แทน'); }
 }
 function printReport(){
-  const s=curSheet(); if(!s) return;
+  const s=curSheet(); if(!s) return; if(!exportCheck(s)) return;
   const pa=$('printArea'); pa.innerHTML=buildPages(s,$('chkPhotos').checked).join('');
   const clear=()=>{ pa.innerHTML=''; window.removeEventListener('afterprint',clear); };
   window.addEventListener('afterprint',clear);
   setTimeout(()=>window.print(),150);
 }
 
-/* ========================= EXPORT: EXCEL (form sheet + photo sheet, with images) ========================= */
-async function buildXlsxBlob(s){
-  await loadLib('lib-exceljs');
-  const ents=sortedEntries(s);
-  const wb=new ExcelJS.Workbook(); wb.creator='i-Tail Two tone QC v'+APP_VERSION; wb.description='FPPDPF65 — สร้างโดยแอป v'+APP_VERSION; const ws=wb.addWorksheet('ใบบันทึก',{pageSetup:{paperSize:9,orientation:'portrait',fitToPage:true,fitToWidth:1,fitToHeight:0}});
-  ws.columns=[{width:9},{width:34},{width:11},{width:14},{width:26},{width:19},{width:19}];
-  const thin={style:'thin',color:{argb:'FF000000'}}, bd={top:thin,left:thin,bottom:thin,right:thin};
-  ws.mergeCells('A1:G1'); ws.getCell('A1').value='i-TAIL CORPORATION PCL.  |  บันทึกการตรวจสอบ Ratio สินค้า Two tone  |  FPPDPF65-0-25/09/26';
-  ws.getCell('A1').font={bold:true,size:13}; ws.getCell('A1').alignment={horizontal:'center',vertical:'middle'}; ws.getRow(1).height=30;
-  ws.mergeCells('A2:G2'); ws.getCell('A2').value=`Date : ${dmy(s.date)}     Shift : ${s.shift}     Product : ${prodLabel(s)}`; ws.getCell('A2').font={bold:true}; ws.getRow(2).height=22;
-  const hdr=['เวลา','Code','Line','การตรวจสอบ (Appreance)','หมายเหตุ (Remark)','QC','PD'];
-  const hr=ws.getRow(3); hdr.forEach((t,i)=>{ const c=hr.getCell(i+1); c.value=t; c.font={bold:true}; c.alignment={horizontal:'center',vertical:'middle',wrapText:true}; c.border=bd; c.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFE3EEF0'}}; }); hr.height=30;
-  const total=Math.max(30,ents.length);
-  for(let i=0;i<total;i++){
-    const r=4+i, row=ws.getRow(r); row.height=34; const e=ents[i];
-    for(let c=1;c<=7;c++){ const cell=row.getCell(c); cell.border=bd; cell.alignment={horizontal:'center',vertical:'middle',wrapText:true}; }
-    if(!e) continue;
-    row.getCell(1).value=e.time; row.getCell(2).value=e.code; row.getCell(3).value=e.line; row.getCell(4).value=e.result==='pass'?'ผ่าน':'ไม่ผ่าน';
-    if(e.result==='fail') row.getCell(4).font={bold:true,color:{argb:'FFCC0000'}};
-    row.getCell(5).value=e.remark;
-    [[e.qcSig,5],[e.pdSig,6]].forEach(([sg,col])=>{
-      const fit=Math.min(100/sg.w,30/sg.h,1.5); const id=wb.addImage({base64:sg.d.split(',')[1],extension:'png'});
-      ws.addImage(id,{tl:{col:col+0.08,row:r-1+0.08},ext:{width:Math.round(sg.w*fit),height:Math.round(sg.h*fit)}});
-    });
-  }
-  const fr=4+total+1;
-  ws.mergeCells(`E${fr+2}:G${fr+2}`); ws.getCell(`E${fr+2}`).value='ผู้ทวนสอบ PD. Leader up'; ws.getCell(`E${fr+2}`).alignment={horizontal:'center'};
-  ws.getRow(fr).height=40;
-  if(s.verifierSig){ const sg=s.verifierSig, fit=Math.min(140/sg.w,38/sg.h,1.5); const id=wb.addImage({base64:sg.d.split(',')[1],extension:'png'});
-    ws.addImage(id,{tl:{col:5.2,row:fr-1+0.1},ext:{width:Math.round(sg.w*fit),height:Math.round(sg.h*fit)}}); }
-
-  const wp=wb.addWorksheet('ภาพถ่าย'); wp.columns=[{width:8},{width:9},{width:34},{width:12},{width:10},{width:32},{width:32}];
-  ['ลำดับ','เวลา','Code','Line','ผล','รูปที่ 1 ผลิตภัณฑ์','รูปที่ 2 โค้ด'].forEach((t,i)=>{ const c=wp.getRow(1).getCell(i+1); c.value=t; c.font={bold:true}; c.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFE3EEF0'}}; c.border=bd; c.alignment={horizontal:'center'}; });
-  for(let i=0;i<ents.length;i++){
-    const e=ents[i], r=i+2, row=wp.getRow(r); row.height=120;
-    [i+1,e.time,e.code,e.line,e.result==='pass'?'ผ่าน':'ไม่ผ่าน'].forEach((v,k)=>{ const c=row.getCell(k+1); c.value=v; c.border=bd; c.alignment={horizontal:'center',vertical:'middle',wrapText:true}; });
-    row.getCell(6).border=bd; row.getCell(7).border=bd;
-    for(const [src,colIdx] of [[e.imageFull||e.image,5.05],[e.image2Full||e.image2,6.05]]){
-      if(!src) continue;
-      const dim=await imgSize(src), fit=Math.min(200/dim.w,112/dim.h);
-      const id=wb.addImage({base64:src.split(',')[1],extension:'jpeg'});
-      wp.addImage(id,{tl:{col:colIdx,row:r-1+0.04},ext:{width:Math.round(dim.w*fit),height:Math.round(dim.h*fit)}});
-    }
-  }
-  const buf=await wb.xlsx.writeBuffer();
-  const type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-  return { blob:new Blob([buf],{type}), name:`FPPDPF65_${s.date}_${s.shift}.xlsx`, type };
-}
 async function exportExcel(){
-  const s=curSheet(); if(!s) return;
+  const s=curSheet(); if(!s) return; if(!exportCheck(s)) return;
   try{ const f=await buildXlsxBlob(s); downloadBlob(f.blob,f.name); }
   catch(e){ alert('สร้าง Excel ไม่สำเร็จ: '+e.message); }
 }
@@ -1149,26 +1169,13 @@ function toast(msg,ms){
   if(!t){ t=document.createElement('div'); t.id='toastBar'; t.style='position:fixed;left:50%;bottom:24px;transform:translateX(-50%);max-width:90vw;background:#073e4a;color:#fff;padding:12px 18px;border-radius:14px;font-size:13.5px;z-index:120;box-shadow:0 8px 20px rgba(0,0,0,.25);text-align:center;'; document.body.appendChild(t); }
   t.textContent=msg; t.style.display='block'; clearTimeout(t._h); t._h=setTimeout(()=>{ t.style.display='none'; }, ms||5000);
 }
-function mailSummary(s){
-  const ents=sortedEntries(s), pass=ents.filter(e=>e.result==='pass').length, fail=ents.length-pass;
-  let body=`บันทึกการตรวจสอบ Ratio สินค้า Two tone (FPPDPF65) — แอป v${APP_VERSION}\nวันที่ ${dmy(s.date)}  กะ ${s.shift}\nProduct: ${prodLabel(s)}\nตรวจทั้งหมด ${ents.length} ครั้ง  ผ่าน ${pass}  ไม่ผ่าน ${fail}\nผู้ทวนสอบ: ${s.verifierSig?'เซ็นแล้ว':'ยังไม่เซ็น'}\n`;
-  return { ents, pass, fail, body };
-}
 /*
   ทำไมต้อง 2 จังหวะ: Web Share ต้องถูกเรียก "ทันทีที่แตะ" (user activation หมดอายุใน ~5 วินาที)
   แต่การสร้าง PDF+Excel ใช้เวลาหลายวินาที — ถ้าสร้างแล้วค่อยเรียก share ในแตะเดียวกัน แท็บเล็ต Android จะปฏิเสธ (NotAllowedError)
   → แตะครั้งที่ 1 = เตรียมไฟล์ / แตะครั้งที่ 2 = เรียก share ทันที (ไฟล์พร้อมอยู่แล้ว)
 */
 let emailCache=null;
-function sheetKey(s){ const last=s.entries.length?s.entries[s.entries.length-1].id:''; return [s.id,s.entries.length,last,s.verifierSig?s.verifierSig.d.length:0,$('chkPhotos').checked?1:0].join('|'); }
 function canShareOne(f){ try{ return !!(navigator.canShare && navigator.share && navigator.canShare({files:[f]})); }catch(e){ return false; } }
-function buildCsv(s){
-  const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
-  const rows=[[ 'FPPDPF65 บันทึกการตรวจสอบ Ratio สินค้า Two tone' ],[ 'Date', dmy(s.date) ],[ 'Shift', s.shift ],[ 'Product', prodLabel(s) ],[ 'ผู้ทวนสอบ', s.verifierSig?'เซ็นแล้ว':'ยังไม่เซ็น' ],[],
-    ['เวลา','Code','Line','การตรวจสอบ (Appreance)','หมายเหตุ (Remark)','QC','PD']];
-  sortedEntries(s).forEach(e=>rows.push([e.time,e.code,e.line,e.result==='pass'?'ผ่าน':'ไม่ผ่าน',e.remark,'เซ็นแล้ว','เซ็นแล้ว']));
-  return { blob:new Blob(['\ufeff'+rows.map(r=>r.map(q).join(',')).join('\r\n')],{type:'text/csv'}), name:`FPPDPF65_${s.date}_${s.shift}.csv`, type:'text/csv' };
-}
 // Chromium (Chrome/Edge/Samsung บน Android/คอม) ไม่อนุญาตให้แชร์ไฟล์ .xlsx: canShare ตอบ true แต่ share() ถูกปฏิเสธ (NotAllowedError)
 function xlsxShareBlocked(){ const ua=navigator.userAgent||''; return /Chrome\//.test(ua) && !/iPhone|iPad|iPod|CriOS|EdgiOS/.test(ua); }
 function refreshEmailBtn(){}   // (เก็บไว้เพื่อความเข้ากันได้)
@@ -1251,6 +1258,7 @@ function mailAct(id){
 async function composeEmail(){
   const s=curSheet(); if(!s || emailBusy) return;
   if(!s.entries.length){ toast('ใบนี้ยังไม่มีรายการตรวจ'); return; }
+  if(!exportCheck(s)) return;
   const key=sheetKey(s);
   $('mailModal').classList.add('show');
   if(emailCache && emailCache.key===key){ renderMail(); return; }
@@ -1272,6 +1280,919 @@ async function composeEmail(){
   } finally { emailBusy=false; }
 }
 
+
+/* ========================= ROUNDS (รอบ): ภาพกลุ่ม 1 ภาพ = 1 รอบ • ใส่ผลทีหลัง • QC/PD เซ็นครั้งเดียวต่อรอบ ========================= */
+let activeRoundId = lsGet('twotone_active_round') || null;
+let entryCtx = null;       // {sheetId, roundId, editId}
+let pickCtx = null;        // บริบทของรูปที่กำลังจะถ่าย {sheetId, roundId}
+let P2new = false;         // true = มีการถ่ายรูปโค้ดใหม่ในหน้าต่างนี้ (ตอนแก้ไขจะเขียนทับรูปเดิม)
+let lastCaptureHtml = '';
+const byCreated = (a,b)=> a.createdAt<b.createdAt ? -1 : (a.createdAt>b.createdAt ? 1 : 0);
+function nowIso(){ return new Date().toISOString(); }
+function hhmm(iso){ const d=new Date(iso); return pad(d.getHours())+':'+pad(d.getMinutes()); }
+function oneLine(t){ return String(t||'').replace(/\s*\n\s*/g,' · '); }
+function migrateSheet(s){
+  if(!s.rounds) s.rounds=[];
+  s.entries.forEach(e=>{ if(e.synced && e.imgSynced===undefined) e.imgSynced=true; if(e.result===undefined) e.result=null; });
+}
+function getSheet(id){ return sheets.find(s=>s.id===id); }
+function getRound(s,id){ return (s && id) ? (s.rounds||[]).find(r=>r.id===id) : null; }
+function roundOrder(s){ return (s.rounds||[]).slice().sort(byCreated); }
+function roundEntries(s,r){ return s.entries.filter(e=>e.roundId===r.id).sort(byCreated); }
+function roundNo(s,r){ return roundOrder(s).findIndex(x=>x.id===r.id)+1; }
+function sortedEntries(s){
+  const key=e=>{ const r=getRound(s,e.roundId); return r ? r.createdAt : e.createdAt; };
+  return s.entries.slice().sort((a,b)=>{ const x=key(a), y=key(b); if(x!==y) return x<y?-1:1; return byCreated(a,b); });
+}
+function sigOf(s,e,role){ const r=getRound(s,e.roundId); return r ? r[role+'Sig'] : e[role+'Sig']; }
+function pendingResults(s){ return s.entries.filter(e=>!e.result).length; }
+function unsignedRounds(s){ return (s.rounds||[]).filter(r=>!r.qcSig || !r.pdSig).length; }
+function resultText(e){ return e.result==='pass' ? 'ผ่าน' : (e.result==='fail' ? 'ไม่ผ่าน' : ''); }
+function touchE(e){ e.updatedAt=nowIso(); e.synced=false; }
+function touchR(r){ r.updatedAt=nowIso(); r.synced=false; }
+function activeRound(){
+  const sh=findSheet(readHdr()); if(!sh || !(sh.rounds||[]).length) return null;
+  const r=getRound(sh,activeRoundId) || roundOrder(sh).pop();
+  return { sh, r };
+}
+function setActiveRound(id){ activeRoundId=id; lsSet('twotone_active_round',id); renderCapture(); }
+function rerenderAll(){
+  renderCapture(); updateRemind();
+  if($('section-results').classList.contains('active')) renderResultsTab();
+  if($('section-report').classList.contains('active')) renderReportTab();
+}
+function exportCheck(s){
+  const p=pendingResults(s), u=unsignedRounds(s); if(!p && !u) return true;
+  return confirm('ใบนี้ยัง'+(p?' ไม่ได้ใส่ผล '+p+' รายการ':'')+(p&&u?' และ':'')+(u?' เซ็นไม่ครบ '+u+' รอบ':'')+'\nออกรายงานต่อเลยหรือไม่? (ช่องที่ยังไม่มีข้อมูลจะเว้นว่างในรายงาน)');
+}
+
+/* ========================= TABS ========================= */
+document.querySelectorAll('.itail-tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.itail-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    tab.classList.add('active');
+    $('section-'+tab.dataset.tab).classList.add('active');
+    if(tab.dataset.tab==='capture') renderCapture();
+    if(tab.dataset.tab==='results'){ const hs=findSheet(readHdr()); if(hs) selectedSheetId=hs.id; renderResultsTab(); }
+    if(tab.dataset.tab==='report') renderReportTab();
+  });
+});
+function gotoTab(name){ document.querySelector('.itail-tab[data-tab="'+name+'"]').click(); }
+
+/* ========================= REMIND ========================= */
+function updateRemind(){
+  renderCapture();
+  const box=$('remindBox'); const sh=findSheet(readHdr());
+  if(!sh || (!sh.entries.length && !(sh.rounds||[]).length)){ box.className='remind'; box.textContent='ยังไม่มีการตรวจในใบนี้ — ตรวจทุก 30 นาทีขณะผลิต (เริ่มจากถ่ายภาพกลุ่ม)'; return; }
+  const times=sh.entries.map(e=>e.createdAt).concat((sh.rounds||[]).map(r=>r.createdAt));
+  const last=times.reduce((a,b)=>a>b?a:b);
+  const mins=Math.floor((Date.now()-new Date(last).getTime())/60000);
+  const nx=new Date(new Date(last).getTime()+30*60000);
+  const pend=pendingResults(sh), uns=unsignedRounds(sh);
+  const info=' • '+(sh.rounds||[]).length+' รอบ '+sh.entries.length+' รายการ'+(pend?' • ⏳ รอผล '+pend:'')+(uns?' • ✍️ รอเซ็น '+uns+' รอบ':'');
+  if(mins>=30){ box.className='remind due'; box.textContent='⏰ ครบรอบตรวจแล้ว — ตรวจล่าสุด '+hhmm(last)+' (ผ่านมา '+mins+' นาที)'+info; }
+  else { box.className='remind'; box.textContent='ตรวจล่าสุด '+hhmm(last)+' ('+mins+' นาทีที่แล้ว) • รอบถัดไป ~'+pad(nx.getHours())+':'+pad(nx.getMinutes())+info; }
+}
+
+/* ========================= IMAGE CAPTURE: 'g' = ภาพกลุ่ม (เริ่มรอบ) • 'gr' = ถ่ายภาพกลุ่มใหม่ของรอบเดิม • 'p2' = ภาพโค้ดทีละรายการ ========================= */
+let P2 = null;           // {el, full, thumb}
+let pickTarget = 'g';
+const modalOpen = ()=> $('entryModal').classList.contains('show');
+function pick(target, src, ctx){ pickTarget=target; if(ctx) pickCtx=ctx; (src==='camera' ? $('cameraInput') : $('fileInput')).click(); }
+$('cameraInput').addEventListener('change', e=>handleFile(e.target.files[0]));
+$('fileInput').addEventListener('change', e=>handleFile(e.target.files[0]));
+function addItem(sid,rid,src){ pick('p2',src,{ sheetId:sid, roundId:rid }); }
+function addItemActive(src){ const a=activeRound(); if(!a){ alert('ถ่ายภาพกลุ่มเพื่อเริ่มรอบก่อน'); return; } addItem(a.sh.id,a.r.id,src); }
+
+function handleFile(file){
+  const target=pickTarget, ctx=pickCtx;
+  resetInputs();
+  if(!file) return;
+  if(target==='g'){
+    const h=readHdr();
+    if(!h.sachet && !h.spoon && !h.other){ alert('กรุณาเลือก Product อย่างน้อย 1 รายการก่อน'); return; }
+  }
+  if(target==='p2' && !modalOpen()){
+    const sh=ctx && getSheet(ctx.sheetId);
+    if(!sh || !getRound(sh,ctx.roundId)){ alert('ถ่ายภาพกลุ่มเพื่อเริ่มรอบก่อน'); return; }
+  }
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const img=new Image();
+    img.onload=()=>{
+      if(target==='g') startRound(img);
+      else if(target==='gr') replaceGroup(img,ctx);
+      else {
+        P2={ el:img, full:resizeToDataUrl(img,900,0.72), thumb:resizeToDataUrl(img,200,0.6) }; P2new=true;
+        if(modalOpen()) refreshP2(); else openEntry(ctx);
+      }
+    };
+    img.src=ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+function resetInputs(){ $('cameraInput').value=''; $('fileInput').value=''; }
+function resizeToDataUrl(img, maxW, q){
+  const nw = img.naturalWidth||img.width, nh = img.naturalHeight||img.height;
+  const sc = Math.min(1, maxW/nw);
+  const c = document.createElement('canvas'); c.width=Math.round(nw*sc); c.height=Math.round(nh*sc);
+  c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+  return c.toDataURL('image/jpeg', q);
+}
+
+function startRound(img){
+  if(!hdrTouched){ $('hDate').value=todayStr(); $('hShift').value=getShiftNow(); }
+  const h=readHdr(); let sh=findSheet(h);
+  if(!sh){ sh={ id:uid(), date:h.date, shift:h.shift, sachet:h.sachet, spoon:h.spoon, other:h.other, sachetText:'', otherText:'', verifierSig:null, entries:[], rounds:[] }; sheets.push(sh); }
+  sh.sachetText=h.sachetText; sh.otherText=h.otherText;
+  const now=nowIso();
+  const r={ id:uid(), time:hhmm(now), createdAt:now, updatedAt:now, image:resizeToDataUrl(img,240,0.6), imageFull:resizeToDataUrl(img,1000,0.66),
+            qcSig:null, pdSig:null, synced:false, imgSynced:false };
+  sh.rounds.push(r); activeRoundId=r.id; lsSet('twotone_active_round',r.id); selectedSheetId=sh.id;
+  persist(); syncSoon(); rerenderAll();
+  toast('เริ่มรอบใหม่แล้ว — ถ่ายภาพโค้ดทีละใบได้เลย',4000);
+}
+function replaceGroup(img,ctx){
+  const sh=ctx && getSheet(ctx.sheetId), r=getRound(sh,ctx&&ctx.roundId); if(!r) return;
+  r.image=resizeToDataUrl(img,240,0.6); r.imageFull=resizeToDataUrl(img,1000,0.66); r.imgSynced=false; r.imgAt=nowIso(); touchR(r);
+  persist(); syncSoon(); rerenderAll(); toast('เปลี่ยนภาพกลุ่มของรอบแล้ว',3000);
+}
+function regroup(rid){ const s=curSheet(); if(s) pick('gr','camera',{ sheetId:s.id, roundId:rid }); }
+
+/* ========================= CAPTURE TAB: การ์ดรอบที่กำลังทำ ========================= */
+function renderCapture(){
+  const card=$('roundCard'), a=activeRound();
+  $('startTitle').textContent = a ? 'ถ่ายภาพกลุ่มใหม่ = เริ่มรอบถัดไป' : 'ขั้นที่ 1 — ถ่ายภาพกลุ่ม (เริ่มรอบใหม่)';
+  let html='';
+  if(a){
+    const { sh, r }=a, ents=roundEntries(sh,r), rounds=roundOrder(sh), n=roundNo(sh,r);
+    const pend=ents.filter(e=>!e.result).length, signed=r.qcSig && r.pdSig;
+    html=`<div class="rc-head"><img class="rc-thumb" src="${r.image||''}" onclick="openGroupLightbox('${sh.id}','${r.id}')">
+      <div class="rc-meta"><div class="rc-title">รอบที่ ${n} <span class="rc-time">เริ่ม ${esc(r.time)}</span></div>
+        <div class="rc-badges"><span class="itail-badge itail-badge-info">${ents.length} รายการ</span>${pend?` <span class="itail-badge itail-badge-warning">⏳ รอผล ${pend}</span>`:(ents.length?' <span class="itail-badge itail-badge-success">ใส่ผลครบ</span>':'')}${signed?' <span class="itail-badge itail-badge-success">เซ็นแล้ว</span>':''}</div>
+        ${rounds.length>1?`<select class="itail-select rc-sel" onchange="setActiveRound(this.value)">${rounds.slice().reverse().map(x=>`<option value="${x.id}"${x.id===r.id?' selected':''}>รอบที่ ${roundNo(sh,x)} • ${esc(x.time)} (${roundEntries(sh,x).length} รายการ)</option>`).join('')}</select>`:''}
+      </div></div>
+      ${ents.length?`<div class="rc-list">${ents.map((e,i)=>`<div class="rc-li"><span class="rc-n">${i+1}</span><span class="rc-lc">${esc(oneLine(e.code))}</span><span class="rc-ll">${esc(e.line||'')}</span>${e.result?`<span class="rc-ls ${e.result}">${e.result==='pass'?'✅':'❌'}</span>`:'<span class="rc-ls">⏳</span>'}</div>`).join('')}</div>`:'<div class="capture-hint" style="margin:8px 0;">ยังไม่มีรายการในรอบนี้ — ถ่ายภาพโค้ดใบแรกได้เลย</div>'}
+      <div class="rc-btns"><button class="itail-btn itail-btn-primary" onclick="addItemActive('camera')">📷 ถ่ายภาพโค้ด (รายการที่ ${ents.length+1})</button><button class="itail-btn itail-btn-outline" onclick="addItemActive('file')">🖼️</button></div>
+      <div style="margin-top:8px;"><button class="link-btn" onclick="gotoResults()">ไปใส่ผล / เซ็นชื่อ →</button></div>`;
+  }
+  if(html===lastCaptureHtml) return;
+  lastCaptureHtml=html; card.innerHTML=html; card.style.display=a?'block':'none';
+}
+function gotoResults(){ const a=activeRound(); if(a) selectedSheetId=a.sh.id; gotoTab('results'); }
+
+/* ========================= ENTRY MODAL (ภาพโค้ด + OCR + Line • ผลใส่ตอนนี้หรือทีหลังก็ได้) ========================= */
+let selResult = null;
+function refreshP2(noOcr){
+  cropSel=null; csel.style.display='none';
+  $('p2Empty').style.display = P2 ? 'none' : 'block';
+  $('p2Has').style.display = P2 ? 'block' : 'none';
+  if(P2){ $('modalImg2').src = P2.full; if(!noOcr) runOCR(true); }
+}
+function applyResultUI(){
+  $('btnPass').classList.toggle('selected',selResult==='pass'); $('btnFail').classList.toggle('selected',selResult==='fail');
+  $('remarkLbl').innerHTML = selResult==='fail' ? 'หมายเหตุ Remark (เหตุผลที่ไม่ผ่าน) <span class="req">*</span>' : 'หมายเหตุ Remark';
+}
+function openEntry(ctx, edit){
+  const sh=getSheet(ctx.sheetId), r=getRound(sh,ctx.roundId);
+  entryCtx={ sheetId:ctx.sheetId, roundId:ctx.roundId||null, editId:edit?edit.id:null };
+  cropSel=null; selResult=edit?(edit.result||null):null; P2new=false;
+  $('fCode').value=edit?edit.code:''; $('fTime').value=edit?edit.time:nowTime(); $('fLine').value=edit?(edit.line||''):lsGet(LINE_KEY); $('fRemark').value=edit?(edit.remark||''):'';
+  applyResultUI();
+  const n=r?roundNo(sh,r):0;
+  $('entryTitle').textContent = edit ? 'แก้ไขรายการ / ใส่ผล' : 'เพิ่มรายการ — รอบที่ '+n;
+  $('entryRound').innerHTML = r ? `<img src="${r.image||''}"><div><b>รอบที่ ${n}</b> • เริ่ม ${esc(r.time)}<br><span>${roundEntries(sh,r).length} รายการในรอบนี้</span></div>` : '';
+  $('entryRound').style.display = r ? 'flex' : 'none';
+  $('btnSaveNext').style.display = edit ? 'none' : '';
+  if(edit){
+    const src=edit.image2Full||edit.image2||'';
+    if(src){ const im=new Image(); im.src=src; P2={ el:im, full:src, thumb:edit.image2||src }; } else P2=null;
+    refreshP2(true);
+  } else { refreshP2(); }
+  $('entryModal').classList.add('show');
+  validate();
+}
+function closeEntry(){ ocrToken++; $('entryModal').classList.remove('show'); resetInputs(); P2=null; P2new=false; entryCtx=null; }
+function selectResult(t){ selResult = (selResult===t) ? null : t; applyResultUI(); validate(); }
+['fCode','fRemark','fTime'].forEach(id=>$(id).addEventListener('input',validate));
+function validate(){
+  let ok = $('fCode').value.trim().length>0 && !!$('fTime').value;
+  if(selResult==='fail') ok = ok && $('fRemark').value.trim().length>0;
+  $('btnSave').disabled = !ok; $('btnSaveNext').disabled = !ok;
+}
+function saveEntry(next){
+  const c=entryCtx; if(!c) return; const sh=getSheet(c.sheetId); if(!sh){ closeEntry(); return; }
+  const line=$('fLine').value.trim(); lsSet(LINE_KEY,line);
+  const vals={ time:$('fTime').value, code:$('fCode').value.trim(), line, result:selResult, remark:$('fRemark').value.trim() };
+  if(c.editId){
+    const e=sh.entries.find(x=>x.id===c.editId); if(!e){ closeEntry(); return; }
+    Object.assign(e,vals); if(P2new && P2){ e.image2=P2.thumb; e.image2Full=P2.full; e.imgSynced=false; e.imgAt=nowIso(); } touchE(e);
+  } else {
+    const now=nowIso();
+    sh.entries.push(Object.assign({ id:uid(), roundId:c.roundId, image:null, imageFull:null, image2:P2?P2.thumb:null, image2Full:P2?P2.full:null,
+      qcSig:null, pdSig:null, createdAt:now, updatedAt:now, synced:false, imgSynced:false }, vals));
+  }
+  if(c.roundId){ activeRoundId=c.roundId; lsSet('twotone_active_round',c.roundId); }
+  const ctx={ sheetId:c.sheetId, roundId:c.roundId };
+  const adding=!c.editId;
+  closeEntry();
+  if(next && adding) pick('p2','camera',ctx);       // เรียกตรงๆ ในจังหวะที่ผู้ใช้กดปุ่ม (ไม่งั้นมือถือไม่ยอมเปิดกล้อง)
+  persist(); syncSoon(); rerenderAll();
+  if(!next) toast(adding?'บันทึกรายการแล้ว':'แก้ไขรายการแล้ว',2500);
+}
+
+/* ========================= SIGNATURE PAD ========================= */
+let sigCb=null, sigDown=false, sigLast=null, sigHas=false;
+const sc = $('sigCanvas'); const sctx = sc.getContext('2d');
+function openSigPad(title, cb){
+  sigCb=cb; $('sigTitle').textContent=title; $('sigModal').classList.add('show');
+  requestAnimationFrame(()=>{
+    const r=sc.getBoundingClientRect(), dpr=window.devicePixelRatio||1;
+    sc.width=Math.round(r.width*dpr); sc.height=Math.round(r.height*dpr); sigClear();
+  });
+}
+function sigClear(){ sctx.clearRect(0,0,sc.width,sc.height); sigHas=false; }
+function sigCancel(){ $('sigModal').classList.remove('show'); sigCb=null; }
+function sigPos(e){ const r=sc.getBoundingClientRect(); return { x:(e.clientX-r.left)*sc.width/r.width, y:(e.clientY-r.top)*sc.height/r.height }; }
+sc.addEventListener('pointerdown', e=>{ sc.setPointerCapture(e.pointerId); sigDown=true; sigLast=sigPos(e); sigHas=true;
+  sctx.fillStyle='#111'; sctx.beginPath(); sctx.arc(sigLast.x,sigLast.y,1.4*(window.devicePixelRatio||1),0,7); sctx.fill(); e.preventDefault(); });
+sc.addEventListener('pointermove', e=>{
+  if(!sigDown) return; const p=sigPos(e);
+  sctx.strokeStyle='#111'; sctx.lineWidth=2.6*(window.devicePixelRatio||1); sctx.lineCap='round'; sctx.lineJoin='round';
+  sctx.beginPath(); sctx.moveTo(sigLast.x,sigLast.y); sctx.lineTo(p.x,p.y); sctx.stroke(); sigLast=p; e.preventDefault();
+});
+['pointerup','pointercancel'].forEach(ev=>sc.addEventListener(ev,()=>{ sigDown=false; }));
+function sigConfirm(){
+  if(!sigHas){ alert('กรุณาเซ็นชื่อก่อน'); return; }
+  const id=sctx.getImageData(0,0,sc.width,sc.height), d=id.data;
+  let x0=sc.width,y0=sc.height,x1=0,y1=0;
+  for(let y=0;y<sc.height;y++) for(let x=0;x<sc.width;x++){ if(d[(y*sc.width+x)*4+3]>20){ if(x<x0)x0=x; if(x>x1)x1=x; if(y<y0)y0=y; if(y>y1)y1=y; } }
+  const p=6; x0=Math.max(0,x0-p); y0=Math.max(0,y0-p); x1=Math.min(sc.width-1,x1+p); y1=Math.min(sc.height-1,y1+p);
+  const cw2=x1-x0+1, ch2=y1-y0+1, k=Math.min(1, 300/cw2, 100/ch2);
+  const o=document.createElement('canvas'); o.width=Math.max(1,Math.round(cw2*k)); o.height=Math.max(1,Math.round(ch2*k));
+  o.getContext('2d').drawImage(sc,x0,y0,cw2,ch2,0,0,o.width,o.height);
+  const sig={ d:o.toDataURL('image/png'), w:o.width, h:o.height };
+  const cb=sigCb; sigCancel(); if(cb) cb(sig);
+}
+
+/* ========================= RESULTS TAB: ใส่ผลทีหลัง + เซ็น QC/PD ต่อรอบ ========================= */
+let selectedSheetId = null;
+function prodLabel(s){
+  const p=[]; if(s.sachet) p.push('Sachet 2.2 Fl.'+(s.sachetText?' '+s.sachetText:'')); if(s.spoon) p.push('Spoon'); if(s.other) p.push(s.otherText||'อื่นๆ');
+  return p.join(', ');
+}
+function curSheet(){ return sheets.find(s=>s.id===selectedSheetId); }
+function sheetList(){ return sheets.slice().sort((a,b)=> (b.date+b.shift)>(a.date+a.shift)?1:-1); }
+function fillSheetSelect(sel){
+  const list=sheetList(); sel.innerHTML='';
+  list.forEach(s=>{ const o=document.createElement('option'); o.value=s.id; o.textContent=`${dmy(s.date)} • ${s.shift} • ${prodLabel(s)} (${(s.rounds||[]).length} รอบ/${s.entries.length})`; sel.appendChild(o); });
+  if(list.length){ if(!list.find(s=>s.id===selectedSheetId)) selectedSheetId=list[0].id; sel.value=selectedSheetId; }
+  return list;
+}
+$('rsSheet').addEventListener('change',e=>{ selectedSheetId=e.target.value; renderResultsTab(); });
+function renderResultsTab(){
+  const list=fillSheetSelect($('rsSheet'));
+  $('rsEmpty').style.display=list.length?'none':'block'; $('rsBody').style.display=list.length?'block':'none';
+  if(!list.length) return;
+  const s=curSheet(), pass=s.entries.filter(e=>e.result==='pass').length, fl=s.entries.filter(e=>e.result==='fail').length, pend=pendingResults(s);
+  $('rsStats').innerHTML=`<span class="itail-badge itail-badge-info">${(s.rounds||[]).length} รอบ • ${s.entries.length} รายการ</span> <span class="itail-badge itail-badge-success">ผ่าน ${pass}</span> <span class="itail-badge itail-badge-danger">ไม่ผ่าน ${fl}</span>${pend?` <span class="itail-badge itail-badge-warning">⏳ รอผล ${pend}</span>`:''}`;
+  const rounds=roundOrder(s).reverse();
+  $('rsRounds').innerHTML = rounds.length ? rounds.map(r=>rsRoundHtml(s,r)).join('') : '<div class="itail-card empty-row">ใบนี้ยังไม่มีรอบ — ไปแท็บ "ตรวจ / บันทึก" เพื่อถ่ายภาพกลุ่ม</div>';
+  const leg=s.entries.filter(e=>!e.roundId).length;
+  $('rsLegacy').textContent = leg ? `มีรายการแบบเดิม ${leg} รายการ (บันทึกจากเวอร์ชันก่อนมีระบบรอบ) — ดู/ลบได้ในแท็บใบรายงาน` : '';
+}
+function sigSlot(r,role,label){
+  const sg=r[role+'Sig'];
+  return `<div class="sig-slot${sg?' done':''}"><div class="lbl">${label}</div>${sg?`<img style="display:block" src="${sg.d}">`:''}<button class="itail-btn itail-btn-outline" onclick="signRound('${r.id}','${role}')">✍️ ${sg?'เซ็นใหม่':'เซ็น'}</button></div>`;
+}
+function rsRoundHtml(s,r){
+  const ents=roundEntries(s,r), n=roundNo(s,r), pend=ents.filter(e=>!e.result).length, signed=r.qcSig&&r.pdSig;
+  const items=ents.map((e,i)=>{
+    const th=e.image2||e.image;
+    return `<div class="rc-item"><span class="rc-n">${i+1}</span>${th?`<img class="thumb" src="${th}" onclick="openLightbox('${e.id}',${e.image2?2:1})">`:'<div class="thumb ph"></div>'}
+      <div class="rc-info"><div class="rc-code">${esc(e.code)}</div><div class="rc-sub">${esc(e.time)} • Line ${esc(e.line||'-')}${e.remark?' • '+esc(e.remark):''}</div></div>
+      <div class="rc-res">${e.result?`<span class="itail-badge ${e.result==='pass'?'itail-badge-success':'itail-badge-danger'}">${resultText(e)}</span>`:`<button class="mini pass" onclick="setResult('${e.id}','pass')">✅</button><button class="mini fail" onclick="quickFail('${e.id}')">❌</button>`}
+        <button class="link-btn" onclick="editEntry('${e.id}')">แก้ไข</button></div></div>`;
+  }).join('');
+  return `<div class="itail-card card-gap round-card">
+    <div class="rc-head"><img class="rc-thumb" src="${r.image||''}" onclick="openGroupLightbox('${s.id}','${r.id}')">
+      <div class="rc-meta"><div class="rc-title">รอบที่ ${n} <span class="rc-time">เริ่ม ${esc(r.time)}</span></div>
+        <div class="rc-badges"><span class="itail-badge itail-badge-info">${ents.length} รายการ</span>${pend?` <span class="itail-badge itail-badge-warning">⏳ รอผล ${pend}</span>`:(ents.length?' <span class="itail-badge itail-badge-success">ใส่ผลครบ</span>':'')} ${signed?'<span class="itail-badge itail-badge-success">เซ็นแล้ว</span>':'<span class="itail-badge itail-badge-warning">✍️ รอเซ็น</span>'}</div></div></div>
+    <div class="rc-items">${items||'<div class="capture-hint" style="margin:8px 0;">ยังไม่มีรายการในรอบนี้</div>'}</div>
+    <div class="rc-btns"><button class="itail-btn itail-btn-outline" onclick="addItem('${s.id}','${r.id}','camera')">➕ เพิ่มรายการ</button>${pend?`<button class="itail-btn itail-btn-outline" onclick="passRest('${r.id}')">✅ ผ่านที่เหลือ (${pend})</button>`:''}</div>
+    <div class="field" style="margin-top:12px;"><label class="itail-label">ผู้ตรวจสอบ (เซ็นครั้งเดียวต่อรอบ)</label><div class="sig-row">${sigSlot(r,'qc','QC')}${sigSlot(r,'pd','PD')}</div></div>
+    <div class="rc-foot"><button class="link-btn" onclick="regroup('${r.id}')">📷 ถ่ายภาพกลุ่มใหม่</button><button class="link-btn danger" onclick="deleteRound('${r.id}')">🗑️ ลบรอบนี้</button></div>
+  </div>`;
+}
+function findEntry(id){ const s=curSheet(); return s && s.entries.find(e=>e.id===id); }
+function setResult(id,res){ const e=findEntry(id); if(!e) return; e.result=res; touchE(e); persist(); syncSoon(); rerenderAll(); }
+function editEntry(id,preset){
+  const s=curSheet(), e=findEntry(id); if(!e) return;
+  openEntry({ sheetId:s.id, roundId:e.roundId }, e);
+  if(preset){ selResult=preset; applyResultUI(); validate(); setTimeout(()=>$('fRemark').focus(),80); }
+}
+function quickFail(id){ editEntry(id,'fail'); }
+function passRest(rid){
+  const s=curSheet(), r=getRound(s,rid); if(!r) return;
+  const p=roundEntries(s,r).filter(e=>!e.result); if(!p.length) return;
+  if(!confirm('ตั้งผล "ผ่าน" ให้ '+p.length+' รายการที่ยังไม่ใส่ผลในรอบนี้ ใช่ไหม?')) return;
+  p.forEach(e=>{ e.result='pass'; touchE(e); }); persist(); syncSoon(); rerenderAll();
+}
+function signRound(rid,role){
+  const s=curSheet(), r=getRound(s,rid); if(!r) return;
+  const pend=roundEntries(s,r).filter(e=>!e.result).length;
+  if(pend && !confirm('รอบนี้ยังมี '+pend+' รายการที่ไม่ได้ใส่ผล — เซ็นต่อเลยไหม?')) return;
+  openSigPad(role==='qc'?'ลายเซ็นผู้ตรวจสอบ QC (ทั้งรอบ)':'ลายเซ็นผู้ตรวจสอบ PD (ทั้งรอบ)', sig=>{ r[role+'Sig']=sig; touchR(r); persist(); syncSoon(); rerenderAll(); });
+}
+function deleteRound(rid){
+  const s=curSheet(), r=getRound(s,rid); if(!r) return;
+  const ents=roundEntries(s,r);
+  if(!confirm('ลบรอบนี้ (รวม '+ents.length+' รายการในรอบ) หรือไม่?'+(syncOn()?'\n(จะลบบน Firebase ด้วย และเครื่องอื่นจะเห็นว่าถูกลบ)':''))) return;
+  ents.forEach(e=>{ if(e.synced) queueDelete('entry',e.id); }); if(r.synced) queueDelete('round',r.id);
+  s.entries=s.entries.filter(e=>e.roundId!==rid); s.rounds=s.rounds.filter(x=>x.id!==rid);
+  if(activeRoundId===rid){ activeRoundId=null; lsSet('twotone_active_round',''); }
+  persist(); rerenderAll();
+}
+function openGroupLightbox(sid,rid){ const r=getRound(getSheet(sid),rid); if(!r) return; $('lightboxImg').src=r.imageFull||r.image; $('lightbox').classList.add('show'); }
+
+/* ========================= REPORT TAB ========================= */
+function renderReportTab(){
+  const list=fillSheetSelect($('sheetSelect')); const has=list.length>0;
+  $('reportEmpty').style.display=has?'none':'block';
+  $('sheetBody').style.display=has?'block':'none';
+  $('previewWrap').style.display=has?'block':'none';
+  $('entriesCard').style.display=has?'block':'none';
+  if(!has){ selectedSheetId=null; return; }
+  renderSheet();
+}
+$('sheetSelect').addEventListener('change',e=>{ selectedSheetId=e.target.value; renderSheet(); });
+
+function renderSheet(){
+  const s=curSheet(); if(!s) return;
+  const pass=s.entries.filter(e=>e.result==='pass').length, fail=s.entries.filter(e=>e.result==='fail').length, pend=pendingResults(s);
+  $('stTotal').textContent=(s.rounds||[]).length+' รอบ • '+s.entries.length+' รายการ'; $('stPass').textContent='ผ่าน '+pass; $('stFail').textContent='ไม่ผ่าน '+fail;
+  $('stPend').textContent=pend?'รอผล '+pend:''; $('stPend').style.display=pend?'inline-block':'none';
+  if(s.verifierSig){ $('verifImg').src=s.verifierSig.d; $('verifImg').style.display='block'; $('verifNone').style.display='none'; }
+  else { $('verifImg').style.display='none'; $('verifNone').style.display='inline-block'; }
+  renderPreview(); renderEntries(); if(typeof refreshEmailBtn==='function') refreshEmailBtn();
+}
+function renderPreview(){
+  const s=curSheet(); const wrap=$('previewWrap'); wrap.innerHTML='';
+  const html=buildPages(s,false);
+  const scale=Math.min(1,(wrap.clientWidth-20)/794);
+  html.forEach(h=>{
+    const holder=document.createElement('div'); holder.className='page-holder';
+    holder.style.width=(794*scale)+'px'; holder.style.height=(1123*scale)+'px';
+    holder.innerHTML=h; const pg=holder.firstElementChild; pg.style.transform=`scale(${scale})`;
+    wrap.appendChild(holder);
+  });
+}
+window.addEventListener('resize',()=>{ if($('section-report').classList.contains('active') && curSheet()) renderPreview(); });
+function renderEntries(){
+  const s=curSheet(); const b=$('entriesBody'); b.innerHTML='';
+  sortedEntries(s).forEach(e=>{
+    const r=getRound(s,e.roundId), tr=document.createElement('tr');
+    const res = e.result==='pass' ? '<span class="itail-badge itail-badge-success">ผ่าน</span>' : (e.result==='fail' ? '<span class="itail-badge itail-badge-danger">ไม่ผ่าน</span>' : '<span class="itail-badge itail-badge-warning">รอผล</span>');
+    tr.innerHTML=`<td>${r?roundNo(s,r):'-'}</td><td>${e.image?`<img class="thumb" src="${e.image}" onclick="openLightbox('${e.id}',1)">`:''}${e.image2?`<img class="thumb thumb2" src="${e.image2}" onclick="openLightbox('${e.id}',2)">`:''}</td><td>${esc(e.time)}</td><td style="font-size:12px;white-space:pre-line;">${esc(e.code)}</td><td>${esc(e.line||'-')}</td>
+    <td>${res}</td><td>${esc(e.remark||'-')}</td>
+    <td><button class="link-btn danger" onclick="deleteEntry('${e.id}')">ลบ</button></td>`;
+    b.appendChild(tr);
+  });
+}
+function openLightbox(id,n){ const s=curSheet(); const e=s&&s.entries.find(x=>x.id===id); if(!e) return; const src=(n===2?(e.image2Full||e.image2):(e.imageFull||e.image)); if(!src) return; $('lightboxImg').src=src; $('lightbox').classList.add('show'); }
+function deleteEntry(id){ if(!confirm('ลบรายการนี้หรือไม่?')) return; const s=curSheet(); const ex=s.entries.find(e=>e.id===id); if(ex&&ex.synced) queueDelete('entry',id); s.entries=s.entries.filter(e=>e.id!==id); persist(); rerenderAll(); }
+function deleteSheet(){ if(!confirm('ลบทั้งใบบันทึกนี้ (รวมทุกรอบ/รายการ) หรือไม่?'+(syncOn()?'\n(จะลบบน Firebase ด้วย และเครื่องอื่นจะเห็นว่าถูกลบ)':''))) return; const ds=curSheet(); if(ds){ ds.entries.forEach(e=>{ if(e.synced) queueDelete('entry',e.id); }); (ds.rounds||[]).forEach(r=>{ if(r.synced) queueDelete('round',r.id); }); if(ds.syncSig) queueDelete('sheet',skey(ds)); } sheets=sheets.filter(s=>s.id!==selectedSheetId); persist(); selectedSheetId=null; rerenderAll(); }
+
+/* ========================= REPORT FORM HTML (A4, matches FPPDPF65) ========================= */
+function formPage(s, pageIdx, total, rows){
+  const cb=on=>`<span class="cb${on?' on':''}"></span>`;
+  const sigImg=(sg,h)=> sg ? `<img src="${sg.d}" style="max-height:${h}px">` : '';
+  let body='', i=0;
+  while(i<30){
+    const e=rows[i];
+    if(!e){ body+='<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>'; i++; continue; }
+    const r=getRound(s,e.roundId);
+    let span=1;
+    if(r){ while(i+span<30 && rows[i+span] && rows[i+span].roundId===e.roundId) span++; }
+    for(let k=0;k<span;k++){
+      const x=rows[i+k];
+      body+=`<tr${k===0&&r?' class="rpt-r0"':''}><td>${esc(x.time)}</td><td class="code">${esc(x.code)}</td><td>${esc(x.line)}</td>
+        <td class="${x.result==='fail'?'rpt-fail':''}">${resultText(x)}</td><td>${esc(x.remark)}</td>`;
+      if(r){ if(k===0) body+=`<td rowspan="${span}">${sigImg(r.qcSig,Math.min(56,span*22))}</td><td rowspan="${span}">${sigImg(r.pdSig,Math.min(56,span*22))}</td>`; }
+      else body+=`<td>${sigImg(x.qcSig,20)}</td><td>${sigImg(x.pdSig,20)}</td>`;
+      body+='</tr>';
+    }
+    i+=span;
+  }
+  return `<div class="rpt-page">
+    <table class="rpt-head"><tr>
+      <td style="width:190px" class="rpt-logo"><b>✦</b> i-TAIL CORPORATION PCL.</td>
+      <td class="rpt-title">บันทึกการตรวจสอบ Ratio สินค้า Two tone</td>
+      <td style="width:170px;white-space:nowrap;font-size:11px" class="rpt-code">FPPDPF65-0-25/09/26</td></tr></table>
+    <div class="rpt-info">
+      <span>Date : <span class="ul" style="min-width:110px">${dmy(s.date)}</span></span>
+      <span>Shift : ${cb(s.shift==='DS')}DS ${cb(s.shift==='NS')}NS</span>
+      <span>Product : ${cb(s.sachet)}Sachet 2.2 Fl. <span class="ul" style="min-width:40px">${esc(s.sachetText)}</span> ${cb(s.spoon)}Spoon ${cb(s.other)}<span class="ul" style="min-width:60px">${esc(s.other?s.otherText:'')}</span></span>
+    </div>
+    <table class="rpt-tbl">
+      <colgroup><col style="width:66px"><col style="width:158px"><col style="width:70px"><col style="width:108px"><col style="width:112px"><col style="width:112px"><col style="width:112px"></colgroup>
+      <thead>
+        <tr><th rowspan="2">เวลา</th><th rowspan="2">Code</th><th rowspan="2">Line</th><th>การตรวจสอบ<small>Appreance</small></th><th>หมายเหตุ<small>Remark</small></th><th colspan="2">ผู้ตรวจสอบ</th></tr>
+        <tr><th style="font-size:10px">&nbsp;</th><th style="font-size:10px">&nbsp;</th><th style="font-size:10.5px">QC</th><th style="font-size:10.5px">PD</th></tr>
+      </thead>
+      <tbody>${body}</tbody>
+    </table>
+    <div class="rpt-note">หมายเหตุ : ขณะผลิตสินค้า ตรวจเช็คการเหลื่อมของสินค้า Two tone ความถี่ทุก 30 นาที</div>
+    ${total>1?`<div class="rpt-pg">หน้า ${pageIdx+1}/${total}</div>`:''}
+    <div class="rpt-foot"><div class="sigbox">${s.verifierSig?`<img src="${s.verifierSig.d}">`:''}</div>ผู้ทวนสอบ PD. Leader up</div>
+  </div>`;
+}
+function codeCell(e){
+  const src=e.image2Full||e.image2;
+  return `<div class="photo-cell"><div class="pp">${e.image?`<img src="${e.imageFull||e.image}">`:''}${src?`<img src="${src}">`:'<div class="noimg">ไม่มีภาพโค้ด</div>'}</div>${esc(e.time)} • ${esc(oneLine(e.code))}<br>${e.result==='pass'?'ผ่าน':(e.result==='fail'?'<b style="color:#c00">ไม่ผ่าน</b>':'<i>รอผล</i>')}${e.line?' • '+esc(e.line):''}</div>`;
+}
+function photoPage(s,p,idx,total){
+  const head = p.legacy ? 'รายการแบบเดิม (รูปผลิตภัณฑ์ + รูปโค้ด)' : 'รอบที่ '+roundNo(s,p.r)+' • เริ่ม '+esc(p.r.time)+(p.first?'':' (ต่อ)');
+  return `<div class="rpt-page"><div style="font-weight:700;font-size:14px;">ภาพถ่ายประกอบ — ${dmy(s.date)} • ${s.shift} • ${esc(prodLabel(s))}</div>
+    <div style="font-weight:600;font-size:12.5px;margin-top:4px;">${head}</div>
+    ${(!p.legacy && p.first)?`<div class="group-photo"><img src="${p.r.imageFull||p.r.image||''}"></div>`:''}
+    <div class="photo-grid">${p.ents.map(codeCell).join('')}</div>
+    <div class="rpt-pg" style="bottom:30px">ภาพถ่าย ${idx+1}/${total}</div></div>`;
+}
+function photoPages(s){
+  const out=[];
+  roundOrder(s).forEach(r=>{ const ents=roundEntries(s,r); let i=0, first=true; do{ const take=first?8:12; out.push({ r, first, ents:ents.slice(i,i+take) }); i+=take; first=false; }while(i<ents.length); });
+  const leg=s.entries.filter(e=>!e.roundId).sort(byCreated); for(let i=0;i<leg.length;i+=10) out.push({ legacy:true, ents:leg.slice(i,i+10) });
+  return out.map((p,idx)=>photoPage(s,p,idx,out.length));
+}
+function buildPages(s, withPhotos){
+  const ents=sortedEntries(s); const n=Math.max(1,Math.ceil(ents.length/30)); const out=[];
+  for(let i=0;i<n;i++) out.push(formPage(s,i,n,ents.slice(i*30,i*30+30)));
+  if(withPhotos && (ents.length || (s.rounds||[]).length)) photoPages(s).forEach(h=>out.push(h));
+  return out;
+}
+
+/* ========================= EXPORT: EXCEL (ใบบันทึก + ภาพถ่าย + ภาพกลุ่ม) ========================= */
+async function buildXlsxBlob(s){
+  await loadLib('lib-exceljs');
+  const ents=sortedEntries(s);
+  const wb=new ExcelJS.Workbook(); wb.creator='i-Tail Two tone QC v'+APP_VERSION; wb.description='FPPDPF65 — สร้างโดยแอป v'+APP_VERSION; const ws=wb.addWorksheet('ใบบันทึก',{pageSetup:{paperSize:9,orientation:'portrait',fitToPage:true,fitToWidth:1,fitToHeight:0}});
+  ws.columns=[{width:9},{width:34},{width:11},{width:14},{width:26},{width:19},{width:19}];
+  const thin={style:'thin',color:{argb:'FF000000'}}, bd={top:thin,left:thin,bottom:thin,right:thin};
+  ws.mergeCells('A1:G1'); ws.getCell('A1').value='i-TAIL CORPORATION PCL.  |  บันทึกการตรวจสอบ Ratio สินค้า Two tone  |  FPPDPF65-0-25/09/26';
+  ws.getCell('A1').font={bold:true,size:13}; ws.getCell('A1').alignment={horizontal:'center',vertical:'middle'}; ws.getRow(1).height=30;
+  ws.mergeCells('A2:G2'); ws.getCell('A2').value=`Date : ${dmy(s.date)}     Shift : ${s.shift}     Product : ${prodLabel(s)}`; ws.getCell('A2').font={bold:true}; ws.getRow(2).height=22;
+  const hdr=['เวลา','Code','Line','การตรวจสอบ (Appreance)','หมายเหตุ (Remark)','QC','PD'];
+  const hr=ws.getRow(3); hdr.forEach((t,i)=>{ const c=hr.getCell(i+1); c.value=t; c.font={bold:true}; c.alignment={horizontal:'center',vertical:'middle',wrapText:true}; c.border=bd; c.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFE3EEF0'}}; }); hr.height=30;
+  const total=Math.max(30,ents.length);
+  const addSig=(sg,col0,rowTop,span)=>{
+    if(!sg) return;
+    const fit=Math.min(100/sg.w,(span*34-8)/sg.h,1.5); const id=wb.addImage({base64:sg.d.split(',')[1],extension:'png'});
+    ws.addImage(id,{tl:{col:col0+0.08,row:rowTop-1+Math.floor((span-1)/2)+0.1},ext:{width:Math.round(sg.w*fit),height:Math.round(sg.h*fit)}});
+  };
+  for(let i=0;i<total;i++){
+    const r=4+i, row=ws.getRow(r); row.height=34; const e=ents[i];
+    for(let c=1;c<=7;c++){ const cell=row.getCell(c); cell.border=bd; cell.alignment={horizontal:'center',vertical:'middle',wrapText:true}; }
+    if(!e) continue;
+    row.getCell(1).value=e.time; row.getCell(2).value=e.code; row.getCell(3).value=e.line; row.getCell(4).value=resultText(e);
+    if(e.result==='fail') row.getCell(4).font={bold:true,color:{argb:'FFCC0000'}};
+    row.getCell(5).value=e.remark;
+  }
+  // ลายเซ็น: ต่อรอบ = รวมเซลล์ทั้งรอบแล้วเซ็นครั้งเดียว / รายการเดิม = ต่อแถว
+  let i=0;
+  while(i<ents.length){
+    const e=ents[i], rd=getRound(s,e.roundId); let span=1;
+    if(rd){ while(i+span<ents.length && ents[i+span].roundId===e.roundId) span++; }
+    const rTop=4+i;
+    if(rd){
+      if(span>1){ ws.mergeCells(rTop,6,rTop+span-1,6); ws.mergeCells(rTop,7,rTop+span-1,7); }
+      addSig(rd.qcSig,5,rTop,span); addSig(rd.pdSig,6,rTop,span);
+    } else { addSig(e.qcSig,5,rTop,1); addSig(e.pdSig,6,rTop,1); }
+    i+=span;
+  }
+  const fr=4+total+1;
+  ws.mergeCells(`E${fr+2}:G${fr+2}`); ws.getCell(`E${fr+2}`).value='ผู้ทวนสอบ PD. Leader up'; ws.getCell(`E${fr+2}`).alignment={horizontal:'center'};
+  ws.getRow(fr).height=40;
+  if(s.verifierSig){ const sg=s.verifierSig, fit=Math.min(140/sg.w,38/sg.h,1.5); const id=wb.addImage({base64:sg.d.split(',')[1],extension:'png'});
+    ws.addImage(id,{tl:{col:5.2,row:fr-1+0.1},ext:{width:Math.round(sg.w*fit),height:Math.round(sg.h*fit)}}); }
+
+  const wp=wb.addWorksheet('ภาพถ่าย'); wp.columns=[{width:8},{width:7},{width:9},{width:34},{width:12},{width:10},{width:32},{width:32}];
+  ['ลำดับ','รอบ','เวลา','Code','Line','ผล','ภาพผลิตภัณฑ์ (รายการเดิม)','ภาพโค้ด'].forEach((t,k)=>{ const c=wp.getRow(1).getCell(k+1); c.value=t; c.font={bold:true}; c.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFE3EEF0'}}; c.border=bd; c.alignment={horizontal:'center',wrapText:true}; });
+  for(let k=0;k<ents.length;k++){
+    const e=ents[k], r=k+2, row=wp.getRow(r), rd=getRound(s,e.roundId); row.height=120;
+    [k+1,rd?roundNo(s,rd):'-',e.time,e.code,e.line,resultText(e)].forEach((v,q)=>{ const c=row.getCell(q+1); c.value=v; c.border=bd; c.alignment={horizontal:'center',vertical:'middle',wrapText:true}; });
+    row.getCell(7).border=bd; row.getCell(8).border=bd;
+    for(const [src,colIdx] of [[e.imageFull||e.image,6.05],[e.image2Full||e.image2,7.05]]){
+      if(!src) continue;
+      const dim=await imgSize(src), fit=Math.min(200/dim.w,112/dim.h);
+      const id=wb.addImage({base64:src.split(',')[1],extension:'jpeg'});
+      wp.addImage(id,{tl:{col:colIdx,row:r-1+0.04},ext:{width:Math.round(dim.w*fit),height:Math.round(dim.h*fit)}});
+    }
+  }
+  const rds=roundOrder(s);
+  if(rds.length){
+    const wg=wb.addWorksheet('ภาพกลุ่ม'); wg.columns=[{width:8},{width:9},{width:12},{width:62}];
+    ['รอบ','เริ่มเวลา','จำนวนรายการ','ภาพกลุ่ม'].forEach((t,k)=>{ const c=wg.getRow(1).getCell(k+1); c.value=t; c.font={bold:true}; c.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFE3EEF0'}}; c.border=bd; c.alignment={horizontal:'center'}; });
+    for(let k=0;k<rds.length;k++){
+      const rd=rds[k], r=k+2, row=wg.getRow(r); row.height=200;
+      [k+1,rd.time,roundEntries(s,rd).length].forEach((v,q)=>{ const c=row.getCell(q+1); c.value=v; c.border=bd; c.alignment={horizontal:'center',vertical:'middle'}; });
+      row.getCell(4).border=bd;
+      const src=rd.imageFull||rd.image; if(!src) continue;
+      const dim=await imgSize(src), fit=Math.min(400/dim.w,192/dim.h);
+      const id=wb.addImage({base64:src.split(',')[1],extension:'jpeg'});
+      wg.addImage(id,{tl:{col:3.05,row:r-1+0.03},ext:{width:Math.round(dim.w*fit),height:Math.round(dim.h*fit)}});
+    }
+  }
+  const buf=await wb.xlsx.writeBuffer();
+  const type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+  return { blob:new Blob([buf],{type}), name:`FPPDPF65_${s.date}_${s.shift}.xlsx`, type };
+}
+function mailSummary(s){
+  const ents=sortedEntries(s), pass=ents.filter(e=>e.result==='pass').length, fail=ents.filter(e=>e.result==='fail').length, pend=ents.length-pass-fail;
+  let body=`บันทึกการตรวจสอบ Ratio สินค้า Two tone (FPPDPF65) — แอป v${APP_VERSION}\nวันที่ ${dmy(s.date)}  กะ ${s.shift}\nProduct: ${prodLabel(s)}\nตรวจทั้งหมด ${(s.rounds||[]).length} รอบ ${ents.length} รายการ  ผ่าน ${pass}  ไม่ผ่าน ${fail}${pend?'  รอผล '+pend:''}\nผู้ทวนสอบ: ${s.verifierSig?'เซ็นแล้ว':'ยังไม่เซ็น'}\n`;
+  return { ents, pass, fail, body };
+}
+function sheetKey(s){
+  const sg=x=>x?x.d.length:0;
+  return [s.id, s.entries.map(e=>e.id+':'+(e.result||'')+':'+(e.updatedAt||'')).join(','), (s.rounds||[]).map(r=>r.id+':'+sg(r.qcSig)+':'+sg(r.pdSig)+':'+(r.updatedAt||'')).join(','), sg(s.verifierSig), $('chkPhotos').checked?1:0].join('|');
+}
+function buildCsv(s){
+  const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+  const rows=[[ 'FPPDPF65 บันทึกการตรวจสอบ Ratio สินค้า Two tone' ],[ 'Date', dmy(s.date) ],[ 'Shift', s.shift ],[ 'Product', prodLabel(s) ],[ 'ผู้ทวนสอบ', s.verifierSig?'เซ็นแล้ว':'ยังไม่เซ็น' ],[],
+    ['รอบ','เวลา','Code','Line','การตรวจสอบ (Appreance)','หมายเหตุ (Remark)','QC','PD']];
+  sortedEntries(s).forEach(e=>{ const r=getRound(s,e.roundId); rows.push([r?roundNo(s,r):'-',e.time,e.code,e.line,resultText(e),e.remark,sigOf(s,e,'qc')?'เซ็นแล้ว':'ยังไม่เซ็น',sigOf(s,e,'pd')?'เซ็นแล้ว':'ยังไม่เซ็น']); });
+  return { blob:new Blob(['﻿'+rows.map(r=>r.map(q).join(',')).join('\r\n')],{type:'text/csv'}), name:`FPPDPF65_${s.date}_${s.shift}.csv`, type:'text/csv' };
+}
+
+/* ========================= CLOUD SYNC (Firebase: Firestore + Anonymous Auth) =========================
+   หลักคิด: หน้าจอทุกหน้าอ่านจาก IndexedDB เท่านั้น — Firestore เป็น "ท่อ sync" ไปมา (เน็ตหลุดก็กรอกได้ พอเน็ตกลับมาค่อยส่งขึ้น)
+   • ไม่ใช้ Firebase Storage — รูปเก็บเป็น base64 ในเอกสารย่อย  photos/{ชื่อรูป}  (เขียนรูปก่อน แล้วค่อยเขียนเอกสารหลัก)
+   • push: ทุกการบันทึก -> ธง synced=false -> ส่งขึ้น; ส่งไม่สำเร็จก็ค้างไว้แล้วลองใหม่ (คิว pending)
+   • pull: onSnapshot ฟังเอกสารหลัก (ไม่ฟังรูป) -> ตัวที่เปลี่ยน/ใหม่ค่อยดึงรูปมาเติม; มี reconcile เทียบ 2 ฝั่งเป็นระยะ
+   • ถ้ายังไม่ตั้งค่า แอปจะไม่ส่งข้อมูลออกนอกเครื่องเลย
+   โครงสร้างใน Firestore (ทุกอย่างอยู่ใต้ teams/{รหัสทีม}/ — รหัสทีมยาวๆ เป็นความลับร่วมของทีม):
+     qc_sheets/{วัน_กะ_สินค้า}            ใบบันทึก + ลายเซ็นผู้ทวนสอบ
+     qc_rounds/{id}  (+ photos/group)      รอบ: เวลา, ลายเซ็น QC/PD, ภาพกลุ่ม
+     qc_entries/{id} (+ photos/p2, p1)     รายการ: code/line/ผล/remark, ภาพโค้ด (p2), รูปผลิตภัณฑ์เดิม (p1)  */
+const FB_VER = '12.19.0', FB_CDN = 'https://www.gstatic.com/firebasejs/' + FB_VER + '/';
+const SYNC_CFG_KEY = 'twotone_fb_cfg';
+const C_SH = 'qc_sheets', C_RD = 'qc_rounds', C_EN = 'qc_entries';
+let syncPendingDel = [];           // [{t:'entry'|'round'|'sheet', id}] — รายการลบที่ยังไม่ได้แจ้ง Firestore
+let syncBusy = false, syncAgain = false, syncTimer = null, syncFull = false;
+let syncState = { last:'', err:'', phase:'idle', msg:'', live:false };
+let fb = null, fbStarting = null, fbUnsubs = [], fbDeferred = [], fbQueue = Promise.resolve(), fbChanged = false, fbFlushT = null;
+
+function syncCfg(){
+  try{ const c = JSON.parse(lsGet(SYNC_CFG_KEY)||'{}'); return { config:c.config||null, team:(c.team||'').trim(), auto:c.auto!==false, days:(c.days==null?7:+c.days) }; }
+  catch(e){ return { config:null, team:'', auto:true, days:7 }; }
+}
+function syncOn(){ const c=syncCfg(); return !!(c.config && c.config.projectId && c.config.apiKey && c.team); }
+function skey(s){ return [s.date, s.shift, (s.sachet?1:0)+''+(s.spoon?1:0)+(s.other?1:0)].join('_'); }
+function sheetSig(s){ return [s.date,s.shift,s.sachet?1:0,s.spoon?1:0,s.other?1:0,s.sachetText||'',s.otherText||'',s.verifierSig?s.verifierSig.d.length:0,s.verifierAt||''].join('|'); }
+async function loadSyncDel(){ try{ const v=await idbGet('syncDel'); if(Array.isArray(v)) syncPendingDel=v; }catch(e){} }
+function saveSyncDel(){ return idbSet('syncDel', syncPendingDel).catch(()=>{}); }
+function queueDelete(t,id){ if(!syncOn()) return; if(!syncPendingDel.some(x=>x.t===t&&x.id===id)) syncPendingDel.push({t,id}); saveSyncDel(); syncSoon(); }
+function pendingCount(){
+  let n=syncPendingDel.length;
+  sheets.forEach(s=>{
+    n+=(s.rounds||[]).filter(r=>!r.synced).length + s.entries.filter(e=>!e.synced).length;
+    if((s.entries.length || (s.rounds||[]).length) && s.syncSig!==sheetSig(s)) n++;
+  });
+  return n;
+}
+function updateSyncBadge(){
+  const b=$('cloudBadge'); if(!b) return;
+  const on=syncOn(), n=on?pendingCount():0;
+  let t='☁️', cls='cloud-pill', tip='ยังไม่ได้เปิดซิงค์ — แตะเพื่อตั้งค่า';
+  if(on){
+    if(syncState.phase==='syncing'){ t='☁️ …'; cls+=' busy'; tip='กำลังซิงค์'; }
+    else if(syncState.err){ t='☁️ ⚠️'; cls+=' err'; tip='ซิงค์ผิดพลาด: '+syncState.err; }
+    else if(n>0){ t='☁️ '+n; cls+=' wait'; tip='รอซิงค์ '+n+' รายการ'; }
+    else { t='☁️ ✓'; cls+=' ok'; tip='ซิงค์ครบแล้ว'; }
+  }
+  b.textContent=t; b.className=cls; b.title=tip;
+  if($('syncModal') && $('syncModal').classList.contains('show')) renderSyncStatus();
+}
+function loadImg(src){ return new Promise((res,rej)=>{ const i=new Image(); i.onload=()=>res(i); i.onerror=()=>rej(new Error('รูปเสียหาย')); i.src=src; }); }
+function wt(p, ms){ return Promise.race([ p, new Promise((_,rej)=>setTimeout(()=>rej(Object.assign(new Error('หมดเวลาเชื่อมต่อ (ออฟไลน์หรือสัญญาณอ่อน)'),{code:'timeout'})), ms||30000)) ]); }
+function fbErr(e){
+  const c=(e&&e.code)||'', m=(e&&e.message)||String(e);
+  if(c==='permission-denied' || /Missing or insufficient permissions/i.test(m)) return 'Firestore ปฏิเสธสิทธิ์ — ตรวจ Rules (ต้องอนุญาตผู้ที่ล็อกอินแล้ว) และรหัสทีม';
+  if(/operation-not-allowed|admin-restricted/.test(c)) return 'ยังไม่ได้เปิด Anonymous ใน Authentication (Sign-in method → Anonymous → Enable)';
+  if(/api-key|invalid-api-key/.test(c)) return 'apiKey ไม่ถูกต้อง — ตรวจ firebaseConfig อีกครั้ง';
+  if(c==='resource-exhausted') return 'โควตาฟรีของวันนี้เต็มแล้ว — พรุ่งนี้กลับมาใช้ได้เอง (แผนฟรีไม่มีค่าใช้จ่ายเพิ่ม)';
+  if(c==='unavailable' || c==='timeout') return m;
+  if(/Failed to fetch|import|dynamically imported|Load failed/i.test(m)) return 'โหลดระบบ Firebase ไม่ได้ — ต้องมีอินเทอร์เน็ตอย่างน้อยครั้งแรก';
+  return m;
+}
+
+/* ---- เชื่อมต่อ Firebase (โหลด SDK ด้วย import() — ถ้าโหลดไม่ได้ แอปยังทำงานออฟไลน์ต่อ ไม่พัง) ---- */
+async function fbInit(){
+  if(fb) return fb;
+  if(fbStarting) return fbStarting;
+  fbStarting=(async()=>{
+    const c=syncCfg();
+    const [A,Au,F]=await Promise.all([ import(FB_CDN+'firebase-app.js'), import(FB_CDN+'firebase-auth.js'), import(FB_CDN+'firebase-firestore.js') ]);
+    const app=A.initializeApp(c.config,'twotone-qc');
+    const auth=Au.getAuth(app);
+    if(auth.authStateReady) await auth.authStateReady();
+    if(!auth.currentUser) await Au.signInAnonymously(auth);
+    let db; try{ db=F.initializeFirestore(app,{ localCache:F.persistentLocalCache() }); }catch(e){ db=F.getFirestore(app); }   // ให้ Firestore คิวคำสั่งเองตอนเน็ตหลุด
+    fb={ app, auth, db, m:F, team:c.team, projectId:c.config.projectId };
+    return fb;
+  })();
+  try{ return await fbStarting; } finally{ fbStarting=null; }
+}
+const colRef=(n)=>fb.m.collection(fb.db,'teams',fb.team,n);
+const dref=(n,id)=>fb.m.doc(fb.db,'teams',fb.team,n,id);
+const pref=(n,id,k)=>fb.m.doc(fb.db,'teams',fb.team,n,id,'photos',k);
+function fbFrom(){
+  const c=syncCfg(); if(!(c.days>0)) return '0000-00-00';
+  const d=new Date(Date.now()-c.days*86400000); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+}
+// เอกสารใน Firestore จำกัด 1 MB — ถ้ารูปใหญ่เกินให้ย่อซ้ำ
+async function fitPhoto(url, max){
+  max=max||800000; if(!url || url.length<=max) return url;
+  const im=await loadImg(url); let w=1000, q=0.6, out=url;
+  for(let i=0;i<5 && out.length>max;i++){ out=resizeToDataUrl(im,w,q); w=Math.round(w*0.8); q=Math.max(0.4,q-0.05); }
+  return out;
+}
+function syncSoon(){ if(!syncOn() || !syncCfg().auto){ updateSyncBadge(); return; } clearTimeout(syncTimer); syncTimer=setTimeout(()=>syncRun(false), 1500); updateSyncBadge(); }
+function syncNow(){ return syncRun(true); }
+
+/* ---- PUSH: ส่งของที่ยังไม่ซิงค์ขึ้น Firestore (รูปก่อน แล้วค่อยเอกสารหลัก) ---- */
+async function pushDelete(d){
+  const F=fb.m, name={sheet:C_SH,round:C_RD,entry:C_EN}[d.t]; if(!name) return;
+  const keys={ round:['group'], entry:['p1','p2'], sheet:[] }[d.t];
+  for(const k of keys) await wt(F.deleteDoc(pref(name,d.id,k)));
+  await wt(F.deleteDoc(dref(name,d.id)));
+}
+async function syncPush(){
+  const F=fb.m;
+  for(const d of syncPendingDel.slice()){
+    await pushDelete(d);
+    syncPendingDel=syncPendingDel.filter(x=>!(x.t===d.t&&x.id===d.id)); await saveSyncDel();
+  }
+  for(const s of sheets.slice()){
+    s.rounds=s.rounds||[];
+    const rTodo=s.rounds.filter(r=>!r.synced), todo=s.entries.filter(e=>!e.synced), sig=sheetSig(s);
+    if(!s.entries.length && !s.rounds.length && !s.verifierSig) continue;
+    if(!todo.length && !rTodo.length && s.syncSig===sig) continue;
+    syncState.msg='อัปโหลดใบ '+dmy(s.date)+' '+s.shift+'...'; updateSyncBadge();
+    const sd={ date:s.date, shift:s.shift, sachet:!!s.sachet, spoon:!!s.spoon, other:!!s.other, updatedAt:nowIso() };
+    if(s.sachetText) sd.sachetText=s.sachetText; if(s.otherText) sd.otherText=s.otherText;
+    if(s.verifierSig){ sd.verifierSig=s.verifierSig; sd.verifierAt=s.verifierAt||s.syncAt||nowIso(); if(!s.verifierAt) s.verifierAt=sd.verifierAt; }
+    await wt(F.setDoc(dref(C_SH,skey(s)), sd, { merge:true }));
+    s.syncSig=sheetSig(s); await persist();
+    let i=0;
+    for(const r of rTodo){
+      i++; syncState.msg='อัปโหลดรอบ '+i+'/'+rTodo.length; updateSyncBadge();
+      const u0=r.updatedAt, sendImg=!r.imgSynced, g=r.imageFull||r.image;
+      if(sendImg && g) await wt(F.setDoc(pref(C_RD,r.id,'group'), { dataUrl:await fitPhoto(g) }), 60000);      // รูปก่อน
+      await wt(F.setDoc(dref(C_RD,r.id), { sheetId:skey(s), sheetDate:s.date, time:r.time, createdAt:r.createdAt, updatedAt:r.updatedAt,
+        imgAt:r.imgAt||r.createdAt, hasGroup:!!g, qcSig:r.qcSig||null, pdSig:r.pdSig||null }));                    // แล้วค่อยเอกสารหลัก
+      if(!s.rounds.includes(r)){ syncPendingDel.push({t:'round',id:r.id}); await saveSyncDel(); }
+      else if(r.updatedAt===u0){ r.synced=true; if(sendImg) r.imgSynced=true; }
+      await persist(); updateSyncBadge();
+    }
+    i=0;
+    for(const e of todo){
+      i++; syncState.msg='อัปโหลดรายการ '+i+'/'+todo.length; updateSyncBadge();
+      const u0=e.updatedAt, sendImg=!e.imgSynced, p2=e.image2Full||e.image2, p1=e.imageFull||e.image;
+      if(sendImg){
+        if(p2) await wt(F.setDoc(pref(C_EN,e.id,'p2'), { dataUrl:await fitPhoto(p2) }), 60000);
+        if(p1) await wt(F.setDoc(pref(C_EN,e.id,'p1'), { dataUrl:await fitPhoto(p1) }), 60000);
+      }
+      await wt(F.setDoc(dref(C_EN,e.id), { sheetId:skey(s), roundId:e.roundId||null, sheetDate:s.date, time:e.time, code:e.code, line:e.line||'',
+        result:e.result||null, remark:e.remark||'', createdAt:e.createdAt, updatedAt:e.updatedAt||e.createdAt, imgAt:e.imgAt||e.createdAt,
+        hasP1:!!p1, hasP2:!!p2, qcSig:e.qcSig||null, pdSig:e.pdSig||null }));
+      if(!s.entries.includes(e)){ syncPendingDel.push({t:'entry',id:e.id}); await saveSyncDel(); }   // ถูกลบระหว่างอัปโหลด
+      else if((e.updatedAt||undefined)===u0){ e.synced=true; if(sendImg) e.imgSynced=true; }
+      await persist(); updateSyncBadge();
+    }
+  }
+}
+
+/* ---- PULL: นำเอกสารจาก Firestore ลงเครื่อง (ใช้ร่วมกันทั้ง onSnapshot และ reconcile) ---- */
+function fbEnqueue(fn){ fbQueue=fbQueue.then(fn).catch(e=>console.warn('fb apply',e)); return fbQueue; }
+function markChanged(){
+  fbChanged=true; clearTimeout(fbFlushT);
+  fbFlushT=setTimeout(async()=>{ if(!fbChanged) return; fbChanged=false; await persist(); updateSyncBadge(); rerenderAll(); }, 250);
+}
+async function fbPhoto(name,id,key){ const d=await wt(fb.m.getDoc(pref(name,id,key)),30000); return d.exists() ? (d.data().dataUrl||null) : null; }
+function sheetBySid(sid){ return sheets.find(s=>skey(s)===sid); }
+async function applySheet(id,d){
+  let ls=sheetBySid(id), ch=false;
+  if(!ls){
+    ls={ id, date:d.date, shift:d.shift, sachet:!!d.sachet, spoon:!!d.spoon, other:!!d.other, sachetText:d.sachetText||'', otherText:d.otherText||'',
+         verifierSig:null, verifierAt:'', entries:[], rounds:[], syncSig:null };
+    sheets.push(ls); ch=true;
+  } else {
+    if(!ls.sachetText && d.sachetText){ ls.sachetText=d.sachetText; ch=true; }
+    if(!ls.otherText && d.otherText){ ls.otherText=d.otherText; ch=true; }
+  }
+  if(d.verifierSig && (!ls.verifierSig || (d.verifierAt||'')>(ls.verifierAt||''))){ ls.verifierSig=d.verifierSig; ls.verifierAt=d.verifierAt||''; ch=true; }
+  ls.syncSig=sheetSig(ls);
+  if(ch) markChanged();
+  flushDeferred();
+}
+async function applyRound(id,d){
+  const ls=sheetBySid(d.sheetId); if(!ls){ fbDeferred.push(()=>applyRound(id,d)); return; }
+  ls.rounds=ls.rounds||[];
+  const lr=ls.rounds.find(r=>r.id===id);
+  if(!lr){
+    let g=null, gi=null;
+    if(d.hasGroup){ try{ g=await fbPhoto(C_RD,id,'group'); gi=g?await loadImg(g):null; }catch(e){ console.warn('group photo',e); } }
+    if(ls.rounds.some(r=>r.id===id)) return;
+    ls.rounds.push({ id, time:d.time, createdAt:d.createdAt, updatedAt:d.updatedAt, imgAt:d.imgAt||d.createdAt, image:gi?resizeToDataUrl(gi,240,0.6):null, imageFull:g,
+      qcSig:d.qcSig||null, pdSig:d.pdSig||null, synced:true, imgSynced:true });
+    markChanged(); flushDeferred();
+  } else if(lr.synced && (d.updatedAt||'')>(lr.updatedAt||'')){
+    lr.time=d.time||lr.time; lr.qcSig=d.qcSig||null; lr.pdSig=d.pdSig||null; lr.updatedAt=d.updatedAt;
+    if(d.hasGroup && (d.imgAt||'')>(lr.imgAt||'')){
+      try{ const g=await fbPhoto(C_RD,id,'group'); if(g){ const gi=await loadImg(g); lr.imageFull=g; lr.image=resizeToDataUrl(gi,240,0.6); lr.imgAt=d.imgAt; } }catch(e){ console.warn('group photo',e); }
+    }
+    markChanged();
+  }
+}
+async function applyEntry(id,d){
+  const ls=sheetBySid(d.sheetId); if(!ls || (d.roundId && !getRound(ls,d.roundId))){ fbDeferred.push(()=>applyEntry(id,d)); return; }
+  const le=ls.entries.find(e=>e.id===id);
+  if(!le){
+    let p1=null,p2=null,i1=null,i2=null;
+    try{ [p2,p1]=await Promise.all([ d.hasP2?fbPhoto(C_EN,id,'p2'):null, d.hasP1?fbPhoto(C_EN,id,'p1'):null ]); i1=p1?await loadImg(p1):null; i2=p2?await loadImg(p2):null; }catch(e){ console.warn('entry photos',e); }
+    if(sheets.some(s=>s.entries.some(x=>x.id===id))) return;
+    ls.entries.push({ id, roundId:d.roundId||null, time:d.time, code:d.code, line:d.line||'', result:d.result||null, remark:d.remark||'',
+      qcSig:d.qcSig||null, pdSig:d.pdSig||null, image:i1?resizeToDataUrl(i1,200,0.6):null, imageFull:p1, image2:i2?resizeToDataUrl(i2,200,0.6):null, image2Full:p2,
+      createdAt:d.createdAt, updatedAt:d.updatedAt, imgAt:d.imgAt||d.createdAt, synced:true, imgSynced:true });
+    markChanged();
+  } else if(le.synced && (d.updatedAt||'')>(le.updatedAt||'')){
+    le.time=d.time; le.code=d.code; le.line=d.line||''; le.result=d.result||null; le.remark=d.remark||''; le.updatedAt=d.updatedAt;
+    if(d.hasP2 && (d.imgAt||'')>(le.imgAt||'')){
+      try{ const p2=await fbPhoto(C_EN,id,'p2'); if(p2){ const i2=await loadImg(p2); le.image2Full=p2; le.image2=resizeToDataUrl(i2,200,0.6); le.imgAt=d.imgAt; } }catch(e){ console.warn('entry photo',e); }
+    }
+    markChanged();
+  }
+}
+function flushDeferred(){ const q=fbDeferred; fbDeferred=[]; q.forEach(fn=>fbEnqueue(fn)); }
+function onRemoved(name,id){
+  if(name===C_EN){ sheets.forEach(s=>{ const e=s.entries.find(x=>x.id===id); if(e && e.synced){ s.entries=s.entries.filter(x=>x!==e); markChanged(); } }); }
+  else if(name===C_RD){ sheets.forEach(s=>{ const r=(s.rounds||[]).find(x=>x.id===id); if(r && r.synced){ s.rounds=s.rounds.filter(x=>x!==r); s.entries=s.entries.filter(e=>e.roundId!==id); markChanged(); } }); }
+  else if(name===C_SH){ const s=sheetBySid(id); if(s && !s.entries.some(e=>!e.synced) && !(s.rounds||[]).some(r=>!r.synced)){ sheets=sheets.filter(x=>x!==s); if(selectedSheetId===s.id) selectedSheetId=null; markChanged(); } }
+}
+function stopListeners(){ fbUnsubs.forEach(u=>{ try{ u(); }catch(e){} }); fbUnsubs=[]; syncState.live=false; }
+function startListeners(){
+  stopListeners();
+  const F=fb.m, from=fbFrom();
+  const mk=(name,field,apply)=>{
+    const q=F.query(colRef(name), F.where(field,'>=',from));
+    return F.onSnapshot(q, snap=>{
+      snap.docChanges().forEach(ch=>{
+        if(ch.doc.metadata && ch.doc.metadata.hasPendingWrites) return;          // เสียงสะท้อนจากที่เราเขียนเอง
+        const id=ch.doc.id;
+        if(ch.type==='removed') fbEnqueue(()=>onRemoved(name,id)); else { const d=ch.doc.data(); fbEnqueue(()=>apply(id,d)); }
+      });
+    }, err=>{ console.warn('listen',name,err); syncState.err=fbErr(err); syncState.live=false; updateSyncBadge(); });
+  };
+  fbUnsubs=[ mk(C_SH,'date',applySheet), mk(C_RD,'sheetDate',applyRound), mk(C_EN,'sheetDate',applyEntry) ];
+  syncState.live=true;
+}
+/* ---- RECONCILE: เทียบ IndexedDB กับ Firestore ว่าอะไรขาด/เกิน แล้วเติมให้ ---- */
+async function reconcile(){
+  const F=fb.m, from=fbFrom();
+  syncState.msg='ตรวจข้อมูลบน Firebase...'; updateSyncBadge();
+  const get=(name,field)=>wt(F.getDocsFromServer(F.query(colRef(name),F.where(field,'>=',from))),45000);
+  const [sS,rS,eS]=await Promise.all([ get(C_SH,'date'), get(C_RD,'sheetDate'), get(C_EN,'sheetDate') ]);
+  const srvE=new Set(), srvR=new Set(), srvS=new Set();
+  sS.forEach(d=>srvS.add(d.id)); rS.forEach(d=>srvR.add(d.id)); eS.forEach(d=>srvE.add(d.id));
+  const serverEmpty = sS.size===0 && rS.size===0 && eS.size===0;
+  const jobs=[]; sS.forEach(d=>{ const x=d.data(); jobs.push(()=>applySheet(d.id,x)); }); rS.forEach(d=>{ const x=d.data(); jobs.push(()=>applyRound(d.id,x)); }); eS.forEach(d=>{ const x=d.data(); jobs.push(()=>applyEntry(d.id,x)); });
+  for(const j of jobs) await fbEnqueue(j);
+  await fbEnqueue(()=>{});
+  // ของที่เคยซิงค์แล้วแต่หายจากเซิร์ฟเวอร์: ถ้าเซิร์ฟเวอร์ "ว่างทั้งหมด" ให้ถือว่าถูกรีเซ็ต -> อัปโหลดใหม่ (กันข้อมูลหาย) ไม่เช่นนั้นถือว่าลบจากเครื่องอื่น
+  let resync=false;
+  sheets.forEach(s=>{
+    if(s.date<from) return;
+    (s.rounds||[]).slice().forEach(r=>{ if(r.synced && !srvR.has(r.id)){
+      if(serverEmpty){ r.synced=false; r.imgSynced=false; s.syncSig=null; resync=true; } else { s.rounds=s.rounds.filter(x=>x!==r); s.entries=s.entries.filter(e=>e.roundId!==r.id); } markChanged(); } });
+    s.entries.slice().forEach(e=>{ if(e.synced && !srvE.has(e.id)){
+      if(serverEmpty){ e.synced=false; e.imgSynced=false; s.syncSig=null; resync=true; } else s.entries=s.entries.filter(x=>x!==e); markChanged(); } });
+  });
+  if(resync){ await persist(); syncState.pendingResync=true; }
+}
+
+/* ---- ตัวควบคุมหลัก: push (+ reconcile เมื่อสั่งซิงค์เต็ม) ---- */
+async function syncRun(full){
+  if(!syncOn()) return;
+  if(syncBusy){ syncAgain=true; if(full) syncFull=true; return; }
+  if(!navigator.onLine){ syncState.msg='ออฟไลน์ — จะซิงค์เองเมื่อมีอินเทอร์เน็ต'; updateSyncBadge(); return; }
+  syncBusy=true; syncState.phase='syncing'; syncState.err=''; syncState.msg='เริ่มซิงค์...'; updateSyncBadge();
+  try{
+    await fbInit();
+    if(!syncState.live) startListeners();
+    await syncPush();
+    if(full || !syncState.last) await reconcile();
+    syncState.last=new Date().toISOString(); lsSet('twotone_sync_last', syncState.last);
+    syncState.phase='idle'; syncState.err=''; syncState.msg='ซิงค์เรียบร้อย';
+  }catch(e){
+    console.error('sync',e); syncState.phase='idle'; syncState.err=fbErr(e); syncState.msg='';
+  }finally{
+    syncBusy=false; updateSyncBadge();
+    if(syncAgain){ syncAgain=false; const f=syncFull; syncFull=false; if(f) syncRun(true); else syncSoon(); }
+    else if(syncState.pendingResync){ syncState.pendingResync=false; syncSoon(); }
+  }
+}
+
+/* ---- ตั้งค่า / หน้าต่างซิงค์ ---- */
+function parseFbConfig(txt){
+  txt=(txt||'').trim(); if(!txt) return null;
+  let o=null; try{ o=JSON.parse(txt); }catch(e){}
+  if(!o){ o={}; const re=/["']?(apiKey|authDomain|projectId|storageBucket|messagingSenderId|appId|measurementId)["']?\s*:\s*["']([^"']+)["']/g; let m; while((m=re.exec(txt))) o[m[1]]=m[2]; }
+  return (o && o.apiKey && o.projectId) ? o : null;
+}
+function encodeConn(cfg,team){ return 'TT1:'+btoa(unescape(encodeURIComponent(JSON.stringify({ c:cfg, t:team })))); }
+function decodeConn(s){ try{ s=(s||'').trim(); if(!/^TT1:/.test(s)) return null; const o=JSON.parse(decodeURIComponent(escape(atob(s.slice(4))))); return (o&&o.c&&o.c.apiKey&&o.t) ? o : null; }catch(e){ return null; } }
+function openSync(){
+  const c=syncCfg();
+  $('fbCfg').value = c.config ? JSON.stringify(c.config,null,1) : '';
+  $('fbTeam').value = c.team; $('fbConn').value=''; $('syncAuto').checked=c.auto; $('syncDays').value=String(c.days);
+  $('syncTestMsg').textContent=''; renderSyncStatus(); $('syncModal').classList.add('show');
+}
+function closeSync(){ $('syncModal').classList.remove('show'); }
+function readSyncForm(){ return { config:parseFbConfig($('fbCfg').value), team:$('fbTeam').value.trim(), auto:$('syncAuto').checked, days:+$('syncDays').value }; }
+function genTeam(){
+  if($('fbTeam').value.trim() && !confirm('มีรหัสทีมอยู่แล้ว — สร้างใหม่จะทำให้ข้อมูลเดิมอยู่คนละกลุ่มกับรหัสใหม่ ต้องการสร้างใหม่ไหม?')) return;
+  const a=new Uint8Array(20); crypto.getRandomValues(a); $('fbTeam').value=Array.from(a,x=>'abcdefghijkmnpqrstuvwxyz23456789'[x%32]).join('');
+}
+function importConn(){
+  const o=decodeConn($('fbConn').value); const m=$('syncTestMsg');
+  if(!o){ m.className='sync-msg bad'; m.textContent='❌ รหัสเชื่อมต่อไม่ถูกต้อง (ต้องขึ้นต้นด้วย TT1:)'; return; }
+  $('fbCfg').value=JSON.stringify(o.c,null,1); $('fbTeam').value=o.t; $('fbConn').value='';
+  m.className='sync-msg ok'; m.textContent='✅ นำเข้าแล้ว — กด "ทดสอบการเชื่อมต่อ" แล้วบันทึก';
+}
+async function copyConn(){
+  const f=readSyncForm(), m=$('syncTestMsg');
+  if(!f.config || !f.team){ m.className='sync-msg bad'; m.textContent='กรอก firebaseConfig และรหัสทีมให้ครบก่อน'; return; }
+  const code=encodeConn(f.config,f.team);
+  try{ await navigator.clipboard.writeText(code); m.className='sync-msg ok'; m.textContent='✅ คัดลอกรหัสเชื่อมต่อแล้ว — ไปวางในเครื่องอื่นที่ช่อง "รหัสเชื่อมต่อ" (เก็บเป็นความลับของทีม)'; }
+  catch(e){ $('fbConn').value=code; $('fbConn').select(); m.className='sync-msg ok'; m.textContent='คัดลอกอัตโนมัติไม่ได้ — ก๊อปจากช่อง "รหัสเชื่อมต่อ" ด้านล่างเอง'; }
+}
+function renderSyncStatus(){
+  const on=syncOn(); const el=$('syncStatus'); if(!el) return;
+  if(!on){ el.innerHTML='<span class="itail-badge itail-badge-warning">ยังไม่เปิดซิงค์</span> ข้อมูลอยู่ในเครื่องนี้เท่านั้น'; return; }
+  const last=lsGet('twotone_sync_last'); const n=pendingCount();
+  let h = syncState.phase==='syncing' ? '<span class="itail-badge itail-badge-info">กำลังซิงค์</span> '+esc(syncState.msg)
+        : syncState.err ? '<span class="itail-badge itail-badge-danger">ผิดพลาด</span> '+esc(syncState.err)
+        : n>0 ? '<span class="itail-badge itail-badge-warning">รอซิงค์ '+n+' รายการ</span>'+(navigator.onLine?'':' ออฟไลน์ — จะซิงค์เองเมื่อมีอินเทอร์เน็ต')
+        : '<span class="itail-badge itail-badge-success">ซิงค์ครบแล้ว</span>';
+  h+='<div class="sync-sub">โปรเจกต์ '+esc(syncCfg().config.projectId)+(syncState.live?' • รับการเปลี่ยนแปลงสดจากเครื่องอื่น':'')+'</div>';
+  if(last){ const d=new Date(last); h+='<div class="sync-sub">ซิงค์ล่าสุด '+dmy(d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()))+' '+pad(d.getHours())+':'+pad(d.getMinutes())+'</div>'; }
+  el.innerHTML=h;
+}
+async function syncTest(){
+  const f=readSyncForm(), m=$('syncTestMsg');
+  if(!f.config){ m.className='sync-msg bad'; m.textContent='วาง firebaseConfig ให้ถูกต้องก่อน (ต้องมี apiKey และ projectId)'; return false; }
+  if(!/^[A-Za-z0-9_\-]{8,60}$/.test(f.team)){ m.className='sync-msg bad'; m.textContent='รหัสทีมต้องเป็นตัวอักษร/ตัวเลข 8–60 ตัว (กด 🎲 เพื่อสร้างให้)'; return false; }
+  if(fb && (fb.projectId!==f.config.projectId || fb.team!==f.team)){ m.className='sync-msg bad'; m.textContent='เปลี่ยนโปรเจกต์/รหัสทีม: กด "บันทึก" ก่อน แล้วแอปจะรีโหลด จากนั้นค่อยทดสอบ'; return false; }
+  m.className='sync-msg'; m.textContent='กำลังทดสอบ...';
+  const old=lsGet(SYNC_CFG_KEY); lsSet(SYNC_CFG_KEY, JSON.stringify(f));
+  try{
+    await fbInit(); const F=fb.m; const ref=F.doc(fb.db,'teams',fb.team,'qc_meta','ping');
+    await wt(F.setDoc(ref,{ t:nowIso() })); const g=await wt(F.getDoc(ref));
+    if(!g.exists()) throw new Error('เขียนแล้วแต่อ่านกลับไม่ได้');
+    m.className='sync-msg ok'; m.textContent='✅ เชื่อมต่อ Firestore สำเร็จ (โปรเจกต์ '+f.config.projectId+')'; return true;
+  }catch(e){ m.className='sync-msg bad'; m.textContent='❌ '+fbErr(e); lsSet(SYNC_CFG_KEY, old); return false; }
+}
+async function syncSave(){
+  const f=readSyncForm(); const m=$('syncTestMsg');
+  if(f.config || f.team){ if(!f.config || !f.team){ m.className='sync-msg bad'; m.textContent='กรอก firebaseConfig และรหัสทีมให้ครบทั้งสองช่อง'; return; } if(!(await syncTest())) return; }
+  lsSet(SYNC_CFG_KEY, JSON.stringify(f));
+  const id=f.config ? f.config.projectId+'|'+f.team : '';
+  const prev=lsGet('twotone_sync_target');
+  if(prev!==id){   // เปลี่ยนปลายทาง = ถือว่าทุกอย่างยังไม่ได้ส่ง แล้วรีโหลดเพื่อเริ่ม SDK ใหม่
+    sheets.forEach(s=>{ s.syncSig=null; (s.rounds||[]).forEach(r=>{ r.synced=false; r.imgSynced=false; }); s.entries.forEach(e=>{ e.synced=false; e.imgSynced=false; }); });
+    syncPendingDel=[]; await saveSyncDel(); await persist(); lsSet('twotone_sync_target', id);
+    if(fb){ toast('เปลี่ยนปลายทางซิงค์แล้ว — กำลังรีโหลดแอป...'); setTimeout(()=>location.reload(),700); return; }
+  }
+  syncState.err=''; updateSyncBadge(); updateCaptureHint(); closeSync();
+  if(syncOn()){ toast('บันทึกการตั้งค่าแล้ว — กำลังซิงค์...'); syncRun(true); } else toast('ปิดการซิงค์แล้ว');
+}
+function syncOff(){
+  if(!confirm('ปิดการซิงค์บนเครื่องนี้? (ข้อมูลที่อยู่บน Firebase และในเครื่องไม่ถูกลบ)')) return;
+  lsSet(SYNC_CFG_KEY,''); lsSet('twotone_sync_target',''); syncPendingDel=[]; saveSyncDel(); stopListeners(); syncState={ last:'', err:'', phase:'idle', msg:'', live:false };
+  updateSyncBadge(); updateCaptureHint(); closeSync(); toast('ปิดการซิงค์แล้ว');
+}
+function updateCaptureHint(){
+  const el=$('privacyHint'); if(!el) return;
+  el.textContent = syncOn() ? '☁️ ซิงค์ข้อมูล/รูปไปยัง Firebase ของคุณ • OCR ยังอ่านในเครื่อง ไม่ส่งรูปให้บริการอ่านภายนอก'
+                            : '🔒 OCR ทำงานในเครื่องทั้งหมด ไม่ส่งรูป/ข้อมูลออกอินเทอร์เน็ต';
+}
+window.addEventListener('online', ()=>{ if(syncOn() && syncCfg().auto) syncRun(true); });
+document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && syncOn() && syncCfg().auto && pendingCount()>0) syncSoon(); });
+setInterval(()=>{ if(syncOn() && syncCfg().auto && !document.hidden && navigator.onLine && pendingCount()>0) syncRun(false); }, 120000);   // รอบเช็กส่งของค้าง (ไม่อ่านจาก Firestore ซ้ำ เพื่อประหยัดโควตา)
+
+
 /* ========================= INIT ========================= */
 /* ========================= VERSION UI ========================= */
 function renderVersion(){
@@ -1287,9 +2208,10 @@ function initVersion(){
 }
 
 (async()=>{
-  sheets = await loadSheets();
+  sheets = await loadSheets(); sheets.forEach(migrateSheet);
+  await loadSyncDel(); updateSyncBadge(); updateCaptureHint(); if(syncOn()) syncRun(true);
   initVersion();
-  initHeader(); updateHeader();
+  initHeader(); updateHeader(); renderCapture();
   try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist(); }catch(e){}
 })();
 
